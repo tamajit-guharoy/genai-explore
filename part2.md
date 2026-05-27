@@ -84,39 +84,200 @@ more specific pattern  >  less specific pattern (within same scope)
 ---
 
 ### `/hooks`
-View hook configurations that execute on tool events.
+View hook configurations that execute on tool events. Hooks are shell commands that Claude Code runs automatically in response to specific events during a session. They are configured in `settings.json` and executed by the harness — not Claude — making them reliable for enforcing side effects regardless of what Claude does.
+
+**Hook events:**
+| Event | When it fires |
+|-------|--------------|
+| `PreToolUse` | Before Claude calls any tool |
+| `PostToolUse` | After a tool completes |
+| `Stop` | When Claude finishes responding |
+| `Notification` | When Claude sends a notification |
+| `UserPromptSubmit` | When you submit a prompt |
+
+A hook can **block** an action by exiting with a non-zero code, or **pass feedback** back to Claude by writing to stdout.
+
+**Key environment variables available in hooks:**
+| Variable | Contains |
+|----------|----------|
+| `$CLAUDE_TOOL_NAME` | Name of the tool being called (e.g. `Bash`, `Edit`) |
+| `$CLAUDE_TOOL_INPUT_COMMAND` | The command string for Bash calls |
+| `$CLAUDE_TOOL_INPUT_FILE_PATH` | File path for Edit/Write/Read calls |
 
 **Example:**
 ```
 /hooks
 ```
 
+**Example 1:** Auto-format after file edits (`PostToolUse`).
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier --write $CLAUDE_TOOL_INPUT_FILE_PATH"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+Claude edits `app.js` → hook fires → Prettier reformats the file automatically.
+
+**Example 2:** Block a dangerous command (`PreToolUse` deny).
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'echo $CLAUDE_TOOL_INPUT_COMMAND | grep -q \"push --force\" && exit 1 || exit 0'"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+- `git push origin main` → hook exits 0 → proceeds normally
+- `git push --force origin main` → hook exits 1 → **tool call is blocked**
+
+**Example 3:** Log every tool call to a file (wildcard matcher).
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date) $CLAUDE_TOOL_NAME: $CLAUDE_TOOL_INPUT_COMMAND\" >> ~/claude-audit.log"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+Every tool call appends a timestamped line to `~/claude-audit.log`.
+
+**Example 4:** Desktop notification when Claude finishes (`Stop` event).
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Claude is done!')\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+When Claude finishes its turn, a Windows popup appears: **"Claude is done!"**
+
+**Example 5:** Inject git branch context on every prompt (`UserPromptSubmit`).
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Current branch: $(git branch --show-current)\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+Every prompt submission automatically includes `Current branch: feature/auth-refactor` as context for Claude.
+
 ---
 
 ## Utilities & Tools
 
 ### `/copy`
-Copy the last assistant response to clipboard. Pass a number to copy the Nth-latest response.
+Copy the last assistant response to clipboard. Pass a number `N` to copy the Nth-latest response (1 = last, 2 = second-to-last, etc.).
 
-**Example 1:** Copy Claude's last code block to paste into your editor.
+| Command | What it copies |
+|---------|---------------|
+| `/copy` | Most recent Claude response |
+| `/copy 1` | Same as `/copy` |
+| `/copy 2` | Second-to-last response |
+| `/copy N` | Nth-latest response |
+
+**Example 1:** Copy Claude's last response (e.g. a SQL query) to paste into your DB client.
 ```
 /copy
 ```
+The entire last response is now on your clipboard.
 
-**Example 2:** Copy the second-to-last response.
+**Example 2:** Copy an older response by number.
+
+Given this exchange:
 ```
-/copy 2
+Turn 1: Claude writes a Python function     ← /copy 3
+Turn 2: Claude explains the function        ← /copy 2
+Turn 3: Claude refactors it                 ← /copy  (or /copy 1)
 ```
+To get the original function from Turn 1:
+```
+/copy 3
+```
+That older response is on your clipboard without scrolling back to manually select it.
 
 ---
 
 ### `/export`
 Export the current conversation as plain text. Useful for sharing session context with a teammate as a read-only reference — they get the full history but cannot resume it as a live session. See [Sharing Sessions with Teammates](#sharing-sessions-with-teammates-cross-machine) for other sharing options.
 
+The exported file is **read-only plain text** — you cannot resume it as a live session directly. But you can use it in a new session in a couple of ways:
+
 **Example 1:** Save the session as a reference doc.
 ```
 /export refactor-session-2026-05-17.txt
 ```
+
+**Example 2:** Feed the exported file as context in a new session.
+```
+Read refactor-session-2026-05-17.txt and summarize what we were doing
+```
+Or:
+```
+Read refactor-session-2026-05-17.txt — continue the auth refactor we started
+```
+Claude reads the history and picks up where you left off. It won't have the actual tool state, but it will understand the full context.
+
+**Example 3:** Use `/resume` instead for true session continuity.
+```
+/resume
+```
+This shows a list of past sessions you can reopen with full context intact.
+
+**Choosing the right tool:**
+
+| Goal | Use |
+|------|-----|
+| Continue a session yourself | `/resume` |
+| Share a session with a teammate (live takeover) | `/remote-control` |
+| Share a session as a reference (read-only) | `/export` → send the `.txt` file |
+| Feed old context into a new session | `/export` → then `Read <file>` in new session |
 
 ---
 
@@ -136,12 +297,30 @@ Ask a quick side question without polluting conversation history.
 ---
 
 ### `/recap`
-Generate a one-line summary of the current session.
+Generate a one-line summary of the current session. No arguments needed — Claude looks at everything that happened and produces a concise single-line description of the work done.
 
 **Example:**
 ```
 /recap
 ```
+
+**Example output:**
+```
+Refactored auth middleware to use JWT tokens and added unit tests for the login flow.
+```
+
+**When to use it:**
+
+| Scenario | Why `/recap` helps |
+|---|---|
+| Coming back after a break | Quickly re-orient yourself on what was done |
+| Writing a commit message | Use the recap as a starting point |
+| End-of-day notes | Log what Claude helped you accomplish |
+| Handing off to a teammate | Give them a one-liner before sharing the session |
+
+**Difference from `/export`:**
+- `/recap` → one-line summary, stays in the terminal
+- `/export` → full conversation history saved to a file
 
 ---
 
@@ -160,10 +339,41 @@ Show available commands and usage information.
 ### `/doctor`
 Diagnose and verify your Claude Code installation and settings. Press `f` to auto-fix issues.
 
+**What it checks:**
+
+| Check | What it verifies |
+|---|---|
+| Installation | Claude Code is correctly installed and up to date |
+| Authentication | You're logged in and your API key/credentials are valid |
+| Settings files | `settings.json` files are valid JSON and have no conflicts |
+| MCP servers | Connected MCP servers are reachable and responding |
+| Network connectivity | Claude Code can reach Anthropic's servers |
+| Node.js / runtime | Underlying runtime is the correct version |
+
 **Example 1:** Something feels off after an update — run a health check.
 ```
 /doctor
 ```
+
+**Example 2:** Typical fix workflow.
+```
+/doctor        ← run the check
+               ← review the output
+f              ← press f to auto-fix flagged issues
+/doctor        ← run again to confirm fixes worked
+```
+
+**When to use it:**
+
+| Scenario | Why `/doctor` helps |
+|---|---|
+| Something feels off after an update | Confirms if the update broke anything |
+| Commands suddenly stop working | Identifies the broken component |
+| MCP server not responding | Pinpoints connectivity or config issues |
+| First-time setup | Verify everything was installed correctly |
+| Sharing a bug report | Run it first to rule out local config issues |
+
+If `/doctor` can't auto-fix something (e.g. an expired API key), it tells you exactly what to fix manually. Run it before filing a bug report with `/feedback`.
 
 ---
 
