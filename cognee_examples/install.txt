@@ -1,0 +1,10 @@
+pip install cognee[local]
+pip install cognee[fastembed]
+
+  $env:LLM_API_KEY="<deepseek token>"
+  $env:LLM_ENDPOINT="https://api.deepseek.com/v1"
+  $env:LLM_MODEL="openai/deepseek-chat"
+  $env:EMBEDDING_PROVIDER="fastembed"
+  $env:EMBEDDING_MODEL="BAAI/bge-small-en-v1.5"
+  $env:EMBEDDING_DIMENSIONS="384"
+  python cognee_examples/01_hello_cognee.py

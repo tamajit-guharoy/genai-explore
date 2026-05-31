@@ -10,7 +10,16 @@
       "Bash(Format-Table -AutoSize)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(Get-ChildItem -Recurse cognee_examples)",
+      "Bash(python *)",
+      "Bash(git restore *)",
+      "Bash(mkdir -p /c/Users/guhar/ws/calude_tutorial/.claude/workflows)",
+      "Bash(mv /c/Users/guhar/.claude/workflows/world-capitals.js /c/Users/guhar/ws/calude_tutorial/.claude/workflows/world-capitals.js)",
+      "Workflow(world-capitals)",
+      "Workflow(pipeline-hello-world)",
+      "Workflow(parallel-hello-world)",
+      "Bash(node *)"
     ]
   }
 }
