@@ -19,7 +19,9 @@
       "Workflow(world-capitals)",
       "Workflow(pipeline-hello-world)",
       "Workflow(parallel-hello-world)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "WebFetch(domain:techysurgeon.substack.com)",
+      "WebFetch(domain:support.claude.com)"
     ]
   }
 }
