@@ -1,0 +1,11 @@
+RECEIPT / INVOICE
+
+Vendor: Eurostar International Ltd
+Date: 06/06/2026
+Route: London St Pancras → Paris Nord (return, same day)
+Outward: 07:01 departure | Return: 19:31 departure
+Ticket class: Standard Premier
+Total: £312.00
+Payment: Corporate Visa ending 3310
+Category: Travel (partner meeting — DataSync HQ Paris)
+VAT: Not applicable (international rail)

@@ -1,0 +1,10 @@
+RECEIPT / TAX INVOICE
+
+Vendor: Figma Inc
+Date: 01/06/2026
+Description: Figma Professional Plan — Annual (1 seat)
+Amount: $144.00 USD
+Exchange rate applied: 0.787 (GBP equivalent: £113.33)
+Payment: Corporate Visa
+Category: Software
+Annual subscription renewal for design tooling

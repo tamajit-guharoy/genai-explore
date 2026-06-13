@@ -1,0 +1,33 @@
+PAPER — Simulate PDF
+
+Title: A Wearable, Fully Autonomous EEG-BCI System for Home-Based Motor Rehabilitation: 12-Week Feasibility Study
+Authors: Patel, A., Rodriguez, C., Tanaka, M., Morgan, A.
+Journal: Journal of NeuroEngineering and Rehabilitation, 2026
+DOI: 10.1186/s12984-026-01392-8
+
+HYPOTHESIS
+A fully wearable, autonomous EEG-BCI system (no clinician required to operate) can be safely and
+effectively used by stroke survivors at home, with comparable adherence to clinic-based BCI therapy.
+
+METHODOLOGY
+Single-arm feasibility study. 18 chronic stroke survivors.
+12-week home-based BCI programme: 5 sessions/week, 45 minutes/session.
+Wearable device: dry-electrode 8-channel EEG headset + custom FES unit.
+Primary outcomes: adherence (target ≥70%), adverse events, usability (SUS score).
+Secondary outcomes: Fugl-Meyer Assessment at 6 and 12 weeks.
+
+KEY RESULTS
+- Adherence: 74% (13/18 met ≥70% target)
+- Usability (SUS): 71/100 — "Good" range
+- Adverse events: 0 serious; 4 skin irritation from electrodes (resolved with repositioning)
+- Fugl-Meyer (upper extremity): +5.1 points at 12 weeks (95% CI: 2.8–7.4) — clinically meaningful
+- 4 participants dropped out: 2 technical difficulties, 1 family carer unavailability, 1 withdrawal of consent
+
+LIMITATIONS
+- No control group — cannot attribute FM improvement to BCI specifically
+- Participants selected for motivation; broader population may have lower adherence
+- 8-channel EEG may miss important signals; 32-channel used in clinic studies
+
+RELEVANCE TO: Neural interfaces in motor rehabilitation — VERY HIGH
+Home-based BCI is a major direction for my research programme. This paper is by my group (I'm a co-author).
+Use as key reference for grant application home-monitoring arm.

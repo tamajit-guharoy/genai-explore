@@ -1,0 +1,16 @@
+AMAZON BUSINESS RECEIPT
+
+Vendor: Amazon Business UK
+Order date: 04/06/2026
+Order ID: 205-8842331-7461943
+
+Items:
+  Logitech MX Keys S Wireless Keyboard    £99.99
+  Anker USB-C Hub 7-in-1                  £34.99
+  VIVO Laptop Stand Adjustable            £28.49
+
+Subtotal: £163.47
+VAT (20%): £32.69
+Total: £196.16
+Payment: Corporate card ending 3310
+Category: Equipment (home office setup — approved by manager 01/06)

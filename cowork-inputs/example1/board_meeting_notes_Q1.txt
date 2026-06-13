@@ -1,0 +1,45 @@
+BOARD MEETING NOTES — Q1 2026
+Date: 15 March 2026
+Attendees: Sarah Chen (CEO), Marcus Webb (CFO), Priya Nair (CPO), David Okafor (CTO), Linda Frost (Chair)
+
+---
+
+AGENDA ITEMS COVERED
+
+1. Q1 Financial Review
+   - Revenue: £2.4M (target: £2.6M — 8% below target)
+   - Gross margin: 68% (stable)
+   - Burn rate: £340K/month
+   - Runway: 14 months at current burn
+
+2. Product Roadmap Update
+   - Mobile app v2.1 shipped 28 Feb — 4,200 downloads in first week
+   - Enterprise dashboard delayed by 3 weeks due to auth provider migration
+   - AI recommendations engine: still in beta, full launch target Q2
+
+3. Sales Pipeline
+   - 3 enterprise deals in final negotiation (combined value: £1.8M ARR)
+   - SMB self-serve growing 12% MoM
+   - Churn rate: 3.2% (up from 2.8% in Q4 — flagged as concern)
+
+---
+
+OPEN ACTION ITEMS
+
+[ ] ACTION: CFO (Marcus Webb) — Submit revised cash flow model accounting for delayed enterprise revenue by 22 March 2026
+[ ] ACTION: CPO (Priya Nair) — Deliver churn analysis report identifying top 5 reasons for Q1 churn spike, due 29 March 2026
+[ ] ACTION: CTO (David Okafor) — Provide auth provider migration post-mortem and updated enterprise dashboard launch date by 20 March 2026
+[ ] ACTION: CEO (Sarah Chen) — Schedule Q2 board pre-read distribution no later than 1 June 2026
+[ ] ACTION: Chair (Linda Frost) — Confirm date for emergency board call if enterprise deals do not close by 30 April 2026
+
+---
+
+DECISIONS MADE
+
+- Board approved hiring freeze on non-critical roles until Q2 revenue target confirmed
+- Board approved extension of Series A runway model to include bridge scenario
+- Next full board meeting: 14 June 2026
+
+---
+
+CONFIDENTIAL — FOR BOARD USE ONLY

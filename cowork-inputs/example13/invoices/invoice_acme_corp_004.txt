@@ -1,0 +1,49 @@
+INVOICE
+
+Invoice number: 2026-004
+Date issued: 1 May 2026
+Due date: 31 May 2026
+Status: UNPAID
+
+From:
+  Alex Morgan Consulting Ltd
+  123 Consulting Street
+  London EC1A 1BB
+  Company No: 12345678
+  VAT No: GB 123 4567 89
+
+To:
+  Acme Corp
+  Accounts Payable Department
+  456 Business Park
+  Manchester M1 1AA
+  Attn: Sandra Price (Finance)
+
+---
+
+SERVICES RENDERED — April 2026
+
+Description                          Days    Day Rate    Amount
+Product strategy advisory            8       £900        £7,200.00
+Stakeholder workshop facilitation    2       £1,200      £2,400.00
+Written deliverables (PRD review)    1       £900        £900.00
+
+Subtotal:                                               £10,500.00
+VAT (20%):                                              £2,100.00
+TOTAL DUE:                                              £12,600.00
+
+---
+
+PAYMENT DETAILS
+Bank: Barclays Bank PLC
+Account name: Alex Morgan Consulting Ltd
+Sort code: 20-12-34
+Account number: 12345678
+Reference: INV-2026-004
+
+Payment terms: 30 days from invoice date.
+Late payment interest: 8% above Bank of England base rate per Late Payment Act 1998.
+
+---
+
+Please direct payment queries to: invoices@alexmorganconsulting.co.uk

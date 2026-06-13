@@ -1,0 +1,73 @@
+RETAILCO BRAND GUIDELINES — EXTERNAL PARTNER VERSION
+Last updated: January 2026
+
+---
+
+ABOUT RETAILCO
+RetailCo is a UK retail chain operating 200 stores across England, Scotland, and Wales.
+Founded 1987. Headquartered in Manchester.
+Tagline: "Quality for every day."
+Core values: Accessibility, Reliability, Community.
+
+---
+
+TONE OF VOICE
+- Clear and direct. No jargon, no buzzwords.
+- Warm but professional. We talk to customers, not at them.
+- Use active voice. "We deliver" not "Deliveries are made by us."
+- Plain English. If a Year 10 student can't understand it, rewrite it.
+
+WORDS WE USE: simple, honest, straightforward, value, community, everyday
+WORDS WE AVOID: leverage, synergies, best-in-class, world-class, holistic, utilise
+
+---
+
+VISUAL IDENTITY
+
+Primary Colours:
+  RetailCo Red:     #E63946 (Pantone 485 C)
+  RetailCo Blue:    #457B9D (Pantone 660 C)
+  White:            #FFFFFF
+
+Secondary Colours:
+  Warm Grey:        #F1FAEE
+  Dark Navy:        #1D3557
+  Accent Green:     #2DC653 (for sustainability messaging only)
+
+Typography:
+  Headings:    Gill Sans MT (bold)
+  Body text:   Gill Sans MT (regular)
+  Digital alt: Inter (if Gill Sans unavailable)
+  Minimum body size: 11pt print, 14px digital
+
+Logo usage:
+  - Minimum clear space: equal to the height of the 'R' in RetailCo on all sides
+  - Never stretch, rotate, or recolour the logo
+  - Use white version on dark backgrounds
+  - Logo files: /brand_assets/logos/ (provided separately)
+
+---
+
+DOCUMENT FORMATTING
+
+Reports:
+  - Cover page with RetailCo logo, document title, date, and "CONFIDENTIAL" watermark
+  - Executive summary on page 1 (max 200 words)
+  - Section headings in RetailCo Red (#E63946)
+  - Page numbers in footer: right-aligned
+  - Footer text: "RetailCo Ltd | Confidential | [Date]"
+
+Presentations:
+  - Use RetailCo PowerPoint template (on SharePoint)
+  - Title slide: white text on RetailCo Red background
+  - Body slides: white background, RetailCo Red accents
+  - Maximum 6 bullet points per slide; prefer visuals over text
+
+---
+
+NAMING CONVENTIONS FOR DELIVERABLES
+RetailCo_{document_type}_{YYYYMMDD}
+Examples:
+  RetailCo_ProgressReport_20260610
+  RetailCo_ExecutiveSummary_20260520
+  RetailCo_StakeholderPresentation_20260601

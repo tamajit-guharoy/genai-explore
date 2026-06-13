@@ -1,0 +1,84 @@
+VENDOR AGREEMENT — DRAFT v1.2
+Date: 2 June 2026
+Parties:
+  Client: Meridian Solutions Ltd ("Client"), registered in England & Wales, Company No. 09874561
+  Vendor: DataSync Technologies Inc ("Vendor"), incorporated in Delaware, USA
+
+---
+
+1. SERVICES
+Vendor shall provide the following services ("Services"):
+- Cloud-based data pipeline software (DataSync Platform, Enterprise tier)
+- API integration services to connect Client's CRM (Salesforce) and ERP (SAP)
+- 99.5% uptime SLA for the DataSync Platform
+- Dedicated support (response: 4 hours for Critical, 8 hours for High, 24 hours for Medium)
+- Annual security audit report, provided within 60 days of each contract anniversary
+
+2. TERM AND RENEWAL
+This Agreement commences on the Effective Date and continues for an initial term of 24 months.
+Thereafter, it shall automatically renew for successive 12-month periods unless either party provides
+written notice of non-renewal no less than 90 days before the end of the then-current term.
+
+3. FEES AND PAYMENT
+Annual platform fee: USD $84,000 (year 1), USD $92,400 (year 2, +10%).
+Fees are invoiced annually in advance. Payment due within 30 days of invoice date.
+Late payment: 1.5% per month on outstanding balances after 30 days.
+All fees are non-refundable except as expressly set out in Section 8 (Termination for Cause).
+
+4. INTELLECTUAL PROPERTY
+4.1 Vendor IP: All software, tools, methodologies, and pre-existing materials remain Vendor's exclusive property.
+4.2 Client Data: All data processed by the platform remains the exclusive property of Client.
+4.3 Derivative Works: Any customisations, integrations, or configurations developed specifically for Client
+under this Agreement ("Deliverables") shall be owned by Vendor. Client receives a perpetual, non-exclusive,
+non-transferable licence to use such Deliverables solely for internal business purposes during the term.
+4.4 Upon termination, Client's right to use Deliverables ceases immediately.
+
+5. CONFIDENTIALITY
+Each party agrees to hold the other's Confidential Information in strict confidence and not disclose it
+to any third party for a period of 5 years from the date of disclosure. This obligation survives termination.
+
+6. LIABILITY
+6.1 Vendor's total cumulative liability under this Agreement shall not exceed the fees paid by Client
+in the 12 months immediately preceding the event giving rise to the claim.
+6.2 Vendor shall not be liable for any indirect, incidental, consequential, special, or punitive damages,
+including loss of profits, loss of data, or business interruption, howsoever arising.
+6.3 Vendor's liability cap in Section 6.1 applies regardless of the form of action (contract, tort, negligence)
+and even if Vendor has been advised of the possibility of such damages.
+6.4 The Client shall indemnify, defend, and hold harmless the Vendor from any third-party claims arising
+from Client's misuse of the Services or Client's breach of applicable law, including reasonable legal fees.
+
+7. DATA PROCESSING
+7.1 Vendor processes Client personal data as a Data Processor under GDPR. A Data Processing Addendum (DPA)
+is incorporated by reference and forms part of this Agreement.
+7.2 Client data shall be stored in EU data centres only, unless Client expressly authorises otherwise in writing.
+7.3 Vendor shall notify Client of any personal data breach within 72 hours of becoming aware of it.
+7.4 Upon termination, Vendor shall delete all Client personal data within 30 days, unless retention
+is required by applicable law.
+
+8. TERMINATION
+8.1 Termination for Convenience: Either party may terminate this Agreement with 90 days' written notice.
+No refund shall be due for any pre-paid fees upon termination for convenience by Client.
+8.2 Termination for Cause: Either party may terminate immediately upon written notice if the other party
+materially breaches this Agreement and fails to cure such breach within 30 days of written notice.
+8.3 Vendor may suspend Services immediately (without liability) if Client's account is more than 45 days
+past due, pending resolution of outstanding payment.
+8.4 Vendor may terminate this Agreement with 30 days' notice if it ceases to offer the DataSync Platform generally.
+
+9. DISPUTE RESOLUTION
+Any dispute shall first be subject to good-faith negotiation for 30 days. If unresolved, disputes shall
+be submitted to binding arbitration under ICC Rules in London. Language: English.
+Notwithstanding the foregoing, either party may seek injunctive relief in any court of competent jurisdiction.
+
+10. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of England and Wales.
+
+11. ENTIRE AGREEMENT
+This Agreement, together with all Schedules and the DPA, constitutes the entire agreement between the
+parties and supersedes all prior agreements or representations relating to its subject matter.
+
+---
+SIGNATURE BLOCK
+For and on behalf of Meridian Solutions Ltd: _____________________ Date: ________
+For and on behalf of DataSync Technologies Inc: __________________ Date: ________
+
+[DRAFT — Not yet executed. For internal review only.]

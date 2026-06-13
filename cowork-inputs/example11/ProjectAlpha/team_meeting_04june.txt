@@ -1,0 +1,47 @@
+PROJECT ALPHA — TEAM MEETING NOTES
+Date: 4 June 2026, 10:00–11:00
+Attendees: Priya Nair (PM), David Okafor (CTO), Tom Bradley (Tech Lead),
+           Mei Lin (Senior FE), Rajiv Kumar (Senior BE), Sasha Petrov (Design), Omar Hassan (Security)
+
+---
+
+AGENDA ITEM 1: Timeline review
+Priya: Sprint 23 completed at 81% velocity. Key risk is the infra blocker on SSO events.
+David: Escalated INFRA-203 to infrastructure lead. They're committing to a fix by 13 June.
+Decision: If infra doesn't deliver by 13 June, SSO report is descoped to Phase 2. Board approved.
+Action: Priya to update PRD to reflect SSO descope as contingency.
+
+AGENDA ITEM 2: Chart library decision
+Tom: We need to pick Recharts vs D3 today. Here's the analysis:
+  - Recharts: faster to implement, well-maintained, covers 90% of our chart types
+  - D3: more flexible, better for complex visualisations, steeper learning curve, 2x implementation time
+  - Recommendation: Recharts for Phase 1; revisit for Phase 2 custom report builder
+Decision: Go with Recharts. Unanimous.
+Action: Tom to update tech spec; Mei to begin chart component work Monday.
+
+AGENDA ITEM 3: Enterprise beta customer selection
+Priya: We need 5 enterprise customers for beta starting week of 16 June.
+David: Suggested: Acme Financial, GreenPath, NovaPharma, TechGrowth, Pacific Retail.
+Sasha: Design will need feedback on heatmap layout specifically — can we get one more design-forward customer?
+Action: Priya to coordinate with CS lead for customer opt-in by 9 June.
+
+AGENDA ITEM 4: Security review timeline
+Omar: Full security review needs 10 business days. Must start by 11 August to clear before 30 Sept launch.
+Decision: Feature freeze at end of Sprint 27 (8 August). Security review 11–22 August.
+Action: Omar to send security review checklist to team by 11 June.
+
+AGENDA ITEM 5: AOB
+- Export to Excel: using PhpSpreadsheet library. Raj has spike done. No blockers.
+- GDPR review: Legal team to review data handling by 20 June. Priya following up.
+
+---
+
+ACTIONS SUMMARY
+[ ] Priya — update PRD with SSO descope contingency — due 6 June
+[ ] Tom — update tech spec to confirm Recharts — due 7 June
+[ ] Mei — begin chart component work — start 8 June
+[ ] Priya — confirm 5 beta customers with CS lead — due 9 June
+[ ] Omar — send security review checklist — due 11 June
+[ ] Priya — follow up with Legal on GDPR review — due 20 June
+
+Next meeting: 11 June 2026 (Sprint 24 kick-off)

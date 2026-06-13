@@ -1,0 +1,24 @@
+PUBLICATION RECORD — Simulate academic PDF
+
+Title: Closed-Loop Functional Electrical Stimulation Driven by EEG Motor Imagery: A Feasibility Study
+Authors: Kim, J., Morgan, A., Fischer, W.
+Journal: IEEE Transactions on Neural Systems and Rehabilitation Engineering
+Volume: 33, Pages 1841–1850
+Date: November 2025
+DOI: 10.1109/TNSRE.2025.3489012
+Type: Original Research Article
+
+ABSTRACT
+Functional electrical stimulation (FES) combined with motor imagery can promote cortical plasticity.
+We describe a closed-loop system in which EEG-decoded motor imagery of wrist extension triggers
+immediate FES delivery to the affected limb. In a 20-participant feasibility study (subacute stroke),
+the closed-loop group showed significantly greater cortical reorganisation (fMRI neuroimaging) and
+faster response latency on voluntary movement tasks compared to open-loop FES control. System latency
+(EEG decode to stimulation delivery) was 187ms — within therapeutic window. This feasibility study
+provides the basis for the larger RCT reported in Chen et al. 2026.
+
+KEY CONTRIBUTION: Technical validation of the closed-loop EEG-FES system design; establishes feasibility
+for the Phase III trial.
+
+CITATION COUNT: 28 (as of June 2026)
+STATUS: Published

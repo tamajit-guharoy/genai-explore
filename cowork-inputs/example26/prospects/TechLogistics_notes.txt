@@ -1,0 +1,60 @@
+PROSPECT RESEARCH NOTES — TechLogistics Ltd
+Last updated: 28 May 2026
+Source: Company website, LinkedIn, industry news
+
+---
+
+COMPANY OVERVIEW
+Company: TechLogistics Ltd
+HQ: Birmingham, UK
+Founded: 2017
+Employees: ~320
+Revenue: Est. £28M ARR (not publicly disclosed — based on funding and headcount estimates)
+Sector: B2B SaaS — logistics and supply chain management software
+Customers: Mid-market and enterprise logistics operators (50–500 vehicles/warehouses)
+Recent funding: Series B £18M (October 2025, led by Seyen Capital)
+
+---
+
+KEY EXECUTIVES
+CEO: David Hargreaves — LinkedIn active; posts about AI in logistics operations
+CTO: Priya Patel — ex-Amazon Logistics tech; joined 2024
+VP Product: James Okafor — ex-Sorted (logistics SaaS); joined 2025
+Head of Ops: Rachel Lin — manages 80-person customer success and ops team
+
+---
+
+CURRENT TECH STACK (inferred from job postings + LinkedIn)
+- Jira for project management
+- Confluence for documentation
+- Notion recently adopted (2 job postings mention it)
+- HubSpot for CRM
+- AWS infrastructure
+
+---
+
+PAIN POINTS (inferred from CEO posts and industry context)
+1. "Operational intelligence" — their CEO posted twice about teams drowning in reports that don't inform decisions
+2. Cross-team collaboration challenges — Series B hiring means fast headcount growth (60 hires planned 2026)
+3. Customer onboarding bottleneck — CS team overwhelmed; mentioned 60-day average time-to-value
+
+---
+
+WHY OUR PRODUCT FITS
+- Our enterprise workspace could replace their fragmented Jira/Confluence/Notion stack
+- AI summarisation directly addresses "drowning in reports" pain point
+- Automated onboarding templates: strong fit for their CS scaling challenge
+- API: their CTO comes from Amazon — will want proper API for custom integrations
+
+---
+
+RED FLAGS
+- Already on Notion (recent adoption) — could be a barrier ("just got this, don't want to change again")
+- Series B — probably in cost optimisation mode; timing may be challenging
+- Logistics is specialist domain — need to show relevant case studies (Fleet or logistics sector preferred)
+
+---
+
+OUR CASE STUDIES TO MENTION
+- GlobalRetail deployment (200-user enterprise, similar size to TechLogistics)
+- BuildFast Corp (fast-growing, post-Series-B, similar growth challenges)

@@ -1,0 +1,31 @@
+PAPER — Simulate PDF
+
+Title: Decoding Motor Intention from EEG During Stroke Rehabilitation: Real-World Performance Across Clinical Settings
+Authors: Hoffmann, R., Nakamura, K., Singh, P., Osei, B.
+Journal: Brain Communications, 2026
+DOI: 10.1093/braincomms/fcad089
+
+HYPOTHESIS
+EEG-based motor intention decoders trained in laboratory settings will show significant performance
+degradation when deployed in clinical rehabilitation environments due to artefact and patient variability.
+
+METHODOLOGY
+Prospective multi-site study. 45 stroke survivors at 3 rehabilitation hospitals.
+Each participant completed 12 sessions: 4 lab, 8 clinical.
+Decoder trained on lab data; tested on clinical data (different days, clinical environment).
+Primary outcome: classification accuracy (idle vs motor attempt), measured as AUC.
+
+KEY RESULTS
+- Lab AUC: 0.87 (SD 0.09) — expected from prior literature
+- Clinical AUC: 0.79 (SD 0.14) — significant drop (p<0.001)
+- Performance drop correlated with: electrode impedance, ambient EMG noise, patient fatigue
+- Adaptive decoder (online update): clinical AUC recovered to 0.85 after 2 sessions of adaptation
+
+LIMITATIONS
+- Relatively small sample (45 patients) from 3 sites — may not generalise
+- All sites in Germany — cultural/healthcare context may affect patient engagement
+- Adaptive decoder requires 2 additional sessions — practical burden not assessed
+
+RELEVANCE TO: Neural interfaces in motor rehabilitation — HIGH
+Critical paper for my RCT design. The 8-point AUC drop from lab to clinic is exactly the challenge
+I need to address with personalised decoders in FLF fellowship application.

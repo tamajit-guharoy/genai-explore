@@ -1,0 +1,17 @@
+PAYMENT DETAILS — Alex Morgan Consulting Ltd
+
+Bank:           Barclays Bank PLC
+Account name:   Alex Morgan Consulting Ltd
+Sort code:      20-12-34
+Account number: 12345678
+IBAN:           GB29 BARC 2012 3412 3456 78
+BIC/SWIFT:      BARCGB22
+
+Payment terms: 30 days from invoice date
+Late payment interest: 8% above Bank of England base rate (Late Payment of Commercial Debts Act 1998)
+
+For payment queries or remittance advice:
+Email:   invoices@alexmorganconsulting.co.uk
+Phone:   +44 7700 900123 (Mon-Fri, 9am-5pm)
+
+Please include your invoice number as the payment reference.

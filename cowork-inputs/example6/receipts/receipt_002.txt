@@ -1,0 +1,10 @@
+RECEIPT
+
+Vendor: Trainline / GWR
+Date: 05/06/2026
+Route: London Paddington → Bristol Temple Meads (return)
+Departure: 09:14 | Return: 18:32
+Ticket type: Advance Standard
+Total: £87.40
+Payment: Corporate card ending 3310
+Category: Travel (client visit — NovaPharma Bristol office)

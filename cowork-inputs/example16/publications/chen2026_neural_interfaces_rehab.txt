@@ -1,0 +1,23 @@
+PUBLICATION RECORD — Simulate academic PDF
+
+Title: Non-invasive EEG-Based Brain-Computer Interfaces for Upper Limb Motor Rehabilitation: A Randomised Controlled Trial
+Authors: Chen, W., Morgan, A., Osei, B., Petrov, S., Yamamoto, T.
+Journal: Journal of NeuroEngineering and Rehabilitation
+Volume: 23, Article 41
+Date: March 2026
+DOI: 10.1186/s12984-026-01341-7
+Type: Original Research Article
+
+ABSTRACT
+We report results of a 16-week randomised controlled trial comparing EEG-BCI-assisted therapy
+vs conventional occupational therapy for upper limb motor rehabilitation in 94 chronic stroke survivors.
+The BCI group showed 34% greater improvement on the Fugl-Meyer Assessment (upper extremity subscale)
+compared to controls (p=0.002, Cohen's d=0.71). Secondary outcomes including grip strength and 9-Hole Peg
+Test also favoured the BCI group. The intervention was well-tolerated; no serious adverse events were reported.
+These results support the clinical translation of EEG-BCI for post-stroke rehabilitation.
+
+KEY CONTRIBUTION: First adequately powered RCT to demonstrate clinically meaningful improvement of BCI-assisted
+upper limb rehabilitation vs active control. Effect size (d=0.71) exceeds the conventional 0.5 minimum threshold.
+
+CITATION COUNT: 42 (as of June 2026)
+STATUS: Published (open access)

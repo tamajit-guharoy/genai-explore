@@ -1,0 +1,59 @@
+JOB DESCRIPTION
+
+Role: Senior Product Manager — Lending
+Company: Monzo
+Location: London, UK (Hybrid — 2 days/week)
+Team: Consumer Credit
+Reports to: Director of Product, Credit
+
+---
+
+ABOUT MONZO
+Monzo is a UK digital bank with over 9 million customers. We're building the best bank in the world —
+one that people genuinely love and that improves their financial lives. We're profitable, growing fast,
+and working toward a full-service banking licence in the US.
+
+---
+
+THE ROLE
+We need a Senior PM to join our Lending team. You'll own product strategy for personal loans and
+overdrafts — products that are already used by over 1.5 million Monzo customers.
+
+This is a deeply cross-functional role. You'll work with credit risk, data science, compliance,
+and operations to build lending products that are genuinely good for customers.
+
+---
+
+WHAT YOU'LL OWN
+- Product roadmap for personal loans (£1K–£25K, 1–5 year terms) and arranged overdrafts
+- Credit decisioning strategy — partnering with risk team to improve approval rates while managing loss
+- Customer experience across the loan lifecycle: apply → approve → disburse → manage → close
+- Consumer Duty compliance for all lending products (you'll own the evidence framework)
+- Responsible lending principles — this matters deeply at Monzo
+
+---
+
+WHAT WE NEED
+Essential:
+- 5+ years PM experience; lending or credit product experience preferred
+- Strong understanding of credit risk fundamentals (LTV, PD, LGD, ECL)
+- Familiarity with FCA Consumer Duty and responsible lending regulation
+- Proven ability to balance commercial outcomes with customer outcomes
+- Experience with data-heavy, compliance-sensitive product environments
+
+Desirable:
+- Open Banking data in credit decisioning
+- Affordability assessment tools
+- BNPL or embedded credit experience
+
+---
+
+MONZO VALUES
+We care deeply about doing the right thing by customers — especially in lending, where the stakes
+are high. We're looking for someone who shares that conviction and can navigate regulatory complexity
+without losing sight of what customers actually need.
+
+---
+
+COMPENSATION
+£95,000–£120,000 + equity + generous benefits (pension, healthcare, learning budget)

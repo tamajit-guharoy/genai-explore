@@ -1,0 +1,62 @@
+JOB DESCRIPTION
+
+Role: Head of Product — Payments Infrastructure
+Company: Stripe
+Location: London, UK (Hybrid — 3 days/week in office)
+Team: Payments Platform
+Reports to: VP Product, Payments
+
+---
+
+ABOUT STRIPE
+Stripe is a financial infrastructure platform for businesses. Millions of companies—from the world's largest
+enterprises to the most ambitious startups—use Stripe to accept payments, grow their revenue, and accelerate
+new business opportunities. Our mission is to grow the GDP of the internet.
+
+---
+
+THE ROLE
+We're looking for an experienced product leader to own the strategy and execution of Stripe's payments
+infrastructure products — the underlying rails, routing logic, and reliability systems that process
+hundreds of billions of dollars annually.
+
+This is a high-visibility, high-impact role. You'll work directly with our largest enterprise customers,
+shape multi-year infrastructure roadmaps, and lead a team of senior PMs.
+
+---
+
+WHAT YOU'LL DO
+- Define and own the product vision for Stripe's core payment processing infrastructure
+- Lead a team of 4 Senior PMs and 2 PMs; set growth frameworks and manage performance
+- Partner with Engineering, Risk, and Data Science to ship high-reliability payment systems
+- Own reliability metrics: payment success rates, latency, uptime — across 135+ currencies and 50+ methods
+- Drive enterprise customer conversations to understand infrastructure pain points and turn them into product
+- Represent Stripe externally at industry events and in regulatory discussions (FCA, PSD3)
+- Work across Stripe's global infrastructure to improve payment routing and optimisation
+
+---
+
+WHAT WE'RE LOOKING FOR
+Required:
+- 7+ years product management experience; 3+ years leading PM teams
+- Deep expertise in payments infrastructure (card networks, bank rails, instant payments, global methods)
+- Experience with high-scale distributed systems (understanding rather than building)
+- Track record of shipping products at significant transaction volume (£1B+/year preferred)
+- Outstanding cross-functional stakeholder management and communication
+
+Preferred:
+- Experience with Open Banking, PSD2/PSD3, or real-time payment schemes (FPS, SEPA Inst, RTP)
+- Familiarity with fraud, risk, and compliance in payments
+- Experience working with enterprise customers at C-suite level
+- Regulatory/policy experience with central banks or payment schemes
+
+---
+
+STRIPE'S VALUES
+We believe that the economy should be more accessible, and that starting and scaling a business should be
+as easy as possible. We work to be thorough, curious, and direct — and we value those qualities in our team.
+
+---
+
+COMPENSATION
+Competitive base salary + equity + benefits. Band: £150,000–£185,000 base (depending on experience).

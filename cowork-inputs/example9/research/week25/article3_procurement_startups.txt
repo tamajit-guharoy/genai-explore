@@ -1,0 +1,36 @@
+SAVED ARTICLE — Week 25 Research
+
+Source: TechCrunch
+Title: Procurement AI Startups Raised $2.1B in Q1 2026 — Who's Winning?
+Date: 5 June 2026
+URL: [saved offline]
+
+---
+
+KEY POINTS FROM ARTICLE
+
+Procurement AI attracted $2.1B in VC funding in Q1 2026 alone — more than the previous 2 years combined.
+The explosion is being driven by enterprises discovering that procurement is a "data-rich, decision-poor"
+function: companies have enormous data on suppliers, contracts, and spend, but have been unable to use it.
+
+TOP FUNDED COMPANIES (Q1 2026):
+- Pactum AI ($180M Series C) — autonomous negotiation for supplier contracts
+- Zip ($150M Series D) — intake-to-procure workflow automation
+- Jagger ($95M Series B) — supplier risk intelligence using real-time news and financial signals
+- Odin Procurement ($72M Series B) — tail spend analytics and automation for mid-market
+
+COMPETITIVE LANDSCAPE OBSERVATIONS:
+- Legacy players (SAP Ariba, Oracle Procurement, Coupa) are integrating AI via acquisitions
+- Platform wars emerging: will procurement AI be a standalone category or absorbed into ERP?
+- Microsoft Copilot for Finance now includes procurement workflows — threatens pure-play startups
+
+INTERESTING QUOTE from Pactum CEO:
+"The average Fortune 500 has 45,000 supplier contracts. Their legal team reviews 2,000 of them per year.
+The other 43,000 just auto-renew on whatever terms the supplier set 5 years ago. That's the problem we solve."
+
+CONTRARIAN TAKE POTENTIAL:
+The funding boom may be creating a procurement AI bubble. The actual ROI evidence is thin —
+most case studies are vendor-supplied with no independent verification. The McKinsey survey
+(see article2) is the most credible data but even that is self-reported by buyers.
+
+RELEVANCE SCORE: 7/10 — Good colour and quotes. Don't lean too heavily on startup claims without corroboration.

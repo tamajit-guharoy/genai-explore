@@ -1,0 +1,66 @@
+CURRICULUM VITAE
+
+Dr. Alex Morgan, PhD
+Senior Research Fellow | Neural Interfaces and Motor Rehabilitation
+University of Bristol, Department of Neuroscience
+Bristol BS8 1TH | a.morgan@bristol.ac.uk | +44 117 900 1234
+
+---
+
+EDUCATION
+PhD Neuroscience | University of Oxford | 2014–2018
+  Thesis: "Cortical plasticity mechanisms in motor learning: implications for rehabilitation"
+  Supervisor: Prof. Eleanor Hayes
+MSc Biomedical Engineering | Imperial College London | 2013–2014
+BSc Biomedical Sciences (First Class Honours) | University of Bristol | 2010–2013
+
+---
+
+CURRENT POSITION
+Senior Research Fellow | University of Bristol | 2022–present
+  PI on EEG-BCI motor rehabilitation research programme
+  Group: 3 postdocs, 4 PhD students, 1 research engineer
+
+---
+
+ACADEMIC POSITIONS
+Research Fellow | University of Bristol | 2019–2022
+Postdoctoral Researcher | ETH Zurich (Neurotechnology Group) | 2018–2019
+
+---
+
+PUBLICATIONS (selected)
+1. Chen W, Morgan A, Osei B, Petrov S, Yamamoto T. (2026). Non-invasive EEG-Based Brain-Computer Interfaces for Upper Limb Motor Rehabilitation: A Randomised Controlled Trial. J NeuroEng Rehabil 23:41.
+2. Kim J, Morgan A, Fischer W. (2025). Closed-Loop Functional Electrical Stimulation Driven by EEG Motor Imagery: A Feasibility Study. IEEE Trans Neural Syst Rehabil Eng 33:1841–1850.
+3. Morgan A, Hayes E. (2024). Neuroplasticity biomarkers as outcome measures in motor rehabilitation: a systematic review. Neurorehabil Neural Repair 38(4):212–228.
+4. Morgan A, Petrov S. (2023). Real-time EEG artifact rejection for BCI applications: a comparative analysis of six algorithms. J Neural Eng 20(6):066002.
+5. Morgan A, Fischer W, Kim J. (2022). Motor imagery classification using EEG: effect of stroke severity on decoder performance. Brain 145(7):2651–2665.
+
+Total publications: 24 | H-index: 11 | Citations: 847
+
+---
+
+GRANTS AND FUNDING
+UKRI Future Leaders Fellowship (2022–2026): £1.2M — "Personalised BCI-driven rehabilitation"
+NIHR Research for Patient Benefit (2024–2026): £285,000 — Co-PI with Prof. R. Singh (Royal Bristol Hospital)
+Wellcome Trust Seed Award (2020–2022): £95,000 — Pilot BCI feasibility work
+
+---
+
+INVITED TALKS (selected)
+2026: IEEE EMBC, Melbourne — Keynote: "Closing the loop on motor rehabilitation"
+2025: British Neuroscience Association Annual Meeting, Edinburgh
+2024: International BCI Meeting, Asilomar, CA
+2023: Royal Society Meeting, London — "Engineering the nervous system"
+
+---
+
+TEACHING
+Module lead: Neural Signal Processing (MSc, 40 students/year)
+Supervisor: 4 PhD students (2 completed, 2 ongoing)
+
+---
+
+PROFESSIONAL SERVICE
+Grant reviewer: NIHR, MRC, Wellcome Trust
+Associate Editor: Journal of NeuroEngineering and Rehabilitation (2024–present)

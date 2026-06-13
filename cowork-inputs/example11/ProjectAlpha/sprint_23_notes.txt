@@ -1,0 +1,47 @@
+SPRINT 23 NOTES — PROJECT ALPHA
+Sprint dates: 26 May – 6 June 2026
+Team: Backend (4 eng), Frontend (2 eng), Design (1), QA (1), PM (Priya Nair)
+
+---
+
+SPRINT GOAL
+Complete the Usage Overview Dashboard data layer (Feature 1) and begin frontend scaffolding.
+
+---
+
+COMPLETED THIS SPRINT ✓
+[DONE] ALPHA-44: Database schema finalised for usage_events table — approved by David (CTO)
+[DONE] ALPHA-45: Event ingestion pipeline deployed to staging — 50K events/day load tested
+[DONE] ALPHA-46: User activity aggregation jobs (daily/weekly/monthly rollups) — passing all tests
+[DONE] ALPHA-47: Admin role verification middleware — security reviewed by Omar (security lead)
+[DONE] ALPHA-48: Dashboard shell component created (empty state, loading states) — design reviewed
+[DONE] ALPHA-49: Seat utilisation calculation logic — edge cases for deactivated seats resolved
+
+---
+
+IN PROGRESS / CARRIED OVER ↺
+[IN PROGRESS] ALPHA-50: Feature adoption heatmap data model — backend 70% complete; blocked on final feature taxonomy list from PM
+[IN PROGRESS] ALPHA-51: Chart library decision — team split between Recharts and D3; decision needed by EOD Monday
+[BLOCKED] ALPHA-52: SSO provider data — waiting for Infrastructure team to expose SSO login events via internal API. Ticket raised with infra team (INFRA-203). ETA unknown.
+
+---
+
+BLOCKERS
+1. Feature taxonomy list (for adoption heatmap): PM to deliver by 8 June
+2. Infra team SSO events API: no ETA. If not resolved by Sprint 24 end, will descope SSO report from Phase 1.
+3. Chart library: needs decision to unblock 3 engineers waiting on it.
+
+---
+
+SPRINT VELOCITY
+Story points committed: 42
+Story points completed: 34 (81%)
+Notes: Lower velocity than target (90%) due to infra blocker and chart library debate.
+
+---
+
+SPRINT 24 PREVIEW (9–20 June)
+- Feature adoption heatmap build (unblocked after taxonomy list delivered)
+- Team activity report data layer
+- Period comparison logic
+- Beta environment setup for first 5 enterprise customers

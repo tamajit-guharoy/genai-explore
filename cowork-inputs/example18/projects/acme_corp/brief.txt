@@ -1,0 +1,47 @@
+CLIENT PROJECT BRIEF
+
+Client: Acme Corp
+Project: Product Strategy Advisory — Payments Platform
+Start date: 1 February 2026
+End date: 31 July 2026 (6 months)
+Monthly retainer: £3,200/month + VAT
+Status: ACTIVE
+
+---
+
+PROJECT OVERVIEW
+Acme Corp is a UK-based B2B payments platform (founded 2019, Series B, 85 employees).
+They are rebuilding their core payment rail architecture to support instant payments (FPS)
+and are expanding into the European market via SEPA Instant.
+
+I (Alex Morgan) am engaged as fractional Head of Product for the payments core team,
+working 8 days/month.
+
+---
+
+KEY CONTACTS
+Product sponsor: Sarah Chen (CPO) — sarah.chen@acmecorp.com
+Day-to-day: Marcus Webb (VP Product) — marcus.webb@acmecorp.com
+Technical lead: Raj Patel (Principal Engineer) — raj.patel@acmecorp.com
+Finance/invoicing: finance@acmecorp.com
+
+---
+
+CURRENT FOCUS AREAS
+1. FPS integration: technical requirements complete; now in design phase
+2. SEPA Instant: market research and regulatory gap analysis
+3. Developer experience: improving API documentation and sandbox environment
+
+---
+
+DELIVERABLES OUTSTANDING
+[ ] FPS product spec v2 — due 20 June 2026
+[ ] SEPA regulatory gap analysis — due 30 June 2026
+[ ] Developer portal UX brief — due 15 July 2026
+
+---
+
+NOTES
+- Sarah Chen very hands-on; expects weekly written updates every Friday by 5pm
+- Team uses Notion for documentation — I have editor access
+- They're sensitive about sharing roadmap externally — nothing leaves this project folder

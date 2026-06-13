@@ -1,0 +1,13 @@
+role,candidate_name,stage,last_activity_date,interviewer,notes,application_date,days_since_last_activity
+Senior Product Manager,Emma Clarke,Technical Interview,2026-06-08,Priya Nair,"Strong systems thinking. Minor concern on data analysis depth. Recommend proceeding.",2026-05-20,2
+Senior Product Manager,James Okoye,Final Interview,2026-06-09,Sarah Chen + Marcus Webb,"Excellent candidate. Sarah very positive. Pending reference check.",2026-05-15,1
+Senior Engineer (Backend),Lin Wei,Offer,2026-06-07,David Okafor,"Offer letter sent 7 June. Waiting on response. Competing offer from Google reportedly on table.",2026-05-10,3
+Senior Engineer (Backend),Aisha Mbeki,Technical Interview,2026-06-05,Tom Bradley,"Solid technical skills. Take-home passed with distinction. Schedule onsite.",2026-05-22,5
+UX Designer,Carlos Rivera,Phone Screen,2026-06-10,HR (Sasha Petrov),"First screen today. Good portfolio. Progress to design challenge.",2026-06-08,0
+UX Designer,Yuki Hasegawa,Design Challenge,2026-06-03,Pending review,"Challenge submitted 3 June. Not yet reviewed. OVERDUE — needs Sasha's attention.",2026-05-25,7
+Engineering Manager,Rachel Thornton,Applied,2026-06-01,Unassigned,"Strong CV. 8 years eng management. Fintech background. Needs initial screen.",2026-06-01,9
+Engineering Manager,Ben Kowalski,Applied,2026-06-04,Unassigned,"Good fit on paper. Ex-Monzo. Needs initial screen.",2026-06-04,6
+Head of Sales,Fatima Osei,Final Interview,2026-06-06,Sarah Chen,"Sarah keen. Final panel tomorrow (11 June). References already checked — all positive.",2026-05-01,4
+Head of Sales,Tom Ashford,Rejected,2026-06-02,Priya Nair,"Good culture fit but insufficient SaaS sales experience for the role level.",2026-05-10,8
+Data Scientist,Priya Kapoor,Technical Interview,2026-06-09,Marcus Brown + Data team,"Strong ML background. Weak on business-oriented SQL. Decision pending.",2026-05-28,1
+Data Scientist,Omar Hassan,Phone Screen,2026-06-04,HR,"Positive first screen. Relevant experience at Revolut. Progress to technical challenge.",2026-05-30,6

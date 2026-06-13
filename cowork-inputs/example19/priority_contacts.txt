@@ -1,0 +1,25 @@
+PRIORITY EMAIL CONTACTS — Founder Dashboard
+(Emails from these people should always be surfaced immediately)
+
+INVESTORS
+sarah.chen@venturepark.com — Sarah Chen, Venture Park (Lead Series A investor)
+michael.ross@alphabridge.vc — Michael Ross, AlphaBridge (Board member)
+investment@tenacity.capital — Tenacity Capital (Follow-on investor)
+
+KEY CUSTOMERS
+cto@acmefinancial.com — James Walker, CTO at Acme Financial (our largest enterprise customer — £240K ARR)
+helen.marsh@globalretail.co.uk — Helen Marsh, COO at GlobalRetail (renewal due August 2026)
+tech@novapharma.com — NovaPharma IT procurement (Enterprise customer, onboarding Q3)
+ops@buildfast.com — BuildFast Corp (enterprise deal in negotiation — £178K)
+
+TEAM (escalation)
+cto@ourcompany.com — David (CTO) — only if marked urgent
+cpo@ourcompany.com — Priya (CPO) — roadmap/customer issues
+
+REGULATORS / COMPLIANCE
+fca.contact@fca.org.uk — FCA correspondence (always surface immediately)
+legal@lawfirmpartner.com — External legal counsel
+
+BOARD
+linda.frost@boardchair.co.uk — Linda Frost (Chair)
+raj.mehta@boardmember.co.uk — Raj Mehta (NED)

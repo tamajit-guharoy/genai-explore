@@ -1,0 +1,74 @@
+PROJECT ALPHA — PRODUCT REQUIREMENTS DOCUMENT
+Version: 2.3 | Last updated: 28 May 2026 | Owner: Priya Nair (CPO)
+
+---
+
+PROJECT OVERVIEW
+Project Alpha is the codename for the enterprise analytics dashboard — our most-requested enterprise feature.
+Target launch: end of Q3 2026 (30 September).
+
+---
+
+PROBLEM STATEMENT
+Enterprise customers (>100 seats) have no consolidated view of their usage, team activity,
+and ROI metrics within the platform. Currently they extract data manually via API or request
+reports from our Customer Success team. This creates churn risk and limits expansion.
+
+---
+
+GOALS
+1. Reduce manual reporting requests to CS team by 80%
+2. Increase enterprise NPS by 10 points (from 42 to 52)
+3. Reduce enterprise churn from 3.2% to 2.0% within 2 quarters of launch
+
+---
+
+SCOPE — IN
+
+Feature 1: Usage Overview Dashboard
+- Total active users (daily/weekly/monthly) across all account seats
+- Feature adoption heatmap (which features are being used vs not)
+- Seat utilisation: % of paid seats with activity in last 30 days
+
+Feature 2: Team Activity Reports
+- Exportable activity report by team or department (requires admin hierarchy)
+- Comparison view: this period vs last period
+- Scheduled email delivery of reports (weekly/monthly)
+
+Feature 3: ROI Metrics Panel
+- Time-saved calculator (user inputs value per hour; platform shows estimated hours saved)
+- Document output tracker (total docs created, edited, exported)
+- API usage breakdown
+
+Feature 4: Admin Controls
+- Seat management: reassign, deactivate, invite
+- SSO usage report
+- Permission audit log
+
+---
+
+SCOPE — OUT (deferred to Phase 2)
+- Real-time activity streaming
+- Custom report builder with query interface
+- Multi-account / parent-child account views
+- Integration with external BI tools (Tableau, Looker)
+
+---
+
+TECHNICAL REQUIREMENTS
+- Dashboard must load in under 3 seconds for accounts with up to 2,000 users
+- Data freshness: within 24 hours of activity
+- Export formats: CSV, PDF, Excel
+- RBAC: only account admins can access; view-only for team managers (scoped to their team)
+- GDPR: must not expose individual user activity to non-admin roles
+
+---
+
+MILESTONES
+Week 1-2 (currently): Technical design review and stakeholder sign-off
+Week 3-4: Feature 1 build begins
+Week 6: Feature 1 beta with 5 enterprise customers
+Week 8: Features 1 and 2 complete
+Week 10: Features 3 and 4 complete
+Week 11-12: QA, security review, beta expansion
+Week 13: General availability launch

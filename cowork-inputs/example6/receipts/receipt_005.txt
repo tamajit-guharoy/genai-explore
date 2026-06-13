@@ -1,0 +1,11 @@
+RECEIPT
+
+Vendor: Itsu (Waterloo Station)
+Date: 08/06/2026
+Items:
+  - Salmon Avocado Roll              £4.95
+  - Miso Soup                        £2.50
+  - Edamame                          £2.30
+Total: £9.75
+Payment: Contactless Mastercard ending 6612
+Category: Meals (working lunch — solo)

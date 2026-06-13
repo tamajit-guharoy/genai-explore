@@ -1,0 +1,67 @@
+CURRICULUM VITAE
+
+Alex Morgan
+Senior Product Manager | Fintech & Payments
+London, UK | alex.morgan@email.com | +44 7700 900123 | linkedin.com/in/alexmorgan
+
+---
+
+PROFESSIONAL SUMMARY
+Senior Product Manager with 8 years of experience building payment and financial products at scale.
+Specialisation: payments infrastructure, open banking, and B2B SaaS platforms.
+Track record of shipping products used by 10M+ end users and managing roadmaps for £20M+ revenue products.
+Currently seeking a leadership PM role at a high-growth fintech.
+
+---
+
+EXPERIENCE
+
+Senior Product Manager — Payments Core | PayFlow Ltd, London
+September 2022 – Present (3 years 9 months)
+- Led product strategy for PayFlow's instant payment rails — grew transaction volume from £500M to £2.1B/year
+- Shipped Open Banking integration with 14 UK banks, cutting checkout abandonment by 22%
+- Managed a cross-functional team of 3 PMs, 12 engineers, 2 designers, and 1 data scientist
+- Defined and executed 0-to-1 B2B SaaS API product: 140 enterprise customers onboarded in first year
+- Reduced payment failure rate from 4.1% to 1.8% through root-cause analysis and provider diversification
+- Ran quarterly OKR cycles; reported directly to VP Product (£20M ARR product line)
+
+Product Manager — Lending | GreenCredit Bank, London
+March 2020 – August 2022 (2 years 5 months)
+- Owned product roadmap for personal loans and credit decisioning engine (120,000 active borrowers)
+- Launched automated underwriting model reducing average decision time from 4 hours to 8 minutes
+- Drove mobile-first redesign of loan application flow — completion rate up 34%
+- Worked with compliance and legal to achieve FCA Consumer Duty alignment across all lending products
+- Managed 2 junior PMs
+
+Associate Product Manager | MoneyHub, London
+August 2018 – February 2020 (1 year 7 months)
+- Supported development of personal finance management features (aggregated account views, spend analytics)
+- Ran 200+ user interviews; established user research programme still used by the team
+- Shipped transaction categorisation engine with 91% accuracy (reduced from 67%)
+
+---
+
+EDUCATION
+BSc Computer Science (2:1) | University of Bristol | 2014–2018
+Product Strategy Certificate | Reforge | 2021
+Certified Scrum Product Owner (CSPO) | Scrum Alliance | 2020
+
+---
+
+SKILLS
+Product: roadmap strategy, OKRs, user research, A/B testing, data analysis, go-to-market
+Payments: FPS, BACS, Open Banking (PSD2), card rails, 3DS2, fraud management
+Technical: SQL (proficient), REST API design, Figma, JIRA, Amplitude, Mixpanel
+Frameworks: Jobs-to-be-Done, Kano model, RICE prioritisation, Wardley mapping
+
+---
+
+ACHIEVEMENTS
+- PayFlow: £1.6B increase in annual payment volume — product-led
+- GreenCredit: 34% improvement in loan application completion (£8M additional revenue)
+- Speaker: Money2020 Europe 2025 — "Rethinking Checkout: Beyond Card Rails"
+- Named in Fintech Insider "30 Under 30 Payments Innovators" 2024
+
+---
+
+REFERENCES available on request

@@ -1,0 +1,32 @@
+date,lead_id,company,contact_name,contact_title,source,plan_interest,deal_value_gbp,stage,account_executive,status
+2026-06-10,L-3401,FastGrow Ltd,Emma Jenkins,Head of Operations,Website Inbound,Pro,28000,MQL,Alex Rivera,New
+2026-06-10,L-3402,Peak Insurance,David Walsh,CTO,LinkedIn Outbound,Enterprise,145000,SQL,Sarah Kim,New
+2026-06-10,L-3403,NovaBuild,Priya Shah,Product Manager,Referral - RetailCo,Pro,22000,MQL,James Hartley,New
+2026-06-10,L-3404,CloudSystems UK,Owen Lewis,VP Engineering,Website Inbound,Enterprise,210000,MQL,Marcus Brown,New
+2026-06-10,L-3405,TinyOps,Sophie Clark,Founder,Product Hunt,Starter,3000,MQL,Alex Rivera,New
+2026-06-10,L-3406,DataFirst,Michael Park,Data Director,Conference - Money2020,Enterprise,89000,SQL,Sarah Kim,New
+2026-06-10,L-3407,QuickScale,Lisa Adeyemi,COO,Webinar,Pro,35000,MQL,James Hartley,New
+2026-06-09,L-3395,FinServ Capital,Robert Chen,CFO,Enterprise SDR,Enterprise,415000,SQL,James Hartley,Progressed
+2026-06-09,L-3396,MedTech Solutions,Anna Fischer,Head of Ops,Website Inbound,Pro,31000,MQL,Alex Rivera,Progressed
+2026-06-09,L-3397,SmartRetail,Kevin Osei,Director of Ops,Referral,Enterprise,178000,SQL,Marcus Brown,Progressed
+2026-06-09,L-3398,BlueHorizon,Fatima Nwosu,VP Product,LinkedIn Outbound,Pro,24000,MQL,Sarah Kim,Progressed
+2026-06-09,L-3399,TechBridge,Sam Kowalski,CTO,Content Download,Enterprise,95000,MQL,Marcus Brown,Progressed
+2026-06-09,L-3400,OperateNow,Yuki Tanaka,Operations Lead,Free Trial Signup,Starter,5000,MQL,Alex Rivera,Progressed
+2026-06-08,L-3388,ScaleFirst,Helen Wright,CEO,Event - SaaStr,Enterprise,267000,Proposal,Marcus Brown,Active
+2026-06-08,L-3389,LegalPro,James Okafor,Managing Partner,Enterprise SDR,Pro,38000,Demo,Sarah Kim,Active
+2026-06-08,L-3390,BuildBetter,Mei Lin,Head of Product,Webinar,Pro,19000,MQL,Alex Rivera,Active
+2026-06-08,L-3391,CoreDigital,Raj Patel,CIO,Referral - DataNest,Enterprise,312000,Proposal,James Hartley,Active
+2026-06-08,L-3392,NanoHealth,Dr. Sara Novak,CEO,LinkedIn Outbound,Enterprise,145000,Demo,Sarah Kim,Active
+2026-06-07,L-3380,GlobalTrade,Peter Schmidt,Head of Procurement,Website Inbound,Enterprise,89000,Negotiation,Marcus Brown,Active
+2026-06-07,L-3381,SkyFirst,Amara Diallo,VP Ops,Content Download,Pro,27000,Demo,Alex Rivera,Active
+2026-06-07,L-3382,EasyWork,Tom Ashford,CEO,Referral,Starter,8000,Free Trial,Alex Rivera,Active
+2026-06-07,L-3383,PrecisionMfg,Laura Chen,Operations Director,Event - Gartner,Enterprise,195000,Proposal,James Hartley,Active
+2026-06-06,L-3374,DataStream,Paul Morris,Data Engineering Lead,LinkedIn Outbound,Enterprise,155000,Closed Won,Marcus Brown,Won
+2026-06-06,L-3375,RetailEdge,Claire Thompson,VP Ops,Referral,Pro,32000,Closed Won,Sarah Kim,Won
+2026-06-05,L-3370,HealthFirst,Dr. Ben Okwu,COO,Enterprise SDR,Enterprise,245000,Closed Won,James Hartley,Won
+pipeline_value_today,4892000,,,,,,,,
+closed_won_this_week,432000,,,,,,,,
+new_leads_today,7,,,,,,,,
+new_leads_7day_average,5.3,,,,,,,,
+conversion_rate_this_week,14.2,,,,,,,,
+conversion_rate_last_week,11.8,,,,,,,,

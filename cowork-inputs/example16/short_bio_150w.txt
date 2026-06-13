@@ -1,0 +1,15 @@
+Dr. Alex Morgan is a Senior Research Fellow in Neuroscience at the University of Bristol,
+where they lead the Neural Interfaces and Motor Rehabilitation Group. Their research focuses
+on EEG-based brain-computer interfaces for post-stroke motor recovery, combining real-time
+neural signal processing with functional electrical stimulation to promote cortical plasticity.
+
+Dr. Morgan holds a PhD from the University of Oxford and was previously a postdoctoral
+researcher at ETH Zurich. They are Principal Investigator on a UKRI Future Leaders Fellowship
+(£1.2M) and co-lead a NIHR-funded clinical trial in collaboration with Royal Bristol Hospital.
+Their 2026 randomised controlled trial (J NeuroEng Rehabil) demonstrated 34% greater upper
+limb recovery with BCI-assisted therapy compared to conventional treatment.
+
+Dr. Morgan is an Associate Editor at the Journal of NeuroEngineering and Rehabilitation
+and has delivered invited talks at IEEE EMBC and the British Neuroscience Association meeting.
+
+[Word count: 140 — update as needed]

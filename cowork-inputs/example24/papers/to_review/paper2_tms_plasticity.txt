@@ -1,0 +1,32 @@
+PAPER — Simulate PDF
+
+Title: Paired TMS-BCI Stimulation Enhances Cortical Plasticity Compared to BCI Alone in Chronic Stroke: A Pilot RCT
+Authors: DeLuca, M., Fischer, W., Yamamoto, T., Chen, W.
+Journal: Neurorehabilitation and Neural Repair, 2025
+DOI: 10.1177/15459683251089442
+
+HYPOTHESIS
+Paired transcranial magnetic stimulation (TMS) delivered in synchrony with BCI-triggered motor
+attempts will induce greater cortical plasticity (indexed by TMS motor evoked potentials) than BCI alone.
+
+METHODOLOGY
+Pilot RCT. 24 chronic stroke survivors (>6 months post-stroke).
+Randomised to: (A) BCI + paired TMS (n=12), (B) BCI alone (n=12).
+Intervention: 15 sessions over 3 weeks.
+Primary outcome: MEP amplitude change from cortical motor map.
+Secondary outcomes: Fugl-Meyer Assessment, grip strength.
+
+KEY RESULTS
+- MEP amplitude change: Group A +42% vs Group B +18% (p=0.031)
+- Fugl-Meyer (upper extremity): Group A +7.2 points vs Group B +4.8 points (p=0.089 — trend only)
+- Grip strength: no significant difference
+- No serious adverse events in TMS group; 2 mild headaches
+
+LIMITATIONS
+- Small sample (pilot study) — underpowered for Fugl-Meyer; results are hypothesis-generating only
+- TMS is expensive equipment not available in most rehabilitation settings — limits translation
+- TMS operator skill may confound results (not blinded)
+
+RELEVANCE TO: Neural interfaces in motor rehabilitation — MEDIUM-HIGH
+Supports the general direction of closed-loop stimulation but TMS is not scalable. FES remains
+more practical. Useful for introduction framing and contrasting stimulation modalities.

@@ -1,0 +1,11 @@
+feature_name,squad,priority,status,description,target_date,eng_owner,pm_owner,q2_metric_baseline,q3_success_metric
+Enterprise Analytics Dashboard,Platform,P0,In Progress,"Consolidated usage, activity and ROI metrics for enterprise admins. Phase 1 scope only (see PRD v2.3)",2026-09-30,Tom Bradley,Priya Nair,Enterprise NPS: 42,Enterprise NPS: 52
+Smart Notifications 2.0,Growth,P0,In Progress,"Personalised notification system using ML to reduce notification fatigue. A/B test in progress.",2026-08-31,Mei Lin,Alex Chen,Email open rate: 22%,Email open rate: 32%
+Mobile App v3.0,Mobile,P0,In Progress,"Full redesign of iOS and Android apps. Focus: offline mode and speed.",2026-09-30,Raj Kumar,Priya Nair,Mobile DAU/MAU: 0.18,Mobile DAU/MAU: 0.28
+API v2 (GraphQL),Platform,P1,Starting,"New GraphQL API alongside existing REST. Developer experience priority.",2026-09-30,David CTO,Alex Chen,API customers: 140,API customers: 200
+AI Summary Improvements,AI,P1,In Progress,"Improved multi-document summarisation. Reduces hallucination rate to <2%.",2026-08-15,Sasha AI,Priya Nair,Hallucination rate: 4.1%,Hallucination rate: <2%
+Team Spaces,Collaboration,P1,Planning,"Dedicated team workspaces with shared templates, pinned docs, and team-level analytics.",2026-09-30,Owen Dev,Alex Chen,N/A — new feature,30% enterprise accounts create 1+ team space
+Integrations Hub v2,Platform,P2,Planning,"Streamlined integration setup. Target: 50% reduction in setup time for new integrations.",2026-09-30,Multiple,Alex Chen,Avg integration setup: 28 min,Avg integration setup: 14 min
+Offline Mode (Web),Platform,P2,Planning,"Progressive web app offline capability for core editing functions.",2026-12-31,Tom Bradley,Priya Nair,N/A,TBD — pushed to Q4
+Advanced Search,Platform,P2,Planning,"Boolean search operators, date filters, file-type filters across entire workspace.",2026-09-30,Lin FE,Alex Chen,Search result quality NPS: 31,Search result quality NPS: 45
+Custom Export Templates,Platform,P3,Backlog,"User-defined export templates for PDF and Word. Requested by 340 enterprise customers.",2027-Q1,Unassigned,TBD,N/A,Pushed to Q1 2027

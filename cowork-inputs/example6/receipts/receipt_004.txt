@@ -1,0 +1,11 @@
+HOTEL RECEIPT
+
+Vendor: Premier Inn London City
+Date: 09/06/2026 – 10/06/2026 (1 night)
+Room type: Standard Double
+Rate: £189.00 per night
+Total: £189.00
+VAT: £31.50 (included)
+Payment: Corporate card ending 3310
+Category: Accommodation
+Purpose: Overnight for early morning client presentation at Canary Wharf (10 June)

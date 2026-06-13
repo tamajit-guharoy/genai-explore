@@ -1,0 +1,55 @@
+STATEMENT OF WORK — RETAILCO OPERATIONAL REVIEW
+Contract ref: MSA-2026-RC-047
+Client: RetailCo Ltd
+Consultant: [Consulting Firm Name]
+Period: 1 April 2026 – 30 June 2026 (13 weeks)
+
+---
+
+ENGAGEMENT OVERVIEW
+RetailCo has commissioned a 13-week operational review of its supply chain and store operations
+to identify efficiency gains ahead of a planned 20-store expansion in H2 2026.
+
+---
+
+DELIVERABLES SCHEDULE
+
+Phase 1 — Discovery (Weeks 1–4)
+  D1.1: Current-state process maps for supply chain (inbound to shelf) — Due Week 4
+  D1.2: Stakeholder interview summaries (15 interviews) — Due Week 4
+  D1.3: Data baseline: inventory turn, shrinkage, out-of-stock rates by region — Due Week 4
+
+Phase 2 — Analysis (Weeks 5–9)
+  D2.1: Gap analysis vs industry benchmarks — Due Week 7
+  D2.2: Root cause analysis for top 5 operational inefficiencies — Due Week 8
+  D2.3: Financial model: cost of inefficiencies and opportunity sizing — Due Week 9
+
+Phase 3 — Recommendations (Weeks 10–13)
+  D3.1: Prioritised recommendation roadmap (20 initiatives, ranked by ROI) — Due Week 11
+  D3.2: Implementation plan for top 5 initiatives — Due Week 12
+  D3.3: Final presentation to Board — Week 13 (14 June 2026)
+  D3.4: Knowledge transfer documentation — Due Week 13
+
+---
+
+FEES
+Fixed fee: £185,000 (exclusive of VAT)
+  Phase 1: £55,000 (payable on delivery of D1.3)
+  Phase 2: £70,000 (payable on delivery of D2.3)
+  Phase 3: £60,000 (payable on delivery of D3.4)
+Expenses: Capped at £8,000; pre-approved by RetailCo Finance
+
+---
+
+CONSTRAINTS AND EXCLUSIONS
+- Scope limited to UK operations only
+- Does not include IT systems implementation
+- Store visits limited to 12 sites (agreed sample)
+- Access to financial systems subject to RetailCo IT approval
+
+---
+
+KEY MILESTONES
+Week 4:   Phase 1 review meeting with CPO
+Week 9:   Mid-engagement steering committee review
+Week 13:  Board presentation (14 June 2026)

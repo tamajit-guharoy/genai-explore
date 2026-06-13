@@ -1,0 +1,41 @@
+SAVED ARTICLE — Week 25 Research
+
+Source: Harvard Business Review
+Title: How AI Is Quietly Transforming B2B Procurement
+Date: 3 June 2026
+URL: [saved offline]
+
+---
+
+KEY POINTS FROM ARTICLE
+
+The $13 trillion global procurement market is experiencing its most significant technology shift since ERP
+systems in the 1990s. AI is not just automating procurement tasks — it's changing who makes procurement
+decisions and how.
+
+Three transformations underway:
+
+1. SUPPLIER DISCOVERY AND RISK SCORING
+Companies like Coupa, SAP Ariba, and a wave of startups are using LLMs trained on supplier databases,
+news feeds, and financial records to surface supplier risk in real time. Buyers at companies like Unilever
+and Boeing now see supplier financial health scores updated daily rather than annually.
+
+Before AI: procurement teams ran annual supplier audits. Typical risk review: 3-6 months lead time.
+After AI: continuous monitoring; high-risk suppliers flagged within 48 hours of deteriorating signals.
+
+2. CONTRACT INTELLIGENCE
+Legal teams are using AI to analyse thousands of supplier contracts simultaneously, identifying
+non-standard clauses, expiring terms, and untapped volume discount triggers. One Fortune 500 CPO
+quoted in the article: "We found £4.2M in unused contracted discounts in our first AI contract audit."
+
+3. DEMAND FORECASTING FOR TAIL SPEND
+Tail spend (purchases outside preferred suppliers) typically represents 20% of procurement value
+but 80% of procurement transactions. AI can now forecast tail spend patterns and proactively suggest
+preferred alternatives — reducing maverick spend by 30-40% in early adopters.
+
+CONTRARIAN TAKE POTENTIAL:
+The article is bullish on AI procurement. A contrarian angle: AI procurement optimisation favours
+incumbent large suppliers who have data partnerships with platforms. SME suppliers are being
+systematically disadvantaged — an unintended consequence worth examining.
+
+RELEVANCE SCORE: 9/10 — Strong primary source with exec quotes. Good for main article thesis.

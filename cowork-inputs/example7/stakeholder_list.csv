@@ -1,0 +1,11 @@
+name,title,department,email,phone,role_in_engagement,preferred_contact,notes
+Tom Ashworth,Chief Executive Officer,Executive,t.ashworth@retailco.co.uk,+44 7711 234001,Executive Sponsor,Email only,"Final approver for all recommendations. Very time-poor — 30 min max for meetings. Prefers 1-page summaries."
+Helen Marsh,Chief Operations Officer,Operations,h.marsh@retailco.co.uk,+44 7711 234002,Primary Client Contact,Phone/Email,"Day-to-day engagement lead. Accessible. Champions change. Key ally."
+Raj Patel,Chief Financial Officer,Finance,r.patel@retailco.co.uk,+44 7711 234003,Stakeholder,Email only,"Controls budget sign-off. Sceptical of consultants — prove ROI early. Likes numbers and evidence."
+Clare Thompson,VP Supply Chain,Supply Chain,c.thompson@retailco.co.uk,+44 7711 234010,Key Interviewee,Teams/Email,"25 years at RetailCo. Deep institutional knowledge. Resistant to external change — build trust slowly."
+Mike Foster,VP Store Operations,Store Ops,m.foster@retailco.co.uk,+44 7711 234011,Key Interviewee,Phone,"Enthusiastic about the engagement. Has detailed data on shrinkage and out-of-stocks. Good data source."
+Priya Kapoor,Head of Data & Analytics,Technology,p.kapoor@retailco.co.uk,+44 7711 234020,Data Access,Email,"Controls access to operational data systems. Need her buy-in for data extraction in Phase 1."
+James Liu,Head of HR,Human Resources,j.liu@retailco.co.uk,+44 7711 234021,Stakeholder,"Email only","Needs advance notice of any workforce-related recommendations — sensitive area."
+Sandra Brooks,Finance Business Partner,Finance,s.brooks@retailco.co.uk,+44 7711 234030,Working Group,Teams/Email,"Working-level contact for financial model in Phase 2. Very detailed and responsive."
+Owen Davies,Regional Manager (South),Store Ops,o.davies@retailco.co.uk,+44 7711 234040,Field Interview,Phone,"Managing 45 stores. Will provide ground-level operational reality check."
+Fatima Osei,Regional Manager (North),Store Ops,f.osei@retailco.co.uk,+44 7711 234041,Field Interview,Phone,"Managing 38 stores in North England and Scotland. Strong performance record."

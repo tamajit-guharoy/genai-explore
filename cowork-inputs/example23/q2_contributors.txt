@@ -1,0 +1,32 @@
+Q2 2026 CONTRIBUTORS — ALL-HANDS RECOGNITION LIST
+
+Engineering
+- Tom Bradley (Tech Lead) — led Project Alpha architecture; delivered auth migration 3 weeks ahead of schedule
+- Mei Lin (Senior FE) — shipped Smart Notifications 2.0 beta; redesigned entire onboarding flow
+- Raj Kumar (Senior BE) — built event ingestion pipeline handling 50K events/day; zero incidents
+- Sasha Petrov (Senior FE / Design) — Mobile app v2.1 design system; reduced design-to-dev handoff time by 60%
+- Lin Wei (BE Engineer) — resolved critical payment gateway bug affecting 340 enterprise customers; found root cause in 2 hours during incident
+- Owen Davies (BE Engineer) — Integrations Hub prototype; shipped 3 new connectors (HubSpot, Linear, Notion)
+- Omar Hassan (Security Lead) — completed SOC 2 Type II audit; zero findings; 6-week faster than last audit
+- David Okafor (CTO) — technical vision and architectural decisions; exceptional crisis management during June SSO incident
+
+Product
+- Priya Nair (CPO) — delivered full Project Alpha PRD; ran 15 enterprise customer discovery sessions
+- Alex Chen (PM) — shipped API v2 roadmap; managed 3 simultaneous feature tracks
+
+Data & Analytics
+- Marcus Webb (Data Lead) — built real-time churn prediction model; flagged 12 at-risk accounts in Q2 (8 saved)
+
+Sales & Customer Success
+- Sarah Kim (AE) — won NovaPharma (£320K ARR) — largest deal in company history
+- James Hartley (AE) — closed 5 enterprise deals in Q2; £690K new ARR; exceeded quota by 138%
+- Alex Rivera (AE) — best SMB conversion rate on the team (19.3%); 3 consecutive quota months
+
+Operations
+- Sandra Brooks (Finance) — financial system migration completed on time; zero payroll errors
+- Fatima Osei (HR) — hired 5 engineers in Q2 against a highly competitive market; average time-to-hire: 34 days
+
+Special Recognition
+- Lin Wei — "Zero-to-Hero" award: joined in March, already one of our most reliable engineers
+- Mei Lin — longest streak of on-time sprint delivery (5 consecutive sprints)
+- Sarah Kim — "Biggest Deal" trophy: NovaPharma win is a company milestone

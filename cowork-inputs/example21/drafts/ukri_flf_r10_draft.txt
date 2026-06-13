@@ -1,0 +1,52 @@
+DRAFT — UKRI FUTURE LEADERS FELLOWSHIP APPLICATION
+Round 10 | Deadline: 12 September 2026
+Applicant: Dr. Alex Morgan | University of Bristol
+
+STATUS: In progress — ~40% complete
+
+---
+
+SECTION 1: VISION (DRAFT — needs revision)
+
+The challenge of restoring motor function after stroke affects 13 million people annually worldwide.
+Despite decades of research, recovery outcomes remain poor and inconsistent. The central hypothesis
+of this fellowship is that personalised, closed-loop brain-computer interface (BCI) therapy — adapting
+stimulation parameters to the individual's real-time neural state — will outperform fixed-protocol
+rehabilitation by 40% on standard outcome measures.
+
+[TODO: Add specific pilot data from Kim 2025 here]
+[TODO: Quantify the healthcare cost burden — get NHS England stats]
+
+---
+
+SECTION 2: RESEARCH PROGRAMME (DRAFT)
+
+Objective 1: Develop personalised decoder algorithms that adapt to within-session neural dynamics
+  - 18-month timeline
+  - Builds directly on Morgan 2023 (EEG artifact rejection) and Kim 2025
+
+Objective 2: Multi-site clinical trial (n=200) comparing personalised vs standard BCI protocol
+  - 30-month timeline; 4 sites (Bristol, London, Edinburgh, Manchester)
+  - Builds on Chen 2026 RCT design and existing site relationships
+
+Objective 3: Health economic analysis and NHS implementation pathway
+  - 12-month timeline; collaboration with health economist (TBC)
+
+[TODO: Budget breakdown needed — estimate £1.2M over 4 years]
+[TODO: Letters of support from all 4 clinical sites]
+
+---
+
+SECTION 3: TRACK RECORD (DRAFT — mostly complete)
+
+- Chen et al. 2026 RCT: 42 citations, featured in Nature Digital Medicine commentary
+- UKRI FLF Round 7 (2022): delivered all milestones; final report submitted March 2026
+- H-index: 11; 24 peer-reviewed publications
+[Continue from CV...]
+
+---
+
+NOTES FOR REVISION
+- Reviewers will be non-specialist — avoid jargon in vision section
+- Need to strengthen the "why me, why now" argument
+- Impact section needs more patient voice — contact PPI group at Royal Bristol

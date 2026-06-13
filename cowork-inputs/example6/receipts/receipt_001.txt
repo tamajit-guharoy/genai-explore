@@ -1,0 +1,10 @@
+RECEIPT
+
+Vendor: The Grid Coffee
+Date: 03/06/2026
+Items:
+  - 2x Flat White                  £6.50
+  - 1x Avocado Toast               £8.90
+Total: £15.40
+Payment: Visa ending 4821
+Category: Meals (client meeting — Alex from RetailCo)

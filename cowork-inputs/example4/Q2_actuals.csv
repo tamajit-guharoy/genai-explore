@@ -1,0 +1,25 @@
+region,account_name,account_tier,deal_size_gbp,deal_type,close_date,stage,account_executive,q2_revenue_gbp,q1_revenue_gbp,q3_forecast_gbp
+EMEA,Apex Financial,Enterprise,145000,New Business,2026-04-12,Closed Won,James Hartley,145000,0,158000
+EMEA,GreenPath Logistics,Enterprise,89000,Expansion,2026-04-19,Closed Won,Sarah Kim,89000,62000,97000
+AMERICAS,TechGrowth Inc,Enterprise,210000,New Business,2026-04-22,Closed Won,Marcus Brown,210000,0,230000
+APAC,Pacific Retail Group,Pro,34000,New Business,2026-04-28,Closed Won,Yuki Tanaka,34000,0,37000
+EMEA,DataStream UK,Pro,28000,Renewal,2026-05-03,Closed Won,James Hartley,28000,28000,30000
+AMERICAS,BuildFast Corp,Enterprise,178000,New Business,2026-05-08,Closed Won,Marcus Brown,178000,0,195000
+APAC,SingTech Ventures,Enterprise,95000,Expansion,2026-05-14,Closed Won,Yuki Tanaka,95000,74000,104000
+EMEA,NovaPharma Ltd,Enterprise,320000,New Business,2026-05-19,Closed Won,Sarah Kim,320000,0,352000
+AMERICAS,QuickScale SMB,Pro,22000,New Business,2026-05-22,Closed Won,Alex Rivera,22000,0,24000
+EMEA,BrightFuture NGO,Starter,8000,New Business,2026-05-28,Closed Won,James Hartley,8000,0,8000
+AMERICAS,CoreSystems,Enterprise,267000,New Business,2026-06-04,Closed Won,Marcus Brown,267000,0,293000
+APAC,TokyoFinance,Enterprise,112000,Renewal,2026-06-06,Closed Won,Yuki Tanaka,112000,112000,123000
+EMEA,ScaleUp Berlin,Pro,41000,Expansion,2026-06-09,Closed Won,Sarah Kim,41000,29000,45000
+AMERICAS,MedTech US,Enterprise,189000,New Business,2026-06-10,Closed Won,Alex Rivera,189000,0,207000
+EMEA,RetailCo UK,Enterprise,245000,New Business,2026-06-10,Closed Won,James Hartley,245000,0,270000
+AMERICAS,HealthFirst,Pro,31000,Renewal,2026-06-10,Closed Won,Marcus Brown,31000,31000,34000
+APAC,AustraliaOps,Enterprise,78000,Expansion,2026-05-30,Closed Won,Yuki Tanaka,78000,55000,85000
+EMEA,LegalEdge,Pro,19000,New Business,2026-05-25,Closed Won,Sarah Kim,19000,0,21000
+AMERICAS,CloudBuild Inc,Starter,6000,New Business,2026-04-15,Closed Won,Alex Rivera,6000,0,6000
+EMEA,Finserv Capital,Enterprise,415000,New Business,2026-06-05,In Progress,James Hartley,0,0,415000
+AMERICAS,MegaInsure,Enterprise,385000,New Business,2026-06-08,In Progress,Marcus Brown,0,0,385000
+APAC,HK Digital,Enterprise,156000,Renewal,2026-06-30,In Progress,Yuki Tanaka,0,145000,156000
+EMEA,BioTech Cambridge,Pro,48000,New Business,2026-06-28,In Progress,Sarah Kim,0,0,48000
+AMERICAS,LogiConnect,Pro,35000,Expansion,2026-07-15,Pipeline,Alex Rivera,0,22000,35000

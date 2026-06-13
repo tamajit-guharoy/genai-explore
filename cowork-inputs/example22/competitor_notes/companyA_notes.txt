@@ -1,0 +1,30 @@
+COMPETITOR RESEARCH — CompanyA (Substitute: Notion)
+Last updated: 15 May 2026
+
+---
+
+PRODUCT UPDATES (Q1 2026)
+- Launched Notion AI 3.0 with multi-document reasoning — can analyse 20+ docs simultaneously
+- New enterprise admin controls: granular permission templates, audit log API
+- Launched Notion Sites (public-facing websites built from Notion pages) — GA in March 2026
+- Database automations now support external triggers via webhooks (competitor to Zapier flows)
+
+PRICING (as of May 2026)
+- Free: up to 10 collaborators (previously unlimited — changed Q1 2026)
+- Plus: $10/user/month (unchanged)
+- Business: $15/user/month (unchanged)
+- Enterprise: custom pricing; starting ~$20/user/month based on peer reports
+
+RECENT PRESS
+- March 2026: Raised $250M Series F at $10B valuation
+- April 2026: Partnership with Salesforce for CRM data sync
+- Negative: Growing user complaints about performance degradation in large workspaces (> 10,000 pages)
+
+COMPETITIVE THREATS TO US
+- Their AI summarisation is now excellent for internal docs — direct overlap with our research feature
+- Enterprise admin controls now match ours — removes a key differentiator
+
+OUR ADVANTAGES VS COMPANYA
+- Better real-time collaboration latency (we beat them by ~40ms per benchmarks)
+- Our API is significantly more developer-friendly (REST + GraphQL vs their REST only)
+- Better mobile app (3.2-star vs our 4.1-star app store ratings)

@@ -1,0 +1,43 @@
+INVOICE
+
+Invoice number: 2026-005
+Date issued: 2 June 2026
+Due date: 2 July 2026
+Status: UNPAID (due in 22 days)
+
+From:
+  Alex Morgan Consulting Ltd
+  123 Consulting Street
+  London EC1A 1BB
+
+To:
+  RetailCo Ltd
+  Accounts Payable
+  RetailCo House
+  Manchester M2 3CD
+  Attn: Sandra Brooks (Finance Business Partner)
+
+---
+
+SERVICES RENDERED — May 2026 (Phase 1 completion)
+
+Description                          Days    Day Rate    Amount
+Phase 1: Process mapping (SC)        6       £900        £5,400.00
+Phase 1: Stakeholder interviews      4       £900        £3,600.00
+Phase 1: Data baseline analysis      4       £900        £3,600.00
+Travel expenses (pre-approved)                           £840.00
+
+Subtotal:                                               £13,440.00
+VAT (20%):                                              £2,688.00
+TOTAL DUE:                                              £16,128.00
+
+---
+
+PAYMENT DETAILS
+Bank: Barclays Bank PLC
+Account name: Alex Morgan Consulting Ltd
+Sort code: 20-12-34
+Account number: 12345678
+Reference: INV-2026-005-RETAILCO
+
+Contract ref: MSA-2026-RC-047. Phase 1 milestone per SOW schedule.

@@ -1,0 +1,59 @@
+JOB DESCRIPTION
+
+Role: Senior Product Manager — Business Payments
+Company: Revolut
+Location: London, UK (Hybrid)
+Team: Business Product
+Reports to: Head of Product, Business
+
+---
+
+ABOUT REVOLUT
+Revolut is a global fintech company with 45 million customers worldwide. We're on a mission to deliver
+10x better financial services. We're regulated in 35+ countries and process $500B+ in transactions annually.
+
+---
+
+THE ROLE
+We're looking for a Senior PM to own Business Payments — the products that allow our 2.5 million business
+customers to send money, manage multi-currency accounts, and automate their financial operations.
+
+You'll be working on one of Revolut's fastest-growing product areas, with a high degree of autonomy
+and a strong emphasis on moving fast and proving impact through data.
+
+---
+
+RESPONSIBILITIES
+- Own the product strategy for business payments (transfers, bulk payments, FX, payroll integrations)
+- Define, build, and launch features used by 2.5M business customers across 35+ markets
+- Lead discovery: deep customer research with SMBs and enterprise clients to uncover unmet needs
+- Work closely with engineering, design, data, compliance, and operations teams
+- Define success metrics, run A/B tests, iterate rapidly based on data
+- Communicate roadmap and outcomes to executive stakeholders
+
+---
+
+REQUIREMENTS
+Must have:
+- 5+ years PM experience in fintech or B2B SaaS
+- Strong payments domain knowledge: SWIFT, SEPA, Faster Payments, multi-currency
+- Data-driven decision making — comfortable writing SQL queries and interpreting A/B test results
+- Experience with cross-border payments or multi-currency products
+- Strong communication skills — able to present to C-suite
+
+Nice to have:
+- Experience with Open Banking API products
+- Knowledge of SMB or enterprise financial needs
+- Multi-market product launches
+
+---
+
+REVOLUT'S PRINCIPLES
+Think bigger. Build better. Deliver faster. We value candidates who challenge assumptions and
+thrive in ambiguity. Don't expect a gentle pace — we move fast, iterate constantly, and celebrate
+both successes and well-reasoned failures.
+
+---
+
+COMPENSATION
+£110,000–£135,000 + bonus + equity

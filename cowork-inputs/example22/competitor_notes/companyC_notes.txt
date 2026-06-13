@@ -1,0 +1,33 @@
+COMPETITOR RESEARCH — CompanyC (Substitute: Coda)
+Last updated: 20 May 2026
+
+---
+
+PRODUCT UPDATES (Q1 2026)
+- Launched Coda AI Pack — AI columns in tables, AI-generated summaries, AI drafting
+- New "Packs" ecosystem expanded: 600+ integrations (vs our 240)
+- Launched Coda for Startups programme — 50% discount, aggressive acquisition strategy
+- Doc analytics: page view tracking, time-on-page, reader engagement (new feature)
+
+PRICING (as of May 2026)
+- Free: unlimited docs (key differentiator vs us)
+- Pro: $10/user/month
+- Team: $30/user/month
+- Enterprise: custom
+
+RECENT PRESS
+- January 2026: $100M Series D (total raised: $440M)
+- March 2026: Partnership with OpenAI for GPT-4o integration in Coda AI Pack
+- Negative: User forum complaints about reliability of Packs (third-party integrations breaking)
+- Negative: Perception issues — "too complex for non-technical users" recurs in app store reviews
+
+COMPETITIVE THREATS TO US
+- Unlimited free tier is a significant acquisition advantage — our freemium is more restricted
+- Their Packs ecosystem growing fast — integration breadth may matter for enterprise buyers
+- Startup programme actively targeting our early-stage customer segment
+
+OUR ADVANTAGES VS COMPANYC
+- Simpler onboarding — consistent feedback that Coda requires too much setup
+- Better mobile experience (Coda mobile is weak)
+- More mature enterprise security controls (SOC 2 Type II, GDPR DPA, 99.9% SLA)
+- Our AI is more contextually aware (whole-workspace AI vs their per-doc AI)

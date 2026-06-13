@@ -1,0 +1,31 @@
+COMPETITOR RESEARCH — CompanyB (Substitute: Confluence/Atlassian)
+Last updated: 18 May 2026
+
+---
+
+PRODUCT UPDATES (Q1 2026)
+- Atlassian Intelligence now available on Confluence — AI-generated page summaries, action item extraction
+- Rovo (Atlassian's AI search) integrated with Confluence — searches across Jira, Confluence, and third-party tools
+- New pricing model: moved to seat-based plans from previous server/cloud split
+- Loom integration deepened — video recordings automatically transcribed and linked to Jira issues
+
+PRICING (as of May 2026)
+- Free: up to 10 users
+- Standard: $4.89/user/month
+- Premium: $8.97/user/month
+- Enterprise: custom, est. $15/user/month
+
+RECENT PRESS
+- February 2026: Rovo GA launch — heavy marketing spend; significant analyst coverage
+- May 2026: Announced Jira and Confluence performance improvement initiative (after year of user complaints)
+- Negative: Atlassian customer survey Q1 2026 leaked — 34% of enterprise customers considering alternatives
+
+COMPETITIVE THREATS TO US
+- Rovo's cross-tool search is genuinely impressive — their strength in the Jira ecosystem means
+  engineering orgs already using Jira may not switch just for our search advantage
+- Premium tier is significantly cheaper than us ($8.97 vs our $15/user)
+
+OUR ADVANTAGES VS COMPANYB
+- Our editor UX is significantly better (new user time-to-first-doc: 4 min vs 12 min for Confluence)
+- No vendor lock-in fear — CompanyB customers worried about Atlassian acquisitions
+- Our AI is purpose-built for knowledge work vs their bolt-on approach

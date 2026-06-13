@@ -1,0 +1,47 @@
+SAVED ARTICLE — Week 25 Research
+
+Source: McKinsey & Company (Supply Chain Practice)
+Title: The Autonomous Supply Chain: From Aspiration to Reality
+Date: 28 May 2026
+URL: [saved offline]
+
+---
+
+KEY POINTS FROM ARTICLE
+
+McKinsey surveyed 400 supply chain leaders across manufacturing, retail, and logistics.
+Key finding: 43% have deployed AI in at least one supply chain function; only 8% have achieved
+"autonomous" operation in any process. The gap between pilots and scale is the central problem.
+
+THREE TIERS OF MATURITY IDENTIFIED:
+
+Tier 1 — Optimised (43% of respondents):
+AI used for demand forecasting and inventory optimisation. Humans still approve all decisions.
+Typical ROI: 5-12% cost reduction.
+
+Tier 2 — Augmented (34% of respondents):
+AI handles routine procurement decisions autonomously (routine POs under threshold, reorder triggers).
+Human oversight for exceptions only.
+Typical ROI: 15-25% cost reduction, 30% reduction in procurement headcount for routine work.
+
+Tier 3 — Autonomous (8% of respondents):
+AI makes supplier selection, contract negotiation (within parameters), and payment decisions.
+Humans set policy and manage exceptions.
+Typical ROI: 35%+ cost reduction.
+
+BARRIERS TO SCALING (from survey):
+1. Data quality — fragmented supplier master data prevents AI from reasoning across contracts (67%)
+2. Change management — procurement teams fear displacement (54%)
+3. Legal/compliance — organisations uncertain about liability for AI-made procurement decisions (48%)
+4. Integration — AI tools don't connect to legacy ERP systems without expensive custom work (71%)
+
+STAT FOR THE ARTICLE:
+"By 2028, McKinsey estimates 25% of all B2B procurement transactions by value will involve
+no human decision point between supplier selection and purchase order issuance."
+
+CONTRARIAN TAKE POTENTIAL:
+The "autonomous" tier in this report is largely confined to commodity goods and services.
+For complex, strategic procurement (consulting, technology, capital equipment), AI is nowhere
+near autonomous decision-making. McKinsey's headline number is doing a lot of work on a narrow slice.
+
+RELEVANCE SCORE: 8/10 — Good data source. Use stats carefully — survey methodology not fully disclosed.

@@ -1,0 +1,39 @@
+CLIENT PROJECT BRIEF
+
+Client: GlobalTech Solutions UK
+Project: API Product Strategy Review
+Start date: 1 March 2026
+End date: 30 June 2026
+Fixed fee: £12,600 (invoiced in 3 monthly tranches of £4,200)
+Status: ACTIVE — INVOICE OVERDUE (see example13)
+
+---
+
+PROJECT OVERVIEW
+GlobalTech builds developer tools for fintech teams. They have an existing REST API product
+with 200 developer customers but are underperforming on enterprise adoption.
+
+Engagement scope: Review and redefine API product strategy, developer experience,
+and go-to-market positioning for enterprise segment.
+
+---
+
+KEY CONTACTS
+Project sponsor: David Walsh (CTO) — d.walsh@globaltech.co.uk
+Day-to-day: Helen Cooper (PM) — h.cooper@globaltech.co.uk
+Finance: accounts@globaltech.co.uk — NOTE: Mark Henderson left company. Finance contact changed.
+
+---
+
+DELIVERABLES
+[DONE] API audit and competitive analysis — delivered 15 April 2026
+[DONE] Developer persona research (5 interviews) — delivered 30 April 2026
+[ ] Enterprise go-to-market strategy — due 30 June 2026
+[ ] Developer documentation framework — due 30 June 2026
+
+---
+
+NOTES
+- Payment for Invoice 2026-003 (£6,300) is 33 days overdue. Escalation needed.
+- David Walsh is the key decision-maker; Helen is execution-focused
+- Good relationship with team but finance processes are slow

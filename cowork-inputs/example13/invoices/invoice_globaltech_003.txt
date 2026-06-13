@@ -1,0 +1,44 @@
+INVOICE
+
+Invoice number: 2026-003
+Date issued: 8 April 2026
+Due date: 8 May 2026
+Status: OVERDUE — 33 DAYS
+
+From:
+  Alex Morgan Consulting Ltd
+  123 Consulting Street
+  London EC1A 1BB
+
+To:
+  GlobalTech Solutions UK
+  Finance Team
+  789 Tech Boulevard
+  London EC2A 2BB
+  Attn: Mark Henderson
+
+---
+
+SERVICES RENDERED — March 2026
+
+Description                          Days    Day Rate    Amount
+API product strategy review          5       £900        £4,500.00
+Technical documentation review       1       £750        £750.00
+
+Subtotal:                                               £5,250.00
+VAT (20%):                                              £1,050.00
+TOTAL DUE:                                              £6,300.00
+
+---
+
+PAYMENT DETAILS
+Bank: Barclays Bank PLC
+Account name: Alex Morgan Consulting Ltd
+Sort code: 20-12-34
+Account number: 12345678
+Reference: INV-2026-003
+
+---
+
+NOTE: This invoice was due 8 May 2026. No payment received. First chaser sent 20 May. No response.
+Escalation to senior contact (David Walsh, CTO) may be required.
