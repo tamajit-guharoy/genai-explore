@@ -1,0 +1,22 @@
+{
+	"nodes":[
+		{"id":"beta","type":"file","file":"projects/project-beta.md","x":450,"y":400,"width":450,"height":280},
+		{"id":"dark-mode","type":"text","text":"## Dark Mode\n\n- User-requested (#3 on feedback)\n- Low effort: CSS variables already in place\n- Dependencies: Design system audit (in [[Project Alpha]])\n- Estimate: 3 days","x":-50,"y":400,"width":350,"height":280},
+		{"id":"mobile-app","type":"text","text":"## Mobile App Notifications\n\n- Push notifications for dashboard updates\n- Requires: Firebase Cloud Messaging\n- Estimate: 2 weeks\n- Risk: New tech for team","x":-400,"y":0,"width":350,"height":280},
+		{"id":"principles","type":"text","text":"## Design Principles\n\n1. Offline-first ([[Deep Work]] philosophy applied to software)\n2. Mobile-responsive (from [[Project Alpha]])\n3. Privacy-first\n4. Fast (<1.5s load time)","x":-400,"y":400,"width":350,"height":280},
+		{"id":"books","type":"file","file":"books/atomic-habits.md","x":1000,"y":130,"width":350,"height":250},
+		{"id":"meeting-notes","type":"file","file":"meetings/2026-06-18-standup.md","x":1000,"y":430,"width":350,"height":250},
+		{"id":"alpha","type":"file","file":"projects/project-alpha.md","x":500,"y":-120,"width":450,"height":320},
+		{"id":"brainstorm","type":"text","text":"# Q3 Brainstorm\n\n## Feature Ideas\n\n- Customer Dashboard Redesign ([[Project Alpha]])\n- Mobile App Notifications\n- Dark Mode\n- Export to CSV\n- API Rate Limiting Dashboard\n- Team Analytics","x":0,"y":-20,"width":350,"height":320,"color":"4"}
+	],
+	"edges":[
+		{"id":"e1","fromNode":"brainstorm","fromSide":"right","toNode":"alpha","toSide":"left","label":"prioritized"},
+		{"id":"e2","fromNode":"brainstorm","fromSide":"bottom","toNode":"dark-mode","toSide":"top","label":"quick-win"},
+		{"id":"e3","fromNode":"brainstorm","fromSide":"left","toNode":"mobile-app","toSide":"right","label":"explore"},
+		{"id":"e4","fromNode":"principles","fromSide":"right","toNode":"alpha","toSide":"left","label":"guides"},
+		{"id":"e5","fromNode":"principles","fromSide":"right","toNode":"dark-mode","toSide":"left","label":"guides"},
+		{"id":"e6","fromNode":"alpha","fromSide":"bottom","toNode":"beta","toSide":"top","label":"API overlap"},
+		{"id":"e7","fromNode":"brainstorm","fromSide":"right","toNode":"meeting-notes","toSide":"left","label":"discussed in"},
+		{"id":"e8","fromNode":"books","fromSide":"left","toNode":"principles","toSide":"right","label":"inspired by"}
+	]
+}

@@ -1,0 +1,245 @@
+{
+  "main": {
+    "id": "9ac9f7be9b04df41",
+    "type": "split",
+    "children": [
+      {
+        "id": "3a3e70d0b0810c2d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "069c52f2e0060ff2",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "project-canvas.canvas",
+                "viewState": {
+                  "x": 475,
+                  "y": 340,
+                  "zoom": -0.6914742100074648
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "project-canvas"
+            }
+          },
+          {
+            "id": "db0b64a0045d6a5a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/project-beta.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "project-beta"
+            }
+          },
+          {
+            "id": "487f90bd25bd43dd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/project-dashboard.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "project-dashboard"
+            }
+          },
+          {
+            "id": "2f518b3da821b190",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "cf541abb2e28821e",
+    "type": "split",
+    "children": [
+      {
+        "id": "c4e4afeadbafcfc1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "e87e8a76de66412d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "3f7c4973458911e5",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "080c99bd9f1f4d9b",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "cd6bc18345e73cc1",
+    "type": "split",
+    "children": [
+      {
+        "id": "bc6c1e955635fec7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f5672a85ebd533c5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "project-canvas.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for project-canvas"
+            }
+          },
+          {
+            "id": "3abf6de6f171d62c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "project-canvas.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from project-canvas"
+            }
+          },
+          {
+            "id": "3b60755f2dc215be",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "93033f8f6c4fc0a6",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "b200dbeff4d26f12",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "project-canvas.canvas",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of project-canvas"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "069c52f2e0060ff2",
+  "lastOpenFiles": [
+    "Untitled.canvas",
+    "meetings/2026-06-18-standup.md",
+    "Project Alpha.md",
+    "2026-06-17 design review.md",
+    "projects/project-alpha.md",
+    "Project Dashboard.md",
+    "README.md",
+    "projects/project-dashboard.md",
+    "projects/project-beta.md",
+    "project-canvas.canvas",
+    "books/atomic-habits.md"
+  ]
+}
