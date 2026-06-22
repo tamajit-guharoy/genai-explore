@@ -1,0 +1,44 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 3: macOS Seatbelt Sandbox
+# =============================================================================
+# Uses macOS's built-in Seatbelt (sandbox-exec) to isolate the agent.
+# Functionally equivalent to linux_bwrap but for macOS hosts.
+#
+# HOW TO RUN:
+#   omni run 16_sandbox_darwin_seatbelt.yaml
+#
+# PREREQUISITE (macOS):
+#   - Nothing extra — Seatbelt is built into macOS
+#   - /usr/bin/sandbox-exec must be available (it is by default)
+#
+# WHAT THIS DEMONSTRATES:
+#   - sandbox.type: darwin_seatbelt → macOS native sandboxing
+#   - Same write_paths / read_paths / allow_network semantics as linux_bwrap
+#   - Cross-platform: this YAML works on macOS; 15_* works on Linux
+# =============================================================================
+
+name: sandboxed_mac_agent
+
+prompt: |
+  You are a macOS development assistant.
+  You work inside ./src and ./tests only.
+  You can read ./docs but never modify documentation.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+
+  sandbox:
+    type: darwin_seatbelt       # macOS Seatbelt sandbox (built into the OS)
+    write_paths:
+      - ./src
+      - ./tests
+    read_paths:
+      - ./src
+      - ./tests
+      - ./docs
+    allow_network: true

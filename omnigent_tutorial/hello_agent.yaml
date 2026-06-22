@@ -1,0 +1,8 @@
+
+name: hello_agent
+prompt: |
+  You are a concise assistant. Answer questions directly.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6

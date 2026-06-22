@@ -1,0 +1,75 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 3: Linux Bubblewrap Sandbox
+# =============================================================================
+# Restricts the agent using Linux namespaces via `bubblewrap`.
+# The agent sees ONLY the paths granted in write_paths and read_paths.
+# Everything else — including ~/.ssh, .env files, system configs — is INVISIBLE.
+#
+# HOW TO RUN:
+#   omni run 15_sandbox_linux_bwrap.yaml
+#
+# PREREQUISITE (Linux):
+#   - bubblewrap must be installed: apt install bubblewrap / pacman -S bubblewrap
+#
+# WHAT THIS DEMONSTRATES:
+#   - sandbox.type: linux_bwrap → Linux namespace isolation
+#   - write_paths: limit where the agent can CREATE/MODIFY files
+#   - read_paths: limit what the agent can READ
+#   - allow_network: true/false toggle for internet access
+#   - Dotfiles in granted directories are automatically MASKED
+#   - env: allowlist of environment variables passed to the sandbox
+#
+# SECURITY PROPERTIES:
+#   - Broad read grants (e.g., ~) don't expose ~/.ssh or ~/.aws — dotfiles masked
+#   - The agent CANNOT escape the sandbox — enforced by kernel namespaces + seccomp
+#   - Network is default-deny; only explicitly allowed traffic passes
+# =============================================================================
+
+name: sandboxed_linux_agent
+
+prompt: |
+  You are a coding assistant that writes code in ./src and tests in ./tests.
+  You can read documentation from ./docs but never modify it.
+  You have NO access to the user's home directory, SSH keys, or system files.
+  You CAN access the network for package installs and API calls.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+
+  sandbox:
+    type: linux_bwrap          # Linux namespace isolation via bubblewrap
+
+    # write_paths: The ONLY directories the agent can CREATE, MODIFY, or DELETE
+    #              files in.  Everything else is read-only or invisible.
+    write_paths:
+      - ./src                   # Can edit source code
+      - ./tests                 # Can edit tests
+      - ./output                # Can write build artifacts / reports
+
+    # read_paths: Directories the agent can READ (but NOT modify unless also
+    #             in write_paths).  Useful for reference data, docs, configs.
+    read_paths:
+      - ./src
+      - ./tests
+      - ./docs                  # Read-only docs
+      - ./data                  # Read-only datasets
+      - ./pyproject.toml        # Can read project config
+      - /tmp/omnigent           # Scratch space
+
+    # allow_network: Whether the agent can make outbound network connections.
+    #                false = fully air-gapped (no pip install, no API calls).
+    allow_network: true
+
+  # env: Environment variables passed INTO the sandbox.
+  #      ONLY variables listed here are visible to the agent.
+  #      API keys and secrets should NOT appear here — use credential brokering.
+  env:
+    PYTHONUNBUFFERED: "1"       # Ensure Python output isn't buffered
+    NODE_ENV: development
+    # SECURITY: Do NOT add API keys, tokens, or passwords here.
+    #           The agent would be able to echo $SECRET and leak it.

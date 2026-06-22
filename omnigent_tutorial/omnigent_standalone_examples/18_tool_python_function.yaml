@@ -1,0 +1,68 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 4: Python Function Tools
+# =============================================================================
+# Registers a local Python function as a tool the agent can call.
+# The JSON schema for the tool is auto-generated from the function signature
+# and docstring.
+#
+# HOW TO RUN:
+#   omni run 18_tool_python_function.yaml
+#
+# PREREQUISITE:
+#   - The Python module containing the callable must be importable
+#     (install your package with `pip install -e .` or adjust PYTHONPATH)
+#
+# WHAT THIS DEMONSTRATES:
+#   - tools.<name>.type: function → local Python callable
+#   - tools.<name>.callable: dotted import path to the function
+#   - tools.<name>.description: what the tool does (shown to the agent)
+#   - tools.<name>.parameters: optional explicit JSON schema (auto-generated if omitted)
+#   - tools.<name>.runtime: client → for client-provided tools (no local callable)
+# =============================================================================
+
+name: function_tool_agent
+
+prompt: |
+  You are a data analyst with a custom `word_count` tool.
+  Use it to analyze text files: count words, characters, sentences.
+  When asked to analyze a document, always start with word_count to get baseline stats.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+tools:
+  # Tool 1: A Python function exposed as an agent-callable tool.
+  #         The agent sees the function name, description, and parameter schema.
+  word_count:
+    type: function
+    description: |
+      Count words, characters, and sentences in a text file.
+      Returns a dictionary with keys: words, chars, sentences, paragraphs.
+    callable: my_package.tools.word_count
+    # parameters:               # Explicit JSON schema (OPTIONAL — auto-generated if omitted)
+    #   type: object
+    #   properties:
+    #     path:
+    #       type: string
+    #       description: Path to the text file to analyze
+    #   required: [path]
+
+  # Tool 2: A client-provided tool (no local callable).
+  #         The client is responsible for executing the tool and returning results.
+  #         Useful for tools that run in the browser, on a remote server, etc.
+  generate_chart:
+    type: function
+    description: Generate a chart or graph from data. Returns an image URL.
+    runtime: client             # Client-side execution — no local callable
+    parameters:
+      type: object
+      properties:
+        chart_type:
+          type: string
+          enum: [bar, line, scatter, pie, histogram]
+          description: The type of chart to generate
+        data:
+          type: object
+          description: Chart data in {labels: [...], values: [...]} format
+      required: [chart_type, data]

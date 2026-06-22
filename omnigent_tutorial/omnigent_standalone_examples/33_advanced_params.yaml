@@ -1,0 +1,58 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 8: Agent with User Parameters
+# =============================================================================
+# Defines typed user parameters that can be passed when launching the agent.
+# These appear in the UI/session as configurable settings the user can adjust.
+#
+# HOW TO RUN:
+#   omni run 33_advanced_params.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - params: → typed parameters available to tools and skills
+#   - Parameters can be booleans, strings, numbers, enums
+#   - The user sets these in the session settings panel (UI) or via CLI flags
+#   - Accessed by tools via their parameter schema
+# =============================================================================
+
+name: configurable_agent
+
+prompt: |
+  You are a flexible coding assistant. Your behavior can be tuned by the user
+  via parameters: verbosity, auto_commit, language preference.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+# params: Typed user-configurable parameters.
+#         The user sets these in the session settings panel.
+#         Tools and the agent prompt can reference them.
+params:
+  verbosity:
+    type: string
+    enum: [terse, normal, verbose]   # User picks from these options
+    default: normal
+    description: How detailed the agent's responses should be
+
+  auto_commit:
+    type: boolean
+    default: false
+    description: Whether the agent should auto-commit changes (false = ask first)
+
+  preferred_language:
+    type: string
+    default: python
+    description: Default programming language for new files
+
+  max_file_size_kb:
+    type: integer
+    default: 100
+    description: Maximum file size the agent should work with (in KB)
+    minimum: 1
+    maximum: 1000

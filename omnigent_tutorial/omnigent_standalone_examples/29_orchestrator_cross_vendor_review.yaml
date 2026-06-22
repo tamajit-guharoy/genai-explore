@@ -1,0 +1,91 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 7: Cross-Vendor Review Orchestrator
+# =============================================================================
+# The Polly pattern: orchestrator → coder (Claude) → reviewer (GPT) → user.
+# The reviewer is ALWAYS a DIFFERENT vendor than the implementer.
+# This catches vendor-specific blind spots.
+#
+# HOW TO RUN:
+#   omni run 29_orchestrator_cross_vendor_review.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Three-agent pipeline: orchestrator → coder → reviewer → user
+#   - Cross-vendor review: Claude writes, GPT reviews (or vice versa)
+#   - Sequential delegation: code first, then review (not parallel)
+#   - Reviewer is READ-ONLY: reports issues but never edits
+#
+# WHY CROSS-VENDOR:
+#   Different models trained on different data catch different issues.
+#   A bug that Claude overlooks might be obvious to GPT, and vice versa.
+# =============================================================================
+
+name: cross_vendor_orchestrator
+
+prompt: |
+  # You are a quality-focused orchestrator.
+  # You never write or edit code yourself.  You delegate and review.
+  #
+  # Workflow:
+  # 1. PLAN the implementation
+  # 2. DISPATCH to `coder` (Claude) via sys_session_send
+  # 3. WAIT for coder to finish (sys_read_inbox)
+  # 4. DISPATCH to `reviewer` (GPT — DIFFERENT vendor) for code review
+  # 5. WAIT for review results
+  # 6. If review is APPROVED, present results to user
+  # 7. If review is NEEDS WORK, dispatch back to coder with review comments
+  # Important: The reviewer must be a DIFFERENT vendor than the coder.
+  #            Cross-vendor review catches more issues.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+spawn: true
+async: true
+cancellable: true
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox: { type: none }
+
+tools:
+  # Coder: Claude — writes the implementation (create, edit, test)
+  coder:
+    type: agent
+    description: Implementation specialist. Writes code, tests, opens PRs.
+    harness: claude-sdk               # Claude writes the code
+    model: claude-sonnet-4-6
+    prompt: |
+      # You are an implementation specialist.
+      # 1. Write tests first (TDD)
+      # 2. Implement the feature
+      # 3. Run all tests — must pass
+      # 4. Open a PR with context
+      # 5. Report done with PR link and summary of changes
+    os_env:
+      type: caller_process
+      cwd: .
+      sandbox: { type: none }
+
+  # Reviewer: GPT — reviews the code (DIFFERENT vendor = different blind spots)
+  reviewer:
+    type: agent
+    description: Code reviewer. Checks correctness, style, security. Never edits.
+    harness: openai-agents            # GPT reviews — DIFFERENT vendor
+    model: gpt-5
+    prompt: |
+      # You are a code reviewer. You NEVER edit code — you report issues only.
+      #
+      # For each review:
+      # 1. Correctness — logic bugs, edge cases, off-by-one errors
+      # 2. Style — consistency with project conventions
+      # 3. Tests — adequate coverage, meaningful assertions
+      # 4. Security — injection risks, auth issues, data exposure
+      # 5. Verdict — APPROVED / NEEDS WORK / BLOCKED
+      #
+      # Be specific: cite file:line, explain the issue, suggest the fix.
+    os_env:
+      type: caller_process
+      cwd: .
+      sandbox: { type: none }

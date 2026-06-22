@@ -1,0 +1,46 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 5: Shell Operation Approval Policy
+# =============================================================================
+# Requires USER APPROVAL before any OS-level tool call:
+#   sys_os_read, sys_os_write, sys_os_edit, sys_os_shell
+#
+# Every time the agent tries to touch the filesystem or run a command,
+# the session PAUSES and waits for the user to ALLOW or DENY.
+#
+# HOW TO RUN:
+#   omni run 24_policy_shell_approval.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - ask_on_os_tools: a direct callable (no factory_params needed)
+#   - ASK verdict: pauses for human decision
+#   - Unlike a cost budget (which tracks state), this is a stateless gate
+#
+# USE CASE:
+#   - Letting an agent plan freely but gate destructive actions
+#   - Reviewing every file write before it happens
+#   - CI/CD where shell commands need a human in the loop
+# =============================================================================
+
+name: human_in_the_loop_agent
+
+prompt: |
+  You plan code changes and explain your reasoning freely.
+  But before executing any shell command or file operation, you must get
+  the user's approval. Explain WHY each operation is needed.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+policies:
+  # Human-in-the-loop: ASK before ANY OS tool call
+  approve_file_ops:
+    type: function
+    handler: omnigent.policies.builtins.safety.ask_on_os_tools
+    # No factory_params — this handler needs no configuration

@@ -1,0 +1,55 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 4: Containerized Python Tool
+# =============================================================================
+# Runs a local Python function inside a Docker/podman container.
+# The container isolates the tool runtime from the host — useful when the tool
+# needs specific dependencies or should be sandboxed.
+#
+# HOW TO RUN:
+#   omni run 21_tool_container.yaml
+#
+# PREREQUISITE:
+#   - Docker or Podman installed and running
+#   - The container image must be pullable or already cached
+#
+# WHAT THIS DEMONSTRATES:
+#   - tools.sandbox.container_image: Docker image for the tool runtime
+#   - tools.sandbox.container_runtime: podman or docker (default: docker)
+#   - The tool function runs INSIDE the container, not on the host
+# =============================================================================
+
+name: container_tool_agent
+
+prompt: |
+  You are a data scientist. Use the `run_pandas` tool to analyze CSV files.
+  The tool runs inside a Docker container with pandas and numpy pre-installed.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+tools:
+  # Local Python function that executes inside a Docker container
+  run_pandas:
+    type: function
+    description: Run a pandas analysis on a CSV file. Returns summary statistics.
+    callable: my_package.tools.run_pandas_analysis
+    parameters:
+      type: object
+      properties:
+        csv_path:
+          type: string
+          description: Path to the CSV file to analyze
+        columns:
+          type: array
+          items:
+            type: string
+          description: Columns to include in analysis
+      required: [csv_path]
+
+    # sandbox: The tool runtime is containerized.
+    #          The host filesystem is NOT exposed to the container.
+    sandbox:
+      container_image: python:3.12-slim   # Docker image with dependencies
+      container_runtime: podman           # 'docker' or 'podman'
+      # docker_image: python:3.12-slim    # DEPRECATED — use container_image

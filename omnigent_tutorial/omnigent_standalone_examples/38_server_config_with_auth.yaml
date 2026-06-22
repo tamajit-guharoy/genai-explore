@@ -1,0 +1,57 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 9: Server with Authentication & SSO
+# =============================================================================
+# A server configuration with multi-user auth enabled.
+# Supports: local user/password, OAuth2 SSO (Google, GitHub, etc.), invite links.
+#
+# HOW TO USE:
+#   OMNIGENT_AUTH_ENABLED=1 omnigent server --config 38_server_config_with_auth.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - auth: → authentication configuration
+#   - OAuth2 providers: Google, GitHub, etc.
+#   - Invite-based onboarding (single-use links)
+#   - Database includes user/role tables
+# =============================================================================
+
+database:
+  url: postgresql://omnigent:${DB_PASSWORD}@db.internal:5432/omnigent
+  # Auth requires a persistent database (not SQLite for production)
+
+# Authentication — set OMNIGENT_AUTH_ENABLED=1 when starting the server
+auth:
+  enabled: true                  # Enable multi-user authentication
+
+  # OAuth2 SSO providers
+  oauth2:
+    # Google SSO
+    google:
+      client_id: ${GOOGLE_OAUTH_CLIENT_ID}
+      client_secret: ${GOOGLE_OAUTH_CLIENT_SECRET}
+      # redirect_uri: https://omnigent.company.com/auth/google/callback
+
+    # GitHub SSO
+    github:
+      client_id: ${GITHUB_OAUTH_CLIENT_ID}
+      client_secret: ${GITHUB_OAUTH_CLIENT_SECRET}
+
+    # Generic OIDC provider (Okta, Auth0, Azure AD, etc.)
+    # oidc:
+    #   issuer: https://accounts.google.com
+    #   client_id: ${OIDC_CLIENT_ID}
+    #   client_secret: ${OIDC_CLIENT_SECRET}
+
+  # Invite system: admins generate single-use invite links
+  invite:
+    enabled: true
+    # invites_expire_after_days: 7  # Default: 7 days
+
+# Server policies (same as before — set the security floor)
+policies:
+  enforce_sandbox:
+    type: function
+    handler: omnigent.policies.builtins.safety.enforce_sandbox
+    factory_params:
+      sandbox_type: linux_bwrap
+      write_paths: [./output]
+      allow_network: true

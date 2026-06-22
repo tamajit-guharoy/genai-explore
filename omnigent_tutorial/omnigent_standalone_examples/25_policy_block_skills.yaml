@@ -1,0 +1,43 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 5: Block Dangerous Skills
+# =============================================================================
+# Prevents the agent from invoking specific named skills.
+# Skills are Omnigent's reusable workflow documents — `block_skills` denies
+# access to skills that could be dangerous.
+#
+# HOW TO RUN:
+#   omni run 25_policy_block_skills.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - block_skills policy: deny-list of skill names
+#   - Useful when an agent should NOT deploy, destroy, or provision resources
+#   - Skills referenced must exist in Omnigent's skill registry
+# =============================================================================
+
+name: safe_skills_agent
+
+prompt: |
+  You are a coding assistant. You can write and test code, but you CANNOT
+  deploy, destroy infrastructure, or provision resources.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+policies:
+  # Block dangerous skills by name
+  no_destructive_skills:
+    type: function
+    handler: omnigent.policies.builtins.safety.block_skills
+    factory_params:
+      blocked:
+        - deploy                  # Can't deploy to production
+        - destroy                 # Can't destroy infrastructure
+        - provision               # Can't provision new resources
+        - production_access       # Can't access production systems

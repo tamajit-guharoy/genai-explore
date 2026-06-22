@@ -1,0 +1,58 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 8: Runner-Level Guardrails
+# =============================================================================
+# Guardrails are ALWAYS-ON protections enforced by the Omnigent runner.
+# Unlike policies (which can be overridden at the session level), guardrails
+# are hard-coded in the runner and CANNOT be bypassed.
+#
+# HOW TO RUN:
+#   omni run 34_advanced_guardrails.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - guardrails: → runner-level protections (below the policy stack)
+#   - blast_radius: blocks destructive commands regardless of sandbox
+#   - Guardrails protect against: force pushes, rm -rf /, fork bombs, chmod 777 /
+#   - ask_timeout: auto-denies approval prompts that aren't answered in time
+#
+# DIFFERENCE — Policies vs Guardrails:
+#   Policies = declarative gates (ALLOW/ASK/DENY), order-dependent, overridable
+#   Guardrails = hard rules enforced by the runner, always active, cannot be overridden
+# =============================================================================
+
+name: guarded_agent
+
+prompt: |
+  You are a careful coding assistant. Your destructive capabilities are
+  limited by runner-level guardrails that you cannot override.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+# guardrails: Runner-level protections enforced BELOW the policy stack.
+#             The agent CANNOT override these — they're in the runner, not the config.
+guardrails:
+  # ask_timeout: How long to wait for user response to an ASK policy.
+  #              After the timeout, the ASK is auto-denied (default: 3600 seconds).
+  ask_timeout: 1800               # 30 minutes
+
+  policies:
+    # blast_radius: ALWAYS blocks:
+    #   - rm -rf / and variants
+    #   - git push --force to any remote
+    #   - git reset --hard to a remote ref
+    #   - chmod -R 777 /
+    #   - Fork bombs (:(){ :|:& };:)
+    blast_radius:
+      type: function
+      function:
+        path: omnigent.inner.nessie.policies.blast_radius
+        arguments:
+          gate_pushes: true        # Require approval for ANY git push
+          # gate_force: true       # Block force operations entirely

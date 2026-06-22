@@ -1,0 +1,32 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Pi Harness
+# =============================================================================
+# Pi is a multi-model agent framework.  Omnigent can wrap Pi's CLI (PTY/tmux)
+# or its SDK.
+#
+# HOW TO RUN:
+#   omni run 07_harness_pi.yaml
+#
+# PREREQUISITE:
+#   - `pi` CLI installed or pi Python SDK accessible
+#   - Appropriate API keys for models Pi will use
+#   - tmux installed (for native mode)
+#
+# WHAT THIS DEMONSTRATES:
+#   - Pi harness: multi-model without switching YAML files
+#   - Can use PTY (native) or SDK transport
+# =============================================================================
+
+name: pi_agent
+
+prompt: |
+  You are a data-exploration specialist. When given a dataset:
+  1. Examine its shape and schema
+  2. Identify data quality issues (nulls, outliers, duplicates)
+  3. Run exploratory statistics (distributions, correlations)
+  4. Visualize key findings
+  5. Summarize actionable insights
+
+executor:
+  harness: pi                   # Multi-model orchestrator
+  model: auto                   # Pi selects best model per sub-task

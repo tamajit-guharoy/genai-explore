@@ -1,0 +1,56 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 4: MCP Server (Local Command)
+# =============================================================================
+# Registers a local MCP (Model Context Protocol) server as a tool provider.
+# The MCP server is launched as a subprocess; Omnigent communicates with it
+# via stdio or SSE.
+#
+# HOW TO RUN:
+#   omni run 19_tool_mcp_local.yaml
+#
+# PREREQUISITE:
+#   - The MCP server package must be installed and runnable
+#   - `uv` must be available (for `uv run` commands)
+#
+# WHAT THIS DEMONSTRATES:
+#   - tools.<name>.type: mcp → MCP server
+#   - tools.<name>.command: binary to execute (uv, python, node, etc.)
+#   - tools.<name>.args: arguments to the command
+#   - tools.<name>.tools: optional allowlist of specific tools to expose
+#                         (omit to expose ALL tools from the server)
+# =============================================================================
+
+name: mcp_local_agent
+
+prompt: |
+  You are a developer with access to a GitHub MCP server.
+  You can search issues, read pull requests, and review code.
+  Use the available MCP tools to answer questions about GitHub activity.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+tools:
+  # GitHub MCP server running locally via `uv run`
+  github:
+    type: mcp
+    command: uv                  # The command to launch the MCP server
+    args:
+      - run                      # uv subcommand
+      - python                   # Run a Python module
+      - -m                       # Module flag
+      - my_package.github_mcp    # The MCP server module
+    # tools:                     # OPTIONAL: Limit which tools the agent can call
+    #   - search_issues           #   Only expose these specific tools
+    #   - get_pull_request        #   Omit to expose ALL tools from the server
+    #   - list_commits
+
+  # Another MCP server: local filesystem operations
+  filesystem:
+    type: mcp
+    command: npx                 # Run via Node.js npx
+    args:
+      - -y                       # Auto-confirm package install
+      - @modelcontextprotocol/server-filesystem
+      - /tmp/workspace           # Root directory for filesystem operations

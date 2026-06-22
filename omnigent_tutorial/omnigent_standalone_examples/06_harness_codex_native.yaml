@@ -1,0 +1,30 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Codex Native (PTY/tmux)
+# =============================================================================
+# Same as `codex` but wraps the actual `codex` CLI via PTY/tmux.
+# Gives the full Codex terminal experience inside Omnigent.
+#
+# HOW TO RUN:
+#   omni run 06_harness_codex_native.yaml
+#
+# PREREQUISITE:
+#   - Node.js 22+ and npm installed
+#   - `codex` CLI installed (npm install -g @openai/codex)
+#   - tmux installed
+#   - OPENAI_API_KEY set (or logged in via `codex login`)
+# =============================================================================
+
+name: codex_native_agent
+
+prompt: |
+  You are a systems programming expert. Write safe, efficient Rust code.
+  Prefer standard library over external crates unless the crate is well-audited.
+  All unsafe blocks must have a SAFETY comment explaining the invariant.
+
+executor:
+  harness: codex-native        # PTY/tmux wrapping `codex` CLI
+  model: gpt-5
+
+  auth:
+    type: provider
+    provider: codex-cli        # Uses `codex login` auth

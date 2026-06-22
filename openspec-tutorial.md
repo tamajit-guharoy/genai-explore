@@ -575,30 +575,51 @@ Syntax:  /opsx:ff [change-name]
 
 #### `/opsx:verify` — Validate Implementation Against Artifacts
 
-Check that the implemented code matches the specs and design.
+Check that the implemented code matches the specs and design. **IMPORTANT: This is a static review — the AI reads your code and compares it against artifacts. It does NOT execute tests, run the application, or invoke any commands.** It's like an automated code review, not a test runner.
 
 ```
 Syntax:  /opsx:verify [change-name]
 ```
 
-**What it does:**
-- Reads specs and verifies each requirement is implemented
-- Checks for missing features, extra features, behavioral mismatches
-- Reports: "All verified" or lists gaps
+**What it does (STATIC ANALYSIS ONLY):**
+- Reads specs and checks if each requirement has corresponding code
+- Reviews whether edge cases from scenarios appear to be handled
+- Checks if code structure matches design decisions
+- Reports issues categorized as CRITICAL, WARNING, or SUGGESTION
 
-**No files created.**
+**What it does NOT do:**
+- Does NOT run `mvn test` / `npm test` / any test command
+- Does NOT start the application or check if it compiles
+- Does NOT execute HTTP requests against endpoints
+- Does NOT verify that tests actually pass
+
+**Files created:** *None*
 
 **Example:**
 ```
 You: /opsx:verify add-dark-mode
 
 AI: Verifying add-dark-mode...
-    ✓ Dark mode toggle renders in settings
-    ✓ CSS variables switch on theme change
-    ✓ localStorage persists preference
-    ✗ System preference detection not found (req 2.3)
-    3/4 requirements verified. 1 gap found.
+    COMPLETENESS
+    ✓ All 12 tasks checked off
+    ✓ All 4 requirements have corresponding code
+    ⚠ Scenario "Session timeout after inactivity" not tested
+
+    CORRECTNESS
+    ✓ Implementation matches spec intent
+    ✓ Edge cases from scenarios are handled
+
+    COHERENCE
+    ✓ Design decisions reflected in code structure
+    ⚠ Design mentions "event-driven" but implementation uses polling
+
+    SUMMARY
+    Critical issues: 0
+    Warnings: 2
+    Ready to archive: Yes (with warnings)
 ```
+
+> **Why this matters:** If your tasks.md has test gates (e.g., "Run `mvn test` and confirm all pass"), `/opsx:verify` will NOT enforce them. It can tell you a test file *exists* but not whether it *passes*. For actual test execution, bake the test command into the task itself in `tasks.md` or run tests manually between phases.
 
 ---
 
@@ -1591,7 +1612,114 @@ rules:
 | Context too large (>50KB) | Summarize. Link external docs instead. |
 | Rules not appearing | Use correct artifact IDs. Check for YAML indentation errors. |
 
----
+### How Config Controls ALL Generated Files
+
+`config.yaml` is the **single control point** for influencing every artifact generated during `/opsx:propose`, `/opsx:ff`, and `/opsx:continue`. It works through two mechanisms:
+
+| Mechanism | Scope | Effect |
+|---|---|---|
+| `context` | **All artifacts** | Injected as project background. The AI reads this as "this is how the project works." Shapes proposals, specs, design, and tasks. |
+| `rules.<artifact>` | **Per artifact** | Injected as specific instructions when that artifact is being generated. |
+
+**The injection chain during `/opsx:propose <name>`:**
+
+```
+User prompt → context (global) → rules.proposal → generates proposal.md
+User prompt → context (global) → rules.specs    → generates specs/*.md
+User prompt → context (global) → rules.design   → generates design.md
+User prompt → context (global) → rules.tasks    → generates tasks.md
+```
+
+The AI receives these auto-wrapped in `<context>...</context>` and `<rules>...</rules>` tags. Rules cascade downstream: `rules.tasks` instructions like *"NEVER proceed past a failing test"* end up IN `tasks.md`, and since `/opsx:apply` reads `tasks.md`, the behavior propagates into implementation.
+
+### What Each Rule Type Controls
+
+| Rule Block | Controls | Example Impact |
+|---|---|---|
+| `rules.proposal` | `proposal.md` — scope, motivation, approach, risks | "Always include rollback plan" → every proposal has rollback section |
+| `rules.specs` | `specs/<capability>/spec.md` — requirements, scenarios | "Use GIVEN/WHEN/THEN for all scenarios" → spec format enforced |
+| `rules.design` | `design.md` — architecture, endpoints, database | "Include sequence diagrams for complex flows" → Mermaid diagrams in design |
+| `rules.tasks` | `tasks.md` — task order, phases, verification steps | "Each task must include a test command" → `mvn test -Dtest=XxxTest` in every task |
+
+### Comprehensive Example: Spring Boot CRUD with Test-Gated Layering
+
+This config shapes ALL generated artifacts for a Spring Boot project — the AI will produce proposal, specs, design, and tasks that enforce bottom-up layering with test gates at each phase:
+
+```yaml
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Tech stack: Java 17, Spring Boot 3.x, Spring MVC, Spring Data JPA
+  Database: H2 (in-memory for dev, file-based for tests)
+  Build tool: Maven (use `./mvnw`), JUnit 5, Mockito
+  Package: com.example.product
+  Architecture: Layered — Controller → Service → Repository → Entity
+  Testing strategy:
+    - Repository: @DataJpaTest with H2
+    - Service: unit tests with @MockBean repository
+    - Controller: @WebMvcTest with @MockBean service
+    - Integration: @SpringBootTest with full context
+  No HTML/Thymeleaf — pure REST API returning JSON
+
+rules:
+  proposal:
+    - State exactly which layers are affected (Entity, Repository, Service, Controller)
+    - Mention whether this is new code or modification of existing
+    - Include a rollback strategy if the change breaks
+
+  specs:
+    - Use RFC 2119 keywords: SHALL, MUST, SHOULD, MAY
+    - Every requirement must have at least one Given/When/Then scenario
+    - Scenarios must cover: success case, validation failure, not-found
+    - Use delta markers: ADDED, MODIFIED, REMOVED
+
+  design:
+    - Include a layered architecture diagram (ASCII art)
+    - Document every API endpoint: method, path, request body, response, status codes
+    - Specify validation constraints for each entity field
+    - Note which exceptions each layer throws and how they map to HTTP status codes
+    - List all Spring annotations used per class (@Entity, @Repository, @Service, @RestController, etc.)
+
+  tasks:
+    - Order tasks bottom-up: Entity/Repository → Service → Controller → Integration
+    - Each task must include a verification command (e.g., `./mvnw test -Dtest=XxxTest`)
+    - NEVER proceed past a task whose verification fails — fix first, then continue
+    - After creating any class, immediately write its unit test in the same task
+    - Mark each phase with a GATE task that requires all tests in that phase to pass
+    - All test classes must be executable and produce green results before archiving
+```
+
+**What the AI generates with this config** (for `/opsx:propose product-crud`):
+
+- **proposal.md**: Identifies which layers are touched, includes rollback plan
+- **specs/product/spec.md**: RFC 2119 keywords, success + validation + not-found scenarios
+- **design.md**: ASCII architecture diagram, endpoint table with status codes, exception mapping
+- **tasks.md**: Structured like this (example):
+
+```markdown
+## Phase 1: Data Layer (Repository)
+- [ ] 1.1 Create Product entity — verify: `./mvnw compile`
+- [ ] 1.2 Create ProductRepository — verify: `./mvnw compile`
+- [ ] 1.3 Write ProductRepositoryTest — verify: `./mvnw test -Dtest=ProductRepositoryTest`
+- [ ] 1.4 GATE: All Phase 1 tests must pass. DO NOT proceed if any fail.
+
+## Phase 2: Service Layer
+- [ ] 2.1 Create ProductService — verify: `./mvnw compile`
+- [ ] 2.2 Write ProductServiceTest — verify: `./mvnw test -Dtest=ProductServiceTest`
+- [ ] 2.3 GATE: All Phase 2 tests must pass. DO NOT proceed if any fail.
+
+## Phase 3: Web Layer (Controller)
+- [ ] 3.1 Create ProductController — verify: `./mvnw compile`
+- [ ] 3.2 Write ProductControllerTest — verify: `./mvnw test -Dtest=ProductControllerTest`
+- [ ] 3.3 GATE: All Phase 3 tests must pass. DO NOT proceed if any fail.
+
+## Phase 4: Integration & Polish
+- [ ] 4.1 Write ProductIntegrationTest — verify: `./mvnw test -Dtest=ProductIntegrationTest`
+- [ ] 4.2 Run full suite — verify: `./mvnw test`
+```
+
+> **Important caveat:** Config rules are *guidance* injected into the AI, not hard automation. The AI can still ignore them (especially weaker models). For maximum reliability, combine config rules with the **multi-change approach** (see Section 15: Best Practices → Preventing Hallucination Snowball).
 
 ## 13. Custom Schemas & OPSX Customization
 
@@ -1737,7 +1865,64 @@ openspec list --specs
 
 **Prefer small changes.** They're easier to review, faster to implement, and simpler to roll back.
 
-### Workflow
+### Preventing Hallucination Snowball Effect
+
+**The problem:** In a single large change, an AI hallucination in step 1 contaminates every subsequent step. If the `Product` entity is generated with wrong fields, the Repository, Service, Controller, and tests ALL inherit those errors. By the time you catch it, you're rewriting layers of code — the "snowball effect."
+
+OpenSpec gives you two ways to prevent this:
+
+#### Approach A: Multiple Small Changes (Most Reliable)
+
+Instead of one big `product-crud` change, chain smaller, self-contained changes:
+
+```
+Change 1: product-entity-and-repo
+  /opsx:propose → review → /opsx:apply → run tests → /opsx:archive
+
+Change 2: product-service
+  /opsx:propose → review → /opsx:apply → run tests → /opsx:archive
+
+Change 3: product-controller
+  /opsx:propose → review → /opsx:apply → run tests → /opsx:archive
+
+Change 4: product-integration-tests
+  /opsx:propose → review → /opsx:apply → run tests → /opsx:archive
+```
+
+**Why this kills the snowball effect:**
+
+| Problem with one big change | How small changes fix it |
+|---|---|
+| AI hallucinates `Product` entity fields | Caught in Change 1 before Service layer exists |
+| Service calls wrong repository method | Change 2 reads Change 1's archived, verified code as ground truth |
+| Controller returns wrong DTO shape | Change 3 reads Changes 1+2's committed, tested code |
+| Integration test reveals layer mismatch | Isolated in Change 4; layers 1-3 already confirmed working |
+
+Each `/opsx:archive` merges the delta spec into `openspec/specs/` AND commits real, tested code. The next change's AI reads actual working code — not a plan about code. This matches OpenSpec's "iterative, not waterfall" philosophy exactly.
+
+#### Approach B: config.yaml Rules (Single Change, Best Effort)
+
+If you prefer one change, inject enforcement rules into `openspec/config.yaml` (see Section 12 for the full Spring CRUD example):
+
+```yaml
+rules:
+  tasks:
+    - Order tasks bottom-up: Entity/Repository → Service → Controller → Integration
+    - Each task must include a verification command (e.g., `./mvnw test -Dtest=XxxTest`)
+    - NEVER proceed past a task whose verification fails — fix first, then continue
+    - Mark each phase with a GATE task that requires all tests in that phase to pass
+```
+
+**Comparison:**
+
+| | Multi-Change (A) | config.yaml Rules (B) |
+|---|---|---|
+| Hallucination containment | **Best** — each change isolated | Partial — same session, AI can drift |
+| Reliability | Each archive = committed truth | Relies on AI following rules consistently |
+| Speed | More commands but safer | Faster setup, riskier execution |
+| Best for | Complex features, layered architecture | Simple features, when you trust the AI model |
+
+**Recommendation:** Use Approach A for layered architectures (Repository → Service → Controller), database migrations, or any change touching 3+ files. Use Approach B for simple, self-contained features where the risk is low.
 
 1. **Always explore first** in brownfield: `/opsx:explore` before `/opsx:propose`
 2. **Review artifacts before applying**: Catch misalignment early

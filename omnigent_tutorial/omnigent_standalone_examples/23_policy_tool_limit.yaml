@@ -1,0 +1,38 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 5: Tool Call Limit Policy
+# =============================================================================
+# Caps the number of tool calls per session.
+# After `limit` calls, every subsequent tool call is DENIED.
+#
+# HOW TO RUN:
+#   omni run 23_policy_tool_limit.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Rate-limiting at the harness layer (not the model)
+#   - Prevents infinite tool-call loops
+#   - Useful for cost control (each tool call costs tokens)
+# =============================================================================
+
+name: rate_limited_agent
+
+prompt: |
+  You are a coding assistant. Work efficiently — you have a limited number of
+  tool calls per session.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+policies:
+  # Tool call rate limit: after 50 calls, DENY everything
+  rate_limit:
+    type: function
+    handler: omnigent.policies.builtins.safety.max_tool_calls_per_session
+    factory_params:
+      limit: 50                 # Max tool calls in this session

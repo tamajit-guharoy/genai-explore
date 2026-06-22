@@ -1,0 +1,36 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 5: Cost Budget Policy
+# =============================================================================
+# Caps the total API spend for a session.
+# - Costs accumulate as the model processes tokens
+# - At each ask_threshold, the policy returns ASK (pauses for user approval)
+# - At max_cost_usd, the policy returns DENY (hard stop — no more calls)
+#
+# HOW TO RUN:
+#   omni run 22_policy_cost_budget.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - policies section in agent YAML
+#   - factory_params: constructor arguments passed to the policy handler
+#   - Cost tracking: model token usage is converted to USD
+#   - Two-phase limit: soft warning (ASK) then hard cap (DENY)
+# =============================================================================
+
+name: budget_controlled_agent
+
+prompt: |
+  You are a cost-aware assistant. Work efficiently — the session has a budget.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+policies:
+  # Cost budget: soft cap at $1.00 (ask user), hard cap at $2.00 (deny)
+  budget:
+    type: function                                         # Always "function" for policies
+    handler: omnigent.policies.builtins.cost.cost_budget  # Dotted Python import path
+    factory_params:                                       # Passed to the handler at build time
+      max_cost_usd: 2.00           # HARD CAP — DENY at this point
+      ask_thresholds_usd: [1.00]   # SOFT WARNING — ASK at this point (can be multiple)
+      # ask_thresholds_usd: [0.50, 1.00, 1.50]  # Multiple warning levels

@@ -1,0 +1,66 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 7: Orchestrator + Single Sub-Agent
+# =============================================================================
+# An orchestrator agent that delegates work to ONE sub-agent.
+# The orchestrator NEVER writes code itself — it plans and delegates.
+# The sub-agent is a tool defined in `tools:` with `type: agent`.
+#
+# HOW TO RUN:
+#   omni run 27_orchestrator_single_subagent.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - tools.<name>.type: agent → sub-agent as a tool
+#   - tools.<name>.harness: different harness than the orchestrator
+#   - tools.<name>.prompt: sub-agent's system prompt
+#   - Sub-agents can have their own os_env, tools, policies
+#   - Orchestrator uses sys_session_send to delegate, sys_read_inbox to receive
+#
+# KEY CONCEPTS:
+#   - sys_session_send: tool the orchestrator uses to send work to a sub-agent
+#   - sys_read_inbox: tool to check for sub-agent completion (inbox-driven, not polling)
+#   - Each sub-agent gets its own git worktree for isolation
+# =============================================================================
+
+name: single_subagent_orchestrator
+
+prompt: |
+  # You are an orchestrator. You NEVER write code yourself.
+  # ALL implementation work is delegated to your `coder` sub-agent.
+  #
+  # Your workflow:
+  # 1. UNDERSTAND the user's request — ask clarifying questions if needed
+  # 2. PLAN the implementation — break into tasks
+  # 3. DISPATCH to `coder` via sys_session_send with clear specs
+  # 4. WAIT for completion via sys_read_inbox (do NOT poll)
+  # 5. REVIEW the result — does it meet the spec?
+  # 6. PRESENT to the user with a summary of what was done
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+# spawn: true → allow this agent to spawn child sessions (sub-agents)
+spawn: true
+
+# async: true → expose async work tools so the orchestrator can wait on results
+async: true
+
+tools:
+  # Sub-agent: A coder that does the actual implementation work.
+  #            Defined inline as a tool — no separate YAML file needed.
+  coder:
+    type: agent                 # agent = sub-agent tool
+    harness: claude-sdk         # Can use DIFFERENT harness than orchestrator
+    model: claude-sonnet-4-6    # Can use DIFFERENT model than orchestrator
+    prompt: |
+      # You are a coding specialist. You implement features, never plan them.
+      # 1. Write tests first (TDD)
+      # 2. Implement the feature
+      # 3. Run tests — must pass before reporting done
+      # 4. Open a PR with a clear description
+      # 5. Report back to the orchestrator when complete
+    os_env:
+      type: caller_process
+      cwd: .
+      sandbox:
+        type: none

@@ -1,0 +1,33 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 2: Subscription / CLI Auth
+# =============================================================================
+# For harnesses that wrap a local CLI (claude-native, codex-native, cursor),
+# authentication is handled by the CLI's own login mechanism — not an API key.
+# Omnigent just needs to know the auth source.
+#
+# PREREQUISITE:
+#   The relevant CLI must be logged in:
+#     claude login          (for claude-native)
+#     codex login           (for codex-native)
+#     cursor-agent login    (for cursor)
+#
+# WHAT THIS DEMONSTRATES:
+#   - auth.type: provider
+#   - auth.provider: which CLI's auth to use
+#   - No API key in config — CLI manages OAuth/token storage
+# =============================================================================
+
+name: subscription_agent
+
+prompt: |
+  You are a pair-programming partner. Think aloud as you code.
+  Explain your reasoning at each decision point.
+  When uncertain, flag it and suggest alternatives.
+
+executor:
+  harness: claude-native       # Uses `claude` CLI with its own auth
+  model: claude-opus-4-8
+
+  auth:
+    type: provider             # Relies on CLI's existing login
+    provider: anthropic-cli    # Maps to `claude login` session

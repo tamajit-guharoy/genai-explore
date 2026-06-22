@@ -1,0 +1,28 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: External Instructions
+# =============================================================================
+# Uses `instructions:` (an external markdown file) instead of an inline prompt.
+# This is the recommended approach for real projects — keep your agent's
+# personality in version-controlled markdown, not buried in YAML.
+#
+# HOW TO RUN:
+#   omni run 01_instructions_file.yaml
+#
+# ACCOMPANYING FILE: AGENTS.md (must exist in same directory)
+#
+# WHAT THIS DEMONSTRATES:
+#   - `instructions:` takes precedence over `prompt:` if both are present
+#   - Separation of concerns: YAML = configuration, .md = personality
+#   - The AGENTS.md file can be reused across multiple agent YAMLs
+# =============================================================================
+
+name: instructed_agent
+
+# instructions: Path to a markdown file containing the system prompt.
+#               Relative to the directory containing THIS YAML file.
+#               If this file exists, any inline `prompt:` is ignored.
+instructions: AGENTS.md
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6

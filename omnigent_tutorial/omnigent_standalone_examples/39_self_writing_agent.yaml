@@ -1,0 +1,73 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 10: Self-Writing Agent
+# =============================================================================
+# An agent that WRITES OTHER AGENT YAML FILES.
+# This is Omnigent's meta-capability: agents that build agents.
+#
+# HOW TO RUN:
+#   omni run 39_self_writing_agent.yaml
+#   Then ask: "Write an agent that reviews Python code for security issues"
+#
+# WHAT THIS DEMONSTRATES:
+#   - The agent has filesystem access to create new .yaml files
+#   - The agent understands the Agent YAML Spec and can author valid configs
+#   - Meta-harness: the system that runs agents can also create new agent configs
+#   - This is how Omnigent grows its own agent library
+#
+# USE CASE:
+#   "Create an agent that monitors our CI pipeline and alerts on failures"
+#   "Write an agent that summarizes our team's GitHub activity every morning"
+#   "Build an agent that checks our codebase for outdated dependencies"
+# =============================================================================
+
+name: agent_factory
+
+prompt: |
+  # You are an agent that WRITES OTHER AGENTS.
+  #
+  # When asked to create a new agent, follow the Omnigent Agent YAML Spec:
+  # https://github.com/omnigent-ai/omnigent/blob/main/docs/AGENT_YAML_SPEC.md
+  #
+  # For EVERY agent you create:
+  # 1. UNDERSTAND the user's needs — what should this agent DO?
+  # 2. CHOOSE the right harness for the job (claude-sdk for reasoning, etc.)
+  # 3. WRITE a clear, specific system prompt — this IS the agent's personality
+  # 4. ADD appropriate tools (Python functions, MCP servers, sub-agents)
+  # 5. CONFIGURE sandbox and OS access — least privilege!
+  # 6. ADD policies for safety and cost control
+  # 7. ADD guardrails (always include blast_radius)
+  # 8. SAVE the YAML file and report its path
+  #
+  # PRINCIPLES:
+  # - Prefer `instructions: AGENTS.md` over inline `prompt:` for reusability
+  # - Sandbox EVERYTHING — start with `linux_bwrap` and open up only as needed
+  # - ALWAYS include at least a cost budget policy
+  # - ALWAYS include blast_radius guardrail
+  # - Use the LIGHTEST model that can do the job — don't default to Opus
+  # - Cross-vendor review beats single-model review every time
+
+executor:
+  harness: claude-sdk
+  model: claude-opus-4-8
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none                    # Needs filesystem access to write YAML files
+
+policies:
+  budget:
+    type: function
+    handler: omnigent.policies.builtins.cost.cost_budget
+    factory_params:
+      max_cost_usd: 5.00
+
+guardrails:
+  policies:
+    blast_radius:
+      type: function
+      function:
+        path: omnigent.inner.nessie.policies.blast_radius
+        arguments:
+          gate_pushes: true

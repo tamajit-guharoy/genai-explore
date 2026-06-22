@@ -1,0 +1,40 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 3: Full OS Access (No Sandbox)
+# =============================================================================
+# The agent runs as YOUR user with NO sandboxing.
+# It can read/write files, run shell commands, access the network freely.
+#
+# HOW TO RUN:
+#   omni run 14_os_trusted_none.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - os_env.type: caller_process → runs under your user
+#   - sandbox.type: none → no isolation at all
+#   - cwd: . → working directory is the directory containing this YAML
+#
+# WHEN TO USE:
+#   - Personal development on your own machine
+#   - You fully trust the agent's actions
+#   - Rapid prototyping where sandbox overhead is annoying
+#
+# WARNING:
+#   The agent CAN: read ~/.ssh, delete files, push to production, curl anywhere.
+#   Only use `none` when you'd trust the agent with your own shell.
+# =============================================================================
+
+name: trusted_dev_agent
+
+prompt: |
+  You are a full-access coding assistant for personal development.
+  You can read, write, edit files and run shell commands.
+  Be careful — you run with the user's full privileges.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process         # Runs as the current user process
+  cwd: .                        # Working directory = where this YAML lives
+  sandbox:
+    type: none                  # NO sandbox — full filesystem + network access

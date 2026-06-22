@@ -1,0 +1,42 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 4: MCP Server (Remote URL)
+# =============================================================================
+# Connects to a remote MCP server over HTTP/SSE.
+# No local process — the server runs elsewhere, Omnigent connects as a client.
+#
+# HOW TO RUN:
+#   omni run 20_tool_mcp_remote.yaml
+#
+# PREREQUISITE:
+#   - A running MCP server accessible at the specified URL
+#   - Authentication headers as needed
+#
+# WHAT THIS DEMONSTRATES:
+#   - tools.<name>.type: mcp with url instead of command
+#   - tools.<name>.url: HTTP/SSE endpoint
+#   - tools.<name>.headers: custom headers (auth tokens, etc.)
+#   - tools.<name>.tools: which specific tools to expose
+# =============================================================================
+
+name: mcp_remote_agent
+
+prompt: |
+  You are a documentation assistant connected to a remote knowledge base.
+  Use the docs MCP server to search and retrieve documentation.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+tools:
+  # Remote MCP server — no local process, connects over HTTP
+  docs:
+    type: mcp
+    url: https://docs.internal.company.com/mcp   # Remote MCP endpoint
+    headers:
+      Authorization: Bearer ${MCP_AUTH_TOKEN}     # Auth header with env-var
+      X-Client-ID: omnigent-agent
+    tools:                          # Only expose search + read tools
+      - search_docs                 #   Agent can search documentation
+      - get_page                    #   Agent can read a specific page
+      # - write_page                # NOT exposed — read-only access

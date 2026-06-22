@@ -1,0 +1,50 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 8: Named Terminal Sessions
+# =============================================================================
+# Defines named, persistent terminal environments the agent can use.
+# Each terminal has its own working directory, environment, and shell.
+#
+# HOW TO RUN:
+#   omni run 30_advanced_terminals.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - terminals: → named interactive shell sessions
+#   - Each terminal can have a different cwd and env
+#   - Agent sees tools like: terminal_dev, terminal_prod
+#   - Useful for multi-repo work, staging vs production, etc.
+# =============================================================================
+
+name: multi_terminal_agent
+
+prompt: |
+  You are a DevOps assistant with access to multiple terminal environments.
+  Use `terminal_dev` for development work and `terminal_prod` for production
+  checks (read-only). Never run destructive commands in `terminal_prod`.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+# terminals: Named terminal environments available to the agent.
+#            Each terminal appears as a separate tool in the agent's toolset.
+terminals:
+  # Development terminal — full access for coding and testing
+  dev:
+    cwd: ./src                    # Start in the source directory
+    env:
+      NODE_ENV: development
+      PYTHONUNBUFFERED: "1"
+
+  # Production terminal — read-only access for monitoring
+  prod:
+    cwd: /var/log/app             # Start in production logs
+    env:
+      NODE_ENV: production
+      READONLY: "true"            # Application-level read-only flag
+    # NOTE: Add policies to restrict this terminal further if needed

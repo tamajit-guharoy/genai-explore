@@ -1,0 +1,72 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 7: Orchestrator + Two Parallel Sub-Agents
+# =============================================================================
+# An orchestrator that dispatches work to TWO sub-agents IN PARALLEL.
+# Both sub-agents work simultaneously in isolated sessions.
+# The orchestrator collects results from both and synthesizes.
+#
+# HOW TO RUN:
+#   omni run 28_orchestrator_two_subagents.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Multiple sub-agents defined as tools
+#   - Parallel dispatch: orchestrator sends to BOTH, then waits
+#   - Different models per sub-agent: claude-sonnet for coding, gpt-5 for docs
+#   - The orchestrator remains available to the user while sub-agents work
+# =============================================================================
+
+name: parallel_subagent_orchestrator
+
+prompt: |
+  # You are a project orchestrator that delegates work to TWO specialists
+  # who work IN PARALLEL.
+  #
+  # Workflow:
+  # 1. When given a feature request, plan the implementation
+  # 2. Dispatch CODE to `coder` AND documentation to `writer` simultaneously
+  # 3. Wait for BOTH to complete (inbox-driven, no polling)
+  # 4. Review results from both
+  # 5. Synthesize and present to the user
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+spawn: true      # Allow spawning child sessions
+async: true      # Enable async work tools (wait for sub-agent results)
+
+tools:
+  # Sub-agent 1: Cody — writes code (Claude)
+  coder:
+    type: agent
+    description: Implements code changes. Write tests, implement, open PR.
+    harness: claude-sdk
+    model: claude-sonnet-4-6
+    prompt: |
+      # You are an implementation specialist.
+      # 1. Write tests first
+      # 2. Implement the feature
+      # 3. Run tests — all must pass
+      # 4. Open a PR
+      # 5. Report done with PR link
+    os_env:
+      type: caller_process
+      cwd: .
+      sandbox: { type: none }
+
+  # Sub-agent 2: Doc — writes documentation (GPT)
+  writer:
+    type: agent
+    description: Writes and updates documentation. Creates READMEs, API docs, guides.
+    harness: openai-agents
+    model: gpt-5                 # DIFFERENT model for documentation tasks
+    prompt: |
+      # You are a technical writer.
+      # 1. Write clear, concise documentation
+      # 2. Include code examples
+      # 3. Follow the project's existing doc style
+      # 4. Report done with the doc path
+    os_env:
+      type: caller_process
+      cwd: .
+      sandbox: { type: none }

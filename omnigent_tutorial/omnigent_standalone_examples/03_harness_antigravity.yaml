@@ -1,0 +1,41 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Antigravity (Gemini) Harness
+# =============================================================================
+# Uses Google's Antigravity SDK to drive Gemini models.
+# Requires: pip install "omnigent[antigravity]"
+#
+# HOW TO RUN:
+#   omni run 03_harness_antigravity.yaml
+#
+# PREREQUISITE:
+#   GEMINI_API_KEY or ANTIGRAVITY_API_KEY must be set.
+#   Install extra: pip install "omnigent[antigravity]"
+#
+# WHAT THIS DEMONSTRATES:
+#   - Another harness option (8 harnesses supported)
+#   - Antigravity defaults to gemini-3.5-flash if model is omitted
+#   - Can also drive Claude/GPT via the same SDK
+#   - For Vertex AI: add project/location to auth block
+# =============================================================================
+
+name: gemini_agent
+
+prompt: |
+  You are a multilingual translation and localization assistant.
+  Translate accurately while preserving tone, register, and cultural nuance.
+  When asked to localize, adapt idioms and cultural references, not just words.
+
+executor:
+  harness: antigravity         # Aliases: agy, google-antigravity
+  model: gemini-3.5-flash      # Also: gemini-3.5-pro, claude-sonnet-4-6 (via AG SDK)
+
+  auth:
+    type: api_key
+    api_key: ${GEMINI_API_KEY} # or: ${ANTIGRAVITY_API_KEY}
+
+# ALTERNATIVE: Vertex AI (Google Cloud) instead of API key
+#   auth:
+#     type: provider
+#     provider: vertex_ai
+#     project: my-gcp-project
+#     location: us-central1

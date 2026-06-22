@@ -1,0 +1,37 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: OpenAI Agents Harness
+# =============================================================================
+# Uses the `openai-agents` harness — drives GPT models via the OpenAI Python SDK.
+# Same YAML structure, different harness.  The prompt is identical to what you'd
+# write for Claude; Omnigent handles the translation.
+#
+# HOW TO RUN:
+#   omni run 02_harness_openai_agents.yaml
+#
+# PREREQUISITE:
+#   OPENAI_API_KEY must be set in your environment or via `omni setup`.
+#
+# WHAT THIS DEMONSTRATES:
+#   - Harness portability: swap `claude-sdk` → `openai-agents`, nothing else changes
+#   - Model selection: gpt-5, gpt-4o, etc. (provider-dependent)
+#   - auth.type: 'api_key' with env-var interpolation via ${VAR_NAME}
+# =============================================================================
+
+name: openai_agent
+
+prompt: |
+  You are a creative writing assistant.
+  When asked to write, start with an outline, then expand.
+  Prefer showing over telling. Use concrete examples.
+  When editing, explain WHY each change improves the text.
+
+executor:
+  harness: openai-agents
+  model: gpt-5                 # Also works: gpt-4o, gpt-4.1
+
+  # auth: Explicit credential configuration.
+  #       Omnigent auto-detects OPENAI_API_KEY from environment, so this is
+  #       optional — but explicit is always clearer.
+  auth:
+    type: api_key              # 'api_key' = use a plain API key
+    api_key: ${OPENAI_API_KEY} # ${VAR_NAME} interpolates environment variables

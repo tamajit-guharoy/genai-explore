@@ -1,0 +1,53 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 8: Cloud-Hosted Sandbox
+# =============================================================================
+# The agent runs in a CLOUD sandbox — an ephemeral VM on Modal, Daytona, or Islo.
+# No local compute used. The sandbox is destroyed when the session ends.
+#
+# HOW TO RUN:
+#   omni run 32_advanced_cloud_sandbox.yaml
+#
+# PREREQUISITE:
+#   - A cloud sandbox host must be configured (Modal, Daytona, or Islo)
+#   - Omnigent server must be running with the host configured
+#   - See Omnigent docs: Cloud Sandbox Host
+#
+# WHAT THIS DEMONSTRATES:
+#   - sandbox.type: managed_host → cloud-hosted VM
+#   - sandbox.host: which cloud provider to use
+#   - Maximum isolation: the agent runs on a remote machine, not yours
+#   - Ephemeral: the VM is destroyed after the session
+#
+# USE CASE:
+#   - Running untrusted code without any local risk
+#   - CI/CD pipelines on cloud infra
+#   - Agents that need GPU or high-memory instances
+# =============================================================================
+
+name: cloud_sandbox_agent
+
+prompt: |
+  You run in a disposable cloud sandbox. The VM is destroyed after this session.
+  Work efficiently — rebuild-time is the cost of starting fresh.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: managed_process        # NOT caller_process — runs on remote host
+
+  sandbox:
+    type: managed_host          # Cloud-hosted sandbox
+    host: modal                 # modal | daytona | islo
+
+    # Cloud sandbox settings (host-specific)
+    modal:
+      app: my-omnigent-sandbox  # Modal app name
+      # gpu: T4                 # Optional: request a GPU
+      # memory: 4096            # Optional: memory in MB
+
+  # Filesystem: paths in the cloud VM
+  cwd: /workspace
+  env:
+    PYTHONUNBUFFERED: "1"

@@ -1,0 +1,35 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 2: Databricks Auth
+# =============================================================================
+# Uses a Databricks workspace profile for authentication and model routing.
+# The Databricks gateway proxies model calls — useful for enterprise setups
+# with centralized billing and model access control.
+#
+# HOW TO RUN:
+#   omni run 10_auth_databricks.yaml
+#
+# PREREQUISITE:
+#   - Databricks CLI configured (`databricks configure`)
+#   - A Databricks workspace profile (default: 'oss')
+#   - Model routing configured in your Databricks workspace
+#
+# WHAT THIS DEMONSTRATES:
+#   - auth.type: databricks
+#   - auth.profile: which Databricks CLI profile to use
+#   - Models can be databricks-prefixed: databricks-claude-sonnet-4-6
+# =============================================================================
+
+name: databricks_agent
+
+prompt: |
+  You assist with data engineering tasks on Databricks.
+  When writing Spark code, prefer DataFrame API over SQL strings.
+  Optimize for the Photon engine where possible.
+
+executor:
+  harness: claude-sdk
+  model: databricks-claude-sonnet-4-6  # Routed through Databricks gateway
+
+  auth:
+    type: databricks            # Uses Databricks CLI auth
+    profile: oss                # Profile name from ~/.databrickscfg

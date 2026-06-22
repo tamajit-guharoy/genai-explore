@@ -1,0 +1,40 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 8: Timer Tools + Async Work
+# =============================================================================
+# Enables timer tools (sleep, schedule, etc.) and async work tools.
+# Useful for long-running tasks, periodic checks, and background operations.
+#
+# HOW TO RUN:
+#   omni run 31_advanced_timers_async.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - timers: true → expose timer/scheduling tools to the agent
+#   - async: true → expose async work tools (spawn background tasks)
+#   - cancellable: true → user can cancel the session mid-task
+#   - Combined: agent can start background work and get notified on completion
+# =============================================================================
+
+name: async_timer_agent
+
+prompt: |
+  You are a monitoring assistant. You can:
+  - Start long-running background tasks (async work)
+  - Schedule periodic checks (timers)
+  - Get notified when background work completes
+  Use these capabilities to set up automated monitoring and reporting.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+# Enable features beyond the defaults
+timers: true          # DEFAULT: false — expose timer/scheduling tools
+async: true           # DEFAULT: true — expose async work tools
+cancellable: true     # DEFAULT: true — user can interrupt the session
+# spawn: true         # Already default; allows spawning child sessions

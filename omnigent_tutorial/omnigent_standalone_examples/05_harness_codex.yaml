@@ -1,0 +1,37 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Codex Harness (SDK)
+# =============================================================================
+# Codex harness via the OpenAI Python SDK — same transport as `openai-agents`
+# but with Codex-specific tool-use optimizations.
+#
+# HOW TO RUN:
+#   omni run 05_harness_codex.yaml
+#
+# PREREQUISITE:
+#   OPENAI_API_KEY must be set.
+#
+# WHAT THIS DEMONSTRATES:
+#   - `codex` harness (SDK variant — no CLI needed)
+#   - Specialized for Codex-style tool chains
+#   - Alternative: `codex-native` for PTY/tmux wrapping `codex` CLI
+# =============================================================================
+
+name: codex_agent_sdk
+
+prompt: |
+  You are a full-stack developer. When given a feature request:
+  1. Design the data model first
+  2. Write the API contract (OpenAPI schema or type definitions)
+  3. Implement the backend logic
+  4. Write the frontend component
+  5. Add integration tests
+  6. Update documentation
+  Work in that order. Don't skip steps.
+
+executor:
+  harness: codex               # OpenAI SDK with Codex tool-use profile
+  model: gpt-5
+
+  auth:
+    type: api_key
+    api_key: ${OPENAI_API_KEY}

@@ -1,0 +1,24 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 2: API Key Auth
+# =============================================================================
+# The simplest auth method: an API key stored in an environment variable.
+# Omnigent interpolates ${VAR_NAME} at runtime.
+#
+# WHAT THIS DEMONSTRATES:
+#   - auth.type: api_key
+#   - Env-var interpolation: ${ANTHROPIC_API_KEY}
+#   - Falls back to auto-detection if auth block is entirely omitted
+# =============================================================================
+
+name: api_key_agent
+
+prompt: |
+  You are a helpful assistant.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+  auth:
+    type: api_key               # Plain API key from environment
+    api_key: ${ANTHROPIC_API_KEY}

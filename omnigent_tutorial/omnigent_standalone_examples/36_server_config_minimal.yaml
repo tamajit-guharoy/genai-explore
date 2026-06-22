@@ -1,0 +1,30 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 9: Minimal Server Config
+# =============================================================================
+# A minimal server configuration for deploying an Omnigent server.
+# The server provides the web UI, session persistence, and multi-user support.
+#
+# HOW TO USE:
+#   omnigent server --config 36_server_config_minimal.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Server config structure (separate from agent YAML)
+#   - Database configuration for session persistence
+#   - Policy modules registration
+#   - This is for SERVER ADMINS, not agent users
+# =============================================================================
+
+# server_config.yaml — used with: omnigent server --config this_file.yaml
+
+# Database: where sessions, messages, and files are persisted
+database:
+  url: sqlite:///./omnigent.db    # SQLite for single-machine; postgres:// for multi
+
+# Policy modules: custom policy modules to load into the policy registry
+policy_modules: []               # Empty = only built-in policies available
+# policy_modules:
+#   - myorg_policies              # Custom corporate policies
+#   - github_mcp_policy           # Custom GitHub-related policies
+
+# Server-level policies: the security FLOOR — agents can be stricter, not looser
+policies: {}                     # Empty = no server-level restrictions

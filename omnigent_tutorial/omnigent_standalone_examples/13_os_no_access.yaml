@@ -1,0 +1,51 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 3: No OS Access
+# =============================================================================
+# The agent has NO filesystem access, NO shell access, NO terminal.
+# It's purely a chat agent — can only think and respond.
+#
+# HOW TO RUN:
+#   omni run 13_os_no_access.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Omitting `os_env:` entirely → no Omnigent `sys_os_*` tools
+#   - The agent CANNOT: read files, write files, run commands, edit code
+#   - The agent CAN: reason, answer questions, generate text
+#   - Use this for: Q&A bots, writing assistants, pure reasoning tasks
+#
+# IMPORTANT — HARNESS SCOPE:
+#   `os_env` controls ONLY Omnigent's built-in OS tools (`sys_os_read`,
+#   `sys_os_write`, `sys_os_edit`, `sys_os_shell`).  Some harnesses have
+#   their OWN native tool systems that operate OUTSIDE `os_env` control:
+#
+#     HARNESS              TOOL SYSTEM           `os_env` CONTROLS IT?
+#     ─────────────────────────────────────────────────────────────────
+#     claude-sdk           Omnigent sys_os_*     YES ← this example
+#     openai-agents        Omnigent sys_os_*     YES
+#     codex (SDK)          Omnigent sys_os_*     YES
+#     antigravity          Gemini native tools   NO — harness-native
+#     claude-native        Claude Code CLI       NO — harness-native
+#     codex-native         Codex CLI             NO — harness-native
+#     pi                   Pi CLI                NO — harness-native
+#     cursor               Cursor CLI            NO — harness-native
+#
+#   For native/CLI harnesses, omitting `os_env` does NOT prevent file
+#   writes — their own tools bypass the Omnigent sandbox layer.  To lock
+#   those down, use the harness's own safety controls, Omnigent guardrails
+#   (blast_radius, shell_approval), or switch to an SDK harness.
+#
+# SECURITY: This is the safest configuration — but ONLY with SDK harnesses
+#           (claude-sdk, openai-agents, codex).  Native harnesses have
+#           their own tools that `os_env` does not control.
+# =============================================================================
+
+name: read_only_agent
+
+prompt: |
+  You are a pure reasoning assistant. You have NO access to the filesystem,
+  shell, or any external tools. You can only think and respond.
+
+executor:
+  harness: claude-sdk
+  model: claude-opus-4-8
+  # NOTE: No `os_env:` key at all → zero OS access

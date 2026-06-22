@@ -1,0 +1,86 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 6: Combined Governance Policies
+# =============================================================================
+# A production-grade agent with MULTIPLE overlapping policies:
+#   1. Cost budget (soft at $3, hard at $5)
+#   2. Tool call limit (100 max)
+#   3. Shell approval gate
+#   4. Dangerous skills blocked
+#   5. Blast radius guardrail (runner-level)
+#
+# HOW TO RUN:
+#   omni run 26_policies_combined_governance.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Policy composition: multiple policies evaluated in declaration order
+#   - First DENY short-circuits all remaining policies
+#   - Policy layering: agent-level policies (this YAML) + server-level (admin)
+#   - Session-level policies (set by user at runtime) evaluate FIRST
+#   - Blast radius guardrails are ALWAYS active regardless of sandbox
+#
+# POLICY EVALUATION ORDER:
+#   SESSION policies (user-set, evaluated FIRST)
+#       ↓
+#   AGENT policies (this YAML, evaluated SECOND)
+#       ↓
+#   SERVER policies (admin-set, evaluated LAST)
+#       ↓
+#   DENY at any level → short-circuits everything below
+# =============================================================================
+
+name: fully_governed_agent
+
+prompt: |
+  You are a governed coding assistant. Every action is reviewed by policies.
+  You have budget limits, tool limits, and safety gates.
+  Work efficiently and explain your reasoning.
+
+executor:
+  harness: claude-sdk
+  model: claude-sonnet-4-6
+
+os_env:
+  type: caller_process
+  cwd: .
+  sandbox:
+    type: none
+
+# Agent-level policies (evaluated AFTER session policies, BEFORE server policies)
+policies:
+  # Policy 1: Cost budget
+  budget:
+    type: function
+    handler: omnigent.policies.builtins.cost.cost_budget
+    factory_params:
+      max_cost_usd: 5.00         # Hard cap
+      ask_thresholds_usd: [3.00]  # Warning
+
+  # Policy 2: Tool call cap
+  rate_limit:
+    type: function
+    handler: omnigent.policies.builtins.safety.max_tool_calls_per_session
+    factory_params:
+      limit: 100
+
+  # Policy 3: Human approval for file/shell ops
+  approve_ops:
+    type: function
+    handler: omnigent.policies.builtins.safety.ask_on_os_tools
+
+  # Policy 4: Block dangerous skills
+  no_destructive:
+    type: function
+    handler: omnigent.policies.builtins.safety.block_skills
+    factory_params:
+      blocked: [deploy, destroy, provision]
+
+# Runner-level guardrails: enforced BELOW the policy stack, cannot be bypassed
+guardrails:
+  ask_timeout: 3600             # Auto-deny after 1 hour if no response
+  policies:
+    blast_radius:               # Always-on protections
+      type: function
+      function:
+        path: omnigent.inner.nessie.policies.blast_radius
+        arguments:
+          gate_pushes: true      # Require approval for git push

@@ -1,0 +1,65 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 3: Maximum Lockdown Sandbox
+# =============================================================================
+# The STRICTEST possible sandbox configuration:
+#   - Air-gapped (no network)
+#   - Single write directory
+#   - Read-only source access
+#   - No environment variables leaked
+#   - Blast-radius guardrails active
+#
+# HOW TO RUN:
+#   omni run 17_sandbox_strictest.yaml
+#
+# USE CASE:
+#   - Running untrusted third-party agents
+#   - CI/CD pipelines where the agent must not exfiltrate data
+#   - Sensitive codebases where even reading outside ./src is dangerous
+#
+# WHAT THIS DEMONSTRATES:
+#   - Every security knob turned to maximum
+#   - Air-gapped: allow_network: false — NO internet, NO API calls
+#   - Minimal write surface: only /tmp/omnigent_output
+#   - No env vars passed (env: {} means empty environment)
+#   - blast_radius guardrail blocks force-push, rm -rf /, fork bombs
+# =============================================================================
+
+name: maximum_lockdown_agent
+
+prompt: |
+  You are a secure code analyzer that reviews code in ./src.
+  You can write findings to /tmp/omnigent_output but CANNOT:
+  - Access the network (fully air-gapped)
+  - Read files outside ./src
+  - See any environment variables
+  - Execute destructive commands
+
+executor:
+  harness: claude-sdk
+  model: claude-opus-4-8
+
+os_env:
+  type: caller_process
+  cwd: .
+
+  sandbox:
+    type: linux_bwrap           # Kernel-enforced isolation
+    write_paths:
+      - /tmp/omnigent_output    # ONLY allowed write location
+    read_paths:
+      - ./src                   # Can read source code only
+    allow_network: false        # AIR-GAPPED — no internet at all
+
+  env: {}                       # EMPTY environment — no env vars leaked
+
+# guardrails: ALWAYS-ON protections enforced by the runner.
+#              These cannot be bypassed by the agent, regardless of sandbox.
+guardrails:
+  ask_timeout: 600              # Auto-timeout approval prompts after 10 minutes
+  policies:
+    blast_radius:               # Blocks: rm -rf /, force push, fork bombs, chmod -R 777 /
+      type: function
+      function:
+        path: omnigent.inner.nessie.policies.blast_radius
+        arguments:
+          gate_pushes: true      # Require approval for any git push

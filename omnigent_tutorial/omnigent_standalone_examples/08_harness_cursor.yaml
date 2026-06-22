@@ -1,0 +1,37 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Cursor Agent Harness
+# =============================================================================
+# Wraps the Cursor editor's agent CLI.  Works ONLY with Cursor's backend —
+# no Databricks gateway path available for this harness.
+#
+# HOW TO RUN:
+#   omni run 08_harness_cursor.yaml
+#
+# PREREQUISITE:
+#   - `cursor-agent` CLI installed
+#   - CURSOR_API_KEY set in environment
+#   - OR: `cursor-agent login` completed
+#
+# WHAT THIS DEMONSTRATES:
+#   - Cursor-specific harness (editor-integrated agent)
+#   - Auth via CURSOR_API_KEY or CLI login
+#   - Model can be 'auto' (Cursor picks) or a specific model
+# =============================================================================
+
+name: cursor_agent
+
+prompt: |
+  You are an expert at refactoring legacy code.
+  When asked to refactor:
+  1. First, write characterization tests to capture current behavior
+  2. Then, restructure the code without changing behavior
+  3. Run tests after each change
+  4. Never mix refactoring with feature changes
+
+executor:
+  harness: cursor               # Cursor editor agent
+  model: auto                   # 'auto' lets Cursor pick; or specify gpt-5, etc.
+
+  auth:
+    type: api_key
+    api_key: ${CURSOR_API_KEY}  # From Cursor account settings

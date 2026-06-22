@@ -1,0 +1,41 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 1: Claude Native (PTY/tmux)
+# =============================================================================
+# Wraps the actual `claude` CLI binary via PTY/tmux — gives the full Claude Code
+# experience including the interactive terminal UI.  This is heavier than
+# `claude-sdk` but supports all Claude Code features natively.
+#
+# HOW TO RUN:
+#   omni run 04_harness_claude_native.yaml
+#
+# PREREQUISITE:
+#   - Node.js 22+ and npm installed
+#   - `claude` CLI installed (npm install -g @anthropic-ai/claude-code)
+#   - tmux installed (on Linux/macOS; brew install tmux / apt install tmux)
+#
+# WHAT THIS DEMONSTRATES:
+#   - PTY-based harness: Omnigent spawns a tmux session and drives it
+#   - Model selection via subscription (Claude Pro/Max), not API key
+#   - auth.type: 'provider' for subscription-based auth
+# =============================================================================
+
+name: claude_native_agent
+
+prompt: |
+  You are an expert code reviewer. For each review:
+  1. Start with a high-level summary of the change
+  2. Flag correctness issues (logic bugs, edge cases)
+  3. Flag style issues (consistency, readability)
+  4. Flag security issues (injection, auth, data exposure)
+  5. Suggest concrete improvements — never just "this could be better"
+  6. End with a summary verdict: APPROVE / NEEDS WORK / BLOCKED
+
+executor:
+  harness: claude-native       # PTY/tmux wrapping `claude` CLI
+  model: claude-opus-4-8       # Model passed to the CLI
+
+  # auth: For Claude Pro/Max subscription, use provider type.
+  #       The CLI handles OAuth; Omnigent just drives the tmux session.
+  auth:
+    type: provider             # Uses the installed CLI's own auth
+    provider: anthropic-cli    # Relies on `claude login` having been run

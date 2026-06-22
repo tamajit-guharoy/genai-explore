@@ -1,0 +1,55 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 2: Gateway Auth (OpenRouter, LiteLLM)
+# =============================================================================
+# Routes through a third-party gateway like OpenRouter, LiteLLM, Ollama, or vLLM.
+# The gateway provides a unified API endpoint; Omnigent sends all model calls there.
+#
+# PREREQUISITE:
+#   1. Install: pip install "omnigent[antigravity]"
+#   2. Define the gateway as a named provider in ~/.omnigent/config.yaml:
+#        providers:
+#          openrouter:
+#            base_url: https://openrouter.ai/api/v1
+#            api_key: ${OPENROUTER_API_KEY}
+#   3. Set OPENROUTER_API_KEY environment variable
+#
+# WHAT THIS DEMONSTRATES:
+#   - auth.type: provider — references a named provider from config
+#   - Gateway details live in ~/.omnigent/config.yaml, not the agent YAML
+#   - Supports OpenAI-compatible gateways (OpenRouter, LiteLLM, Ollama, vLLM)
+#
+# NOTE: For gateway routing, the model name must be understood by the gateway.
+#       Check your gateway's model list for exact names.
+# =============================================================================
+
+name: gateway_agent
+
+prompt: |
+  You are a general-purpose assistant running through an API gateway.
+  Respond concisely.
+
+executor:
+  harness: openai-agents       # Gateway must be OpenAI-compatible
+
+  # For OpenRouter, models use provider/model format: anthropic/claude-sonnet-4-6
+  model: anthropic/claude-sonnet-4-6
+
+  # auth.type: provider references a named gateway from ~/.omnigent/config.yaml
+  auth:
+    type: provider
+    name: openrouter
+
+# ALTERNATIVE — Gateway + Claude SDK:
+#   First add an Anthropic-compatible provider in ~/.omnigent/config.yaml:
+#     providers:
+#       openrouter-anthropic:
+#         base_url: https://openrouter.ai/api
+#         api_key: ${OPENROUTER_API_KEY}
+#
+#   Then in the agent YAML:
+#   executor:
+#     harness: claude-sdk
+#     model: anthropic/claude-sonnet-4
+#     auth:
+#       type: provider
+#       name: openrouter-anthropic

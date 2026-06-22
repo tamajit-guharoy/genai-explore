@@ -1,0 +1,64 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 0: Absolute Minimum
+# =============================================================================
+# The smallest possible Omnigent agent YAML.
+# Only three keys required: name, prompt, executor.
+#
+# HOW TO RUN:
+#   omni run 00_minimal.yaml
+#   — or —
+#   omnigent run 00_minimal.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - A named agent (appears in session logs / UI as "minimal")
+#   - An inline system prompt (the model's personality/instructions)
+#   - A harness + model selection (which SDK and which model to use)
+#   - The YAML spec is the agent; no code needed
+#
+# KEY CONCEPT:
+#   Every Omnigent agent is a YAML file.  The runner (Omnigent) reads this
+#   file, starts a session with the specified model, and wires the prompt
+#   into the system message.  Changing the harness is a one-line edit.
+# =============================================================================
+
+# name: A stable identifier.  Appears in session listings, logs, and the UI.
+#        Use lowercase with underscores for consistency.
+name: minimal
+
+# prompt: The system prompt — the model's core personality and instruction set.
+#         The `|` (literal block scalar) preserves newlines in YAML.
+#         Use `>-` (folded block scalar) to join lines with spaces instead.
+prompt: |
+  # You are a concise AI assistant.  Answer questions directly and briefly.
+  # Do not volunteer extra information unless asked.
+  # When the request is ambiguous, ask one clarifying question.
+
+# ALTERNATIVE: `instructions:` — point to an external markdown file instead
+# of an inline prompt.  If BOTH `prompt` and `instructions` are present,
+# `instructions` wins.  The path is relative to the YAML file.
+#   instructions: AGENTS.md       # ← path to a file in the same directory
+
+# executor: The runtime engine configuration.
+#           Selects the SDK/CLI transport AND the model to use.
+executor:
+  # harness: Which agent SDK or CLI to wrap.
+  #   claude-sdk     — Anthropic Python SDK (no local CLI needed)
+  #   openai-agents  — OpenAI Python SDK (no local CLI needed)
+  #   codex          — OpenAI SDK optimized for Codex-style tool use
+  #   codex-native   — PTY/tmux wrapping the `codex` CLI (needs Node.js)
+  #   claude-native  — PTY/tmux wrapping the `claude` CLI (needs Node.js)
+  #   cursor         — Cursor agent CLI (needs cursor-agent + CURSOR_API_KEY)
+  #   pi             — Pi CLI (needs pi installed)
+  #   antigravity    — Google Antigravity SDK (Gemini models)
+  harness: claude-sdk
+
+  # model: Provider-qualified model name or short name.
+  #   Examples: claude-sonnet-4-6, claude-opus-4-8, gpt-5, gemini-3.5-flash
+  model: claude-sonnet-4-6
+
+  # auth (OPTIONAL at this level): If not specified, Omnigent auto-detects
+  # credentials from environment variables (ANTHROPIC_API_KEY, OPENAI_API_KEY,
+  # etc.) or from the setup done via `omni setup`.
+  #   auth:
+  #     type: api_key                  # 'api_key' | 'databricks' | 'provider'
+  #     api_key: ${ANTHROPIC_API_KEY}  # env-var interpolation supported

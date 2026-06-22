@@ -1,0 +1,59 @@
+# =============================================================================
+# Omnigent Standalone Example — Level 9: Server with Admin Policies
+# =============================================================================
+# A server configuration with ADMIN-LEVEL policies.
+# These policies set the MINIMUM security bar for all agents on this server.
+# Individual agents can add STRICTER policies but cannot relax these.
+#
+# HOW TO USE:
+#   omnigent server --config 37_server_config_with_policies.yaml
+#
+# WHAT THIS DEMONSTRATES:
+#   - Server-level policies: the floor for all agents
+#   - Policy layering: server (floor) → agent (middle) → session (ceiling)
+#   - Common admin policies: mandatory sandbox, team budget, rate limits
+#
+# POLICY EVALUATION FOR SERVER ADMINS:
+#   SESSION policies (user, tightest)
+#       ↓
+#   AGENT policies (developer, middle)
+#       ↓
+#   SERVER policies (you, the admin, loosest)
+#   A DENY at any level overrides everything below
+# =============================================================================
+
+database:
+  url: postgresql://omnigent:${DB_PASSWORD}@db.internal:5432/omnigent
+  # For multi-user deployments, use PostgreSQL, not SQLite
+
+# Custom policy modules registered at the server level
+policy_modules:
+  - myorg_policies              # Corporate policies module
+  # - github_mcp_policy         # GitHub MCP-specific policies
+  # - compliance_audit           # Compliance logging policies
+
+# Server-level policies: enforced for EVERY agent on this server
+policies:
+  # 1. Mandatory sandbox for all agents (no 'none' allowed)
+  enforce_sandbox:
+    type: function
+    handler: omnigent.policies.builtins.safety.enforce_sandbox
+    factory_params:
+      sandbox_type: linux_bwrap  # All agents MUST use bubblewrap
+      write_paths: [./output]    # All agents can ONLY write to ./output
+      allow_network: true        # Network access permitted
+
+  # 2. Team-wide spending cap ($50 per session)
+  team_budget:
+    type: function
+    handler: omnigent.policies.builtins.cost.cost_budget
+    factory_params:
+      max_cost_usd: 50.00
+      ask_thresholds_usd: [25.00]
+
+  # 3. Global rate limit (500 tool calls per session)
+  global_rate_limit:
+    type: function
+    handler: omnigent.policies.builtins.safety.max_tool_calls_per_session
+    factory_params:
+      limit: 500
