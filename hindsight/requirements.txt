@@ -1,0 +1,23 @@
+# Core dependencies
+hindsight-client>=0.8.0
+
+# For notebooks
+jupyter>=1.0.0
+ipywidgets>=8.0.0
+
+# For async examples
+aiohttp>=3.9.0
+httpx>=0.27.0
+
+# For retry logic
+tenacity>=8.0.0
+
+# For data processing in notebooks
+pandas>=2.0.0
+
+# Optional: integration packages (install as needed)
+# hindsight-langchain>=0.1.0
+# hindsight-crewai>=0.1.0
+# hindsight-pydantic-ai>=0.1.0
+# hindsight-litellm>=0.1.0
+# hindsight-all>=0.8.0  # Embedded server + client
