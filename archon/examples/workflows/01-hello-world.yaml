@@ -1,0 +1,8 @@
+# .archon/workflows/hello-world.yaml
+# Simplest possible Archon workflow
+name: hello-world
+description: My first Archon workflow — just says hello
+
+nodes:
+  - id: greet
+    prompt: "Say hello and list the files in the current directory."

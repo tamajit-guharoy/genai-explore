@@ -1,0 +1,73 @@
+# .archon/workflows/fix-bug.yaml
+# Complete end-to-end bug fix pipeline
+name: fix-bug-end-to-end
+description: |
+  Fetch bug report from GitHub, reproduce, fix, 
+  add regression test, verify, and create PR.
+
+nodes:
+  - id: fetch-bug
+    bash: |
+      num=$(echo "$ARGUMENTS" | grep -oE '[0-9]+' | head -1)
+      gh issue view "$num" --json title,body,labels,comments
+    timeout: 15000
+
+  - id: analyze
+    depends_on: [fetch-bug]
+    prompt: |
+      Analyze this bug: $fetch-bug.output
+
+      Identify:
+      1. Expected vs actual behavior
+      2. Steps to reproduce
+      3. Likely affected code paths
+      4. Severity assessment
+
+      Save findings to $ARTIFACTS_DIR/analysis.md
+    model: sonnet
+
+  - id: reproduce
+    depends_on: [analyze]
+    loop:
+      prompt: |
+        Read $ARTIFACTS_DIR/analysis.md
+        Try to reproduce the bug. Write a minimal reproduction script.
+        When confirmed reproducible: <promise>CONFIRMED</promise>
+        If cannot reproduce after thorough attempt: <promise>CANNOT_REPRODUCE</promise>
+      until: CONFIRMED
+      max_iterations: 3
+
+  - id: implement-fix
+    depends_on: [reproduce]
+    loop:
+      prompt: |
+        Implement the fix.
+        After each change:
+        1. Run reproduction script to verify bug is fixed
+        2. Run existing test suite to check for regressions
+        When fix complete and all tests pass: <promise>DONE</promise>
+      until: DONE
+      max_iterations: 5
+
+  - id: add-regression-test
+    depends_on: [implement-fix]
+    prompt: |
+      Add a regression test that:
+      - FAILS without the fix
+      - PASSES with the fix
+      Add it to the existing test suite.
+
+  - id: verify
+    depends_on: [add-regression-test]
+    bash: "npm test 2>&1"
+    timeout: 300000
+
+  - id: create-pr
+    depends_on: [verify]
+    prompt: |
+      Create a PR with:
+      1. The bug fix
+      2. The regression test
+      3. Root cause analysis from $ARTIFACTS_DIR/analysis.md
+      4. Reference to the original issue
+      Use `gh pr create`

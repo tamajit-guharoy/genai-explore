@@ -1,0 +1,245 @@
+=== 02_installation_setup.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 02 — Installation & Setup
+
+**Goal:** Install OpenHands CLI and SDK, configure Docker, set up your LLM provider, and verify everything works.
+
+**What You'll Learn:**
+- Installing via uv (recommended) and pip
+- Docker prerequisites and verification
+- Configuration files and environment variables
+- Connecting to OpenAI, Anthropic, OpenRouter, and local models
+- Verifying your installation
+
+
+--- CELL 1 (markdown) ---
+## 2.1 Prerequisites
+
+Before installing, ensure you have:
+- **Python 3.12+:** OpenHands requires Python 3.12 or newer
+- **uv 0.11.6+:** Fast Python package manager (required for MCP servers)
+- **Docker:** For sandboxed execution and the GUI server
+- **API Key:** For your chosen LLM provider
+
+
+--- CELL 2 (code) ---
+# ═══════════════════════════════════════════
+# 2.1 Check Prerequisites
+# ═══════════════════════════════════════════
+import sys, subprocess, shutil
+
+# ─── Check Python version ───
+# OpenHands requires Python 3.12+ for type parameter syntax and performance
+print(f'Python version: {sys.version}')
+assert sys.version_info >= (3, 12), 'Python 3.12+ is required!'
+print('  ✓ Python 3.12+ detected')
+
+# ─── Check uv availability ───
+# uv is the recommended package manager — faster than pip and handles MCP server deps
+uv_path = shutil.which('uv')
+if uv_path:
+    result = subprocess.run(['uv', '--version'], capture_output=True, text=True)
+    print(f'  ✓ uv found: {result.stdout.strip()}')
+else:
+    print('  ✗ uv not found. Install: curl -LsSf https://astral.sh/uv/install.sh | sh')
+
+# ─── Check Docker availability ───
+# Docker is required for sandboxed code execution and the GUI server
+docker_path = shutil.which('docker')
+if docker_path:
+    result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
+    print(f'  ✓ Docker found: {result.stdout.strip()}')
+    # Also check if Docker daemon is running
+    result2 = subprocess.run(['docker', 'info'], capture_output=True, text=True)
+    if result2.returncode == 0:
+        print('  ✓ Docker daemon is running')
+    else:
+        print('  ⚠ Docker daemon is NOT running — start Docker Desktop or dockerd')
+else:
+    print('  ✗ Docker not found — install Docker Desktop or docker.io')
+
+
+--- CELL 3 (markdown) ---
+## 2.2 Installing OpenHands via uv (Recommended)
+
+The recommended installation method uses `uv tool install`. This isolates OpenHands from your project's virtual environment and handles Python version pinning automatically.
+
+```bash
+# Install OpenHands CLI + SDK
+uv tool install openhands --python 3.12
+
+# The command becomes available globally
+openhands --version
+
+# To upgrade later:
+uv tool upgrade openhands --python 3.12
+```
+
+**Why uv instead of pip?**
+- uv creates an isolated environment — no conflicts with your project's dependencies
+- MCP servers (like the fetch MCP server) require uv for their own dependency management
+- uv is 10-100x faster than pip for installation
+
+
+--- CELL 4 (markdown) ---
+## 2.3 Alternative: Standalone Binary
+
+If you prefer a single binary without Python/uv dependency management:
+
+```bash
+curl -fsSL https://install.openhands.dev/install.sh | sh
+```
+
+
+--- CELL 5 (markdown) ---
+## 2.4 Configuration Files
+
+OpenHands stores configuration in `~/.openhands/`:
+
+| File | Purpose |
+|---|---|
+| `agent_settings.json` | Agent behavior settings, condenser config |
+| `cli_config.json` | CLI/TUI preferences (e.g., critic enabled) |
+| `mcp.json` | MCP server configuration |
+| `settings.json` | LLM provider, model, and API credentials |
+
+**Environment variables** (only applied with `--override-with-envs`):
+- `LLM_API_KEY` — API key for your LLM provider
+- `LLM_MODEL` — Model name (e.g., `claude-sonnet-4-5`)
+- `LLM_BASE_URL` — Custom endpoint for local models or proxies
+
+
+--- CELL 6 (code) ---
+# ═══════════════════════════════════════════
+# 2.4 Inspect Configuration Directory
+# ═══════════════════════════════════════════
+from pathlib import Path
+import json
+
+# OpenHands stores all config in ~/.openhands/
+config_dir = Path.home() / '.openhands'
+print(f'Config directory: {config_dir}')
+print(f'  Exists: {config_dir.exists()}')
+
+# If it exists, list the files inside
+# This directory is created on first run of 'openhands'
+if config_dir.exists():
+    for f in sorted(config_dir.iterdir()):
+        size = f.stat().st_size if f.is_file() else '-'
+        print(f'  {"📄" if f.is_file() else "📁"} {f.name} ({size} bytes)')
+else:
+    print('  Directory not created yet — run `openhands` once to initialize')
+    print('  On first run, OpenHands will guide you through LLM configuration')
+
+
+--- CELL 7 (markdown) ---
+## 2.5 Configuring Your LLM Provider
+
+OpenHands supports **100+ model providers** via litellm. Common setups:
+
+```bash
+# Run the interactive setup (recommended for first time)
+openhands
+# Then type /settings to configure your LLM provider
+
+# Or set via environment (requires --override-with-envs flag)
+export LLM_API_KEY=sk-...
+export LLM_MODEL=gpt-5.5
+openhands --override-with-envs
+```
+
+**Common model strings:**
+| Provider | Model String |
+|---|---|
+| OpenAI | `gpt-5.5`, `gpt-5.5-codex`, `gpt-5.4` |
+| Anthropic | `claude-sonnet-4-5`, `claude-opus-4-8` |
+| OpenRouter | `openrouter:anthropic/claude-sonnet-4` |
+| DeepSeek | `deepseek:deepseek-chat` |
+| Ollama (local) | `ollama/qwen3:32b` |
+| Google | `gemini/gemini-3-pro` |
+
+
+--- CELL 8 (code) ---
+# ═══════════════════════════════════════════
+# 2.5 Configure LLM Programmatically (SDK)
+# ═══════════════════════════════════════════
+import os
+
+# ─── Pattern 1: Direct API key ───
+# Best for quick scripts — but NEVER hardcode keys in committed code
+# Use environment variables or a .env file instead
+from openhands.sdk import LLM
+
+# ─── Pattern 2: From environment variable (recommended) ───
+# This is the production-safe pattern — keys never touch source code
+api_key = os.getenv('LLM_API_KEY')  # Set this in your shell: export LLM_API_KEY=sk-...
+model_name = os.getenv('LLM_MODEL', 'gpt-5.5')  # Default if not set
+
+# Create the LLM client — this is a thin wrapper around litellm
+# The LLM object handles authentication, rate limiting, and provider routing
+llm = LLM(
+    model=model_name,           # The model identifier (provider-agnostic via litellm)
+    api_key=api_key,            # API key from environment
+    # base_url='...',           # Optional: for custom endpoints / proxies
+)
+
+print(f'LLM configured:')
+print(f'  Model: {llm.model}')
+print(f'  Provider: auto-detected by litellm from model string')
+print(f'  API key: {"SET" if api_key else "NOT SET — export LLM_API_KEY first"}')
+
+
+--- CELL 9 (markdown) ---
+## 2.6 Verifying Your Installation
+
+After installation, run these checks:
+
+```bash
+# Check CLI version
+openhands --version
+
+# List available commands
+openhands --help
+
+# Check SDK installation
+python -c "import openhands; print(openhands.__version__)"
+
+# Launch the TUI (interactive)
+openhands
+
+# Test headless mode (needs API key configured)
+openhands --headless -t "List the files in the current directory"
+```
+
+
+--- CELL 10 (code) ---
+# ═══════════════════════════════════════════
+# 2.6 Verify SDK Installation
+# ═══════════════════════════════════════════
+# This cell verifies the Python SDK is installed and importable
+try:
+    import openhands
+    print(f'✓ openhands package imported')
+    # Check for version attribute (may differ between CLI and SDK packages)
+    if hasattr(openhands, '__version__'):
+        print(f'  Version: {openhands.__version__}')
+except ImportError as e:
+    print(f'✗ openhands not installed: {e}')
+    print('  Install: uv tool install openhands --python 3.12')
+
+# Check SDK subpackages — these are the four architectural layers
+subpackages = ['openhands.sdk', 'openhands.tools', 'openhands.workspace']
+for pkg in subpackages:
+    try:
+        __import__(pkg)
+        print(f'  ✓ {pkg}')
+    except ImportError:
+        print(f'  - {pkg} (optional — needed for advanced features)')
+
+
+--- CELL 11 (markdown) ---
+## Next
+
+→ [03_cli_modes.ipynb](03_cli_modes.ipynb) — Explore all CLI modes: TUI, headless, web, ACP, and cloud
+

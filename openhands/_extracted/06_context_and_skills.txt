@@ -1,0 +1,195 @@
+=== 06_context_and_skills.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 06 — Context Management & Skills
+
+**Goal:** Master how OpenHands manages conversation context across long tasks and how skills provide reusable procedural knowledge.
+
+**What You'll Learn:**
+- Context condensation: how history gets compressed to fit token limits
+- The condenser pipeline: summarizers, truncators, and LLM condensers
+- Skills: reusable prompt templates triggered by conditions
+- AGENTS.md and context files: injecting project-specific knowledge
+- Best practices for long-running agent tasks
+
+
+--- CELL 1 (markdown) ---
+## 6.1 The Context Problem
+
+Every tool call adds events to the conversation history. After 50+ turns, the history can exceed the LLM's context window. OpenHands solves this with **condensers** — components that compress old events while preserving essential information.
+
+```
+Event History (growing) → Condenser → Compressed History → LLM
+                              ↑
+                        Drops repetitive output
+                        Summarizes old turns
+                        Preserves key decisions
+```
+
+**Without condensers:** Agent forgets early context, repeats actions, misses constraints.
+**With condensers:** Agent maintains coherent behavior even after hundreds of tool calls.
+
+
+--- CELL 2 (markdown) ---
+## 6.2 Condenser Types
+
+| Condenser | Strategy | Best For |
+|---|---|---|
+| **NoOpCondenser** | Keep everything (no compression) | Short tasks, debugging |
+| **LLMCondenser** | Use a smaller/cheaper LLM to summarize old events | Production, long tasks |
+| **TruncationCondenser** | Drop oldest events, keep recent ones | Memory-constrained |
+| **HybridCondenser** | Summarize middle, keep start and end | Balanced approach |
+
+The default condenser is auto-selected based on the model's context window and task complexity.
+
+
+--- CELL 3 (code) ---
+# ═══════════════════════════════════════════
+# 6.2 Configuring a Condenser
+# ═══════════════════════════════════════════
+# Condensers are configured per-conversation — different tasks need different strategies
+
+from openhands.sdk.condenser import LLMCondenser
+
+# ─── LLM-based condensation ───
+# Uses a cheap model (like GPT-5.4 mini) to summarize old events
+# The summarizer LLM is DIFFERENT from the agent's main LLM
+# This keeps summary costs low while preserving decision quality
+condenser = LLMCondenser(
+    llm=LLM(  # A separate, cheaper LLM just for summarization
+        model='gpt-5.4-mini',  # Smaller model = lower cost
+        api_key=os.getenv('LLM_API_KEY'),
+    ),
+    keep_recent=20,  # Always keep the last 20 events verbatim
+    target_tokens=80000,  # Aim to keep total context under 80K tokens
+)
+
+print('Condenser configured:')
+print(f'  Type: LLM-based summarization')
+print(f'  Summarizer model: gpt-5.4-mini (cheaper than main model)')
+print(f'  Keep recent: 20 events (verbatim — never compressed)')
+print(f'  Target: 80K tokens total context budget')
+
+# ─── Apply condenser to a conversation ───
+# The condenser runs automatically before each LLM call
+# You don't need to invoke it manually — it's part of the agent loop
+print(f'\nTo use: Conversation(agent=agent, workspace=..., condenser=condenser)')
+
+
+--- CELL 4 (markdown) ---
+## 6.3 The Skills System
+
+Skills are **reusable prompt fragments** that activate on trigger conditions. Think of them as "if the user asks about X, inject these instructions."
+
+**Skill anatomy:**
+```yaml
+# SKILL.md
+---
+name: python-testing
+description: Generate pytest tests following project conventions
+triggers:
+  - keywords: [test, pytest, unit test, coverage]
+  - file_patterns: ['test_*.py', '*_test.py']
+---
+
+When writing tests:
+1. Use pytest (never unittest)
+2. Follow AAA pattern: Arrange, Act, Assert
+3. Use fixtures from conftest.py
+4. Mock external services with pytest-mock
+```
+
+When the user mentions "test" or edits a `test_*.py` file, these instructions are injected into the agent's context automatically.
+
+
+--- CELL 5 (code) ---
+# ═══════════════════════════════════════════
+# 6.3 Creating and Loading Skills
+# ═══════════════════════════════════════════
+from pathlib import Path
+import yaml
+
+# ─── Skill structure (in-memory for demo) ───
+# Skills are stored as SKILL.md files with YAML frontmatter
+# The frontmatter defines triggers; the body is the injected prompt
+skill_yaml = """---
+name: security-review
+description: Security review checklist for code changes
+triggers:
+  - keywords: [security, vulnerability, auth, encryption, SQL injection, XSS]
+  - file_patterns: ['*.env', '*.pem', 'auth*.py', '*password*']
+version: 1.0.0
+---
+
+# Security Review Skill
+
+When reviewing or writing code, ALWAYS check:
+
+1. **Input Validation:** All user input is validated and sanitized
+2. **Authentication:** Secrets are never hardcoded, use environment variables
+3. **SQL Injection:** Use parameterized queries (never string formatting)
+4. **XSS:** Escape output in HTML contexts
+5. **CSRF:** State-changing endpoints require CSRF tokens
+6. **Dependencies:** Check for known vulnerabilities (run `pip-audit` or `npm audit`)
+
+Report findings with severity: CRITICAL, HIGH, MEDIUM, LOW.
+"""
+
+# Parse the frontmatter to see skill metadata
+# The YAML between --- markers is structured metadata
+parts = skill_yaml.split('---')
+if len(parts) >= 3:
+    metadata = yaml.safe_load(parts[1])
+    body = parts[2].strip()
+    print('Skill Metadata:')
+    for key, value in metadata.items():
+        print(f'  {key}: {value}')
+    print(f'\nSkill Body (injected into agent context when triggered):')
+    print(f'  Length: {len(body)} chars')
+    print(f'  Preview: {body[:120]}...')
+    print(f'\nWhen agent sees "security" keyword or edits auth*.py,')
+    print(f'the full security review checklist is injected into its context.')
+
+
+--- CELL 6 (markdown) ---
+## 6.4 AGENTS.md and Context Files
+
+OpenHands respects project-level context files that tell the agent about your codebase:
+
+| File | Purpose |
+|---|---|
+| `AGENTS.md` | Project-wide instructions for AI agents |
+| `CLAUDE.md` | Claude-specific instructions (also read by OpenHands) |
+| `.cursorrules` | Cursor editor rules (also read by OpenHands) |
+| `README.md` | Project overview — injected as context |
+
+**Example AGENTS.md:**
+```markdown
+# Agent Instructions
+
+- This project uses pytest with fixtures in conftest.py
+- Always run `pre-commit run --all-files` before committing
+- Database migrations go through Alembic: `alembic upgrade head`
+- API keys are stored in `.env` — NEVER commit `.env` files
+- Code style: Black with line length 100
+- Test coverage must stay above 85%
+```
+
+OpenHands reads these files automatically when the workspace is a project directory.
+
+
+--- CELL 7 (markdown) ---
+## 6.5 Best Practices for Long-Running Agents
+
+1. **Use skills for project conventions** — one skill for testing patterns, one for deployment, one for code style
+2. **Keep AGENTS.md up to date** — the agent is only as good as its context
+3. **Set reasonable condenser targets** — 80K tokens is a good default for 128K+ context models
+4. **Break large tasks into sub-tasks** — let the TaskTrackerTool manage decomposition
+5. **Monitor token usage** — the condenser should keep you under the model's limit, but verify
+
+
+--- CELL 8 (markdown) ---
+## Next
+
+→ [07_security_and_approval.ipynb](07_security_and_approval.ipynb) — Security analyzer, risk levels, and approval modes
+

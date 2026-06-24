@@ -1,0 +1,236 @@
+=== 13_appendix_reference.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 13 — Appendix: Cheat Sheet, CLI Reference & Glossary
+
+**Goal:** One-stop reference for all OpenHands commands, SDK APIs, and terminology.
+
+
+--- CELL 1 (markdown) ---
+## 13.1 CLI Command Reference
+
+### Main Command
+
+| Command | Description |
+|---|---|
+| `openhands` | Launch interactive TUI |
+| `openhands --tui` | Same as above (explicit) |
+| `openhands --headless -t "task"` | Run task without UI |
+| `openhands --headless -f file.txt` | Run task from file |
+| `openhands --headless --json -t "task"` | JSONL output mode |
+| `openhands --continue` / `-c` | Resume last session |
+
+### Subcommands
+
+| Command | Description | Key Options |
+|---|---|---|
+| `openhands serve` | Launch GUI server (Docker) | `--mount-cwd`, `--gpu` |
+| `openhands web` | Browser-based TUI | `--host`, `--port`, `--debug` |
+| `openhands cloud` | Create cloud session | `-t`, `-f`, `--server-url` |
+| `openhands acp` | Start ACP server for IDE | `--resume`, `--last`, `--always-approve`, `--llm-approve` |
+| `openhands agent-server` | Start Agent Server | (Docker recommended for production) |
+
+### Flags
+
+| Flag | Effect |
+|---|---|
+| `--always-approve` | Auto-approve all actions (no confirmation) |
+| `--llm-approve` | Use LLM for action safety approval |
+| `--override-with-envs` | Use LLM_API_KEY, LLM_MODEL, LLM_BASE_URL env vars |
+| `--exit-without-confirmation` | Exit without confirmation dialog |
+| `--streaming` | Enable token-by-token streaming (ACP mode) |
+
+
+--- CELL 2 (markdown) ---
+## 13.2 SDK Quick Reference
+
+### Core Objects
+
+```python
+from openhands.sdk import LLM, Agent, Conversation
+
+# LLM — the language model
+llm = LLM(model="gpt-5.5", api_key="sk-...")
+
+# Agent — LLM + tools
+agent = Agent(
+    llm=llm,
+    tools=[Tool(name=FileEditorTool.name), Tool(name=TerminalTool.name)],
+    system_prompt="You are a Python expert.",  # Optional
+)
+
+# Conversation — execution loop
+conv = Conversation(
+    agent=agent,
+    workspace="/path/to/project",  # LocalWorkspace or RemoteWorkspace
+    max_iterations=100,            # Max agent loop cycles
+    condenser=LLMCondenser(...),   # Optional context compression
+)
+conv.send_message("Your task here")
+conv.run()  # Blocks until agent finishes or hits limit
+```
+
+
+--- CELL 3 (markdown) ---
+## 13.3 Built-in Tools Reference
+
+| Tool | Import | Actions |
+|---|---|---|
+| FileEditor | `openhands.tools.file_editor.FileEditorTool` | read, write, edit, search, list |
+| Terminal | `openhands.tools.terminal.TerminalTool` | Bash execution, background, timeout |
+| TaskTracker | `openhands.tools.task_tracker.TaskTrackerTool` | Create/update/complete subtasks |
+| WebBrowser | `openhands.tools.web_browser.WebBrowserTool` | Navigate, click, extract, JS eval |
+| MCP | `openhands.tools.mcp.MCPTool` | Connect external MCP servers |
+
+
+--- CELL 4 (markdown) ---
+## 13.4 Provider & Model Strings
+
+| Provider | Model String Example | Notes |
+|---|---|---|
+| OpenAI | `gpt-5.5`, `gpt-5.5-codex`, `gpt-5.4` | Auto-detected |
+| Anthropic | `claude-sonnet-4-5`, `claude-opus-4-8` | Auto-detected |
+| OpenRouter | `openrouter:anthropic/claude-sonnet-4` | Prefix with `openrouter:` |
+| DeepSeek | `deepseek:deepseek-chat` | Prefix with `deepseek:` |
+| Google | `gemini/gemini-3-pro` | Prefix with `gemini/` |
+| Ollama | `ollama/qwen3:32b` | Local — prefix with `ollama/` |
+| Custom | Any litellm-compatible string | Set `LLM_BASE_URL` for custom endpoints |
+
+
+--- CELL 5 (markdown) ---
+## 13.5 Configuration Files
+
+| File | Location | Purpose |
+|---|---|---|
+| `settings.json` | `~/.openhands/` | LLM provider, model, credentials |
+| `agent_settings.json` | `~/.openhands/` | Agent behavior, condenser config |
+| `cli_config.json` | `~/.openhands/` | CLI/TUI preferences |
+| `mcp.json` | `~/.openhands/` | MCP server definitions |
+| `acp.json` | `~/.jetbrains/` | JetBrains ACP configuration |
+
+
+--- CELL 6 (markdown) ---
+## 13.6 Exit Codes
+
+| Code | Meaning |
+|---|---|
+| `0` | Task completed successfully |
+| `1` | Task failed or agent errored |
+| `2` | Invalid arguments or configuration |
+
+
+--- CELL 7 (markdown) ---
+## 13.7 Environment Variables
+
+| Variable | Purpose | Required For |
+|---|---|---|
+| `LLM_API_KEY` | API key for LLM provider | `--override-with-envs` flag |
+| `LLM_MODEL` | Model identifier | `--override-with-envs` flag |
+| `LLM_BASE_URL` | Custom endpoint URL | Local models, proxies |
+| `AGENT_SERVER_KEY` | Auth token for Agent Server | Remote execution |
+| `SANDBOX_VOLUMES` | Directories to mount in Docker | Custom sandbox paths |
+
+
+--- CELL 8 (markdown) ---
+## 13.8 Glossary
+
+| Term | Definition |
+|---|---|
+| **Action** | A proposed operation by the agent (write file, run bash, etc.) |
+| **ACP** | Agent Client Protocol — JSON-RPC 2.0 for IDE-agent communication |
+| **Agent** | The reasoning-action loop: LLM + tools |
+| **Agent Server** | REST/WebSocket server for remote agent execution |
+| **Condenser** | Component that compresses conversation history for context limits |
+| **Conversation** | A session with event history, driving the agent loop |
+| **Event** | Immutable record of an action, observation, or state change |
+| **Headless** | CLI mode without UI — for CI/CD and automation |
+| **LLM** | Large Language Model — the reasoning engine behind agents |
+| **MCP** | Model Context Protocol — standard for connecting tools to LLMs |
+| **Observation** | The result of executing an action |
+| **Sandbox** | Isolated execution environment (typically Docker) |
+| **Security Analyzer** | Evaluates action risk before execution |
+| **Skill** | Reusable prompt fragment with trigger-based activation |
+| **Tool** | What an agent can DO — FileEditor, Terminal, WebBrowser, etc. |
+| **TUI** | Terminal User Interface — the interactive CLI mode |
+| **Workspace** | Where the agent works — local directory, Docker, or remote server |
+
+
+--- CELL 9 (markdown) ---
+## 13.9 Troubleshooting Quick Reference
+
+| Symptom | Likely Cause | Fix |
+|---|---|---|
+| Agent loops forever | No finish condition | Set `max_iterations` lower |
+| Context truncated mid-task | History exceeded context window | Configure a condenser, use a model with larger context |
+| "Permission denied" in Docker | Container UID mismatch | Use `setfacl` on workspace dir |
+| Agent can't find files | Wrong workspace path | Use absolute paths, check `--mount-cwd` |
+| API errors | Invalid key or model name | Verify with `curl` to provider API |
+| MCP tools not appearing | MCP server not configured | Check `~/.openhands/mcp.json` |
+| Headless mode hangs | Task too complex, agent stuck | Add timeout, simplify task |
+| "uv: command not found" | uv not installed | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+
+
+--- CELL 10 (markdown) ---
+## 13.10 Comparison: When to Use What
+
+| I want to... | Use... |
+|---|---|
+| Chat with an AI about my code interactively | `openhands` (TUI) |
+| Automate a task in CI/CD | `openhands --headless` |
+| Build a custom agent application | Python SDK (`openhands.sdk`) |
+| Use OpenHands inside IntelliJ | `openhands acp` + JetBrains config |
+| Deploy an agent for my team | Agent Server (REST API) |
+| Try OpenHands without installing | `openhands cloud` or app.all-hands.dev |
+| Give an agent a custom tool | Extend `BaseTool` (see Notebook 05) |
+| Control what an agent can do | Security Analyzer + approval modes (Notebook 07) |
+| Break a huge task into smaller ones | Task decomposition + multi-agent (Notebook 11) |
+
+
+--- CELL 11 (markdown) ---
+## 13.11 SDK Version Compatibility
+
+| Component | Minimum Version | Recommended |
+|---|---|---|
+| Python | 3.12 | 3.12+ |
+| uv | 0.11.6 | Latest |
+| Docker | 24.0 | Latest stable |
+| OpenHands CLI | v1.0+ | Latest |
+| openhands-sdk | Matches CLI version | Latest |
+| JetBrains IDE (for ACP) | 2025.3+ | Latest |
+
+
+--- CELL 12 (markdown) ---
+## 13.12 Useful Links
+
+- **Docs:** <https://docs.openhands.dev>
+- **SDK Docs:** <https://docs.openhands.dev/sdk>
+- **GitHub (Platform):** <https://github.com/All-Hands-AI/OpenHands>
+- **GitHub (SDK):** <https://github.com/OpenHands/software-agent-sdk>
+- **GitHub (CLI):** <https://github.com/OpenHands/OpenHands-CLI>
+- **PyPI:** <https://pypi.org/project/openhands>
+- **Slack Community:** <https://openhands.dev/joinslack>
+- **Cloud:** <https://app.all-hands.dev>
+- **ACP Protocol:** <https://agentclientprotocol.com>
+- **Paper (ICLR 2025):** <https://arxiv.org/abs/2407.16741>
+- **SDK Paper:** <https://arxiv.org/abs/2511.03690>
+
+
+--- CELL 13 (markdown) ---
+## End of Tutorial
+
+You've completed the OpenHands tutorial — from basic concepts to multi-agent orchestration.
+
+**Key takeaways:**
+1. OpenHands is an event-driven autonomous coding agent with sandboxed execution
+2. The SDK follows LLM → Agent → Conversation pattern
+3. Tools define what the agent can do; workspace defines where
+4. Condensers and skills keep agents effective on long tasks
+5. Headless mode enables CI/CD automation
+6. Multi-agent orchestration tackles tasks too large for one agent
+
+**To go deeper:**
+- Read the SDK paper for the full 31-feature comparison to other SDKs
+- Join the Slack community for real-world usage patterns
+- Contribute to the open-source project on GitHub
+- Build a custom tool for your domain-specific workflow
+

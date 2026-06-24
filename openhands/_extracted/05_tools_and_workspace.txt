@@ -1,0 +1,332 @@
+=== 05_tools_and_workspace.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 05 — Tools & Workspace: The Agent's Hands and Desk
+
+**Goal:** Master every built-in tool and understand workspace types — local, Docker, and remote.
+
+**What You'll Learn:**
+- FileEditorTool: read, write, edit, search files
+- TerminalTool: bash execution with tmux-based interactive terminal
+- TaskTrackerTool: autonomous task decomposition and tracking
+- WebBrowserTool: web browsing for research and documentation
+- MCPTool: connecting external MCP servers
+- LocalWorkspace vs RemoteWorkspace vs Docker sandbox
+- Creating custom tools
+
+
+--- CELL 1 (markdown) ---
+## 5.1 The Tool System Architecture
+
+Tools are how the agent interacts with the world. Each tool has:
+
+```
+┌─────────────────────────────────────┐
+│              Tool                   │
+├─────────────────────────────────────┤
+│ name: str         Unique identifier │
+│ description: str  LLM sees this     │
+│ parameters: JSON  Input schema      │
+├─────────────────────────────────────┤
+│ execute(action) → Observation       │
+└─────────────────────────────────────┘
+```
+
+**The LLM chooses which tool to invoke** based on the tool descriptions and the current task. The agent never "calls" a tool — it emits an Action, and the Tool Executor runs it.
+
+
+--- CELL 2 (markdown) ---
+## 5.2 FileEditorTool — Read, Write, Edit, Search
+
+The most-used tool. Capabilities:
+- `read`: Read a file (with line numbers, offset, limit)
+- `write`: Create or overwrite a file
+- `edit`: Find-and-replace within a file
+- `search`: Regex search across files (ripgrep-backed)
+- `list`: List directory contents
+
+
+--- CELL 3 (code) ---
+# ═══════════════════════════════════════════
+# 5.2 FileEditorTool — Programmatic Usage
+# ═══════════════════════════════════════════
+# While agents use FileEditorTool via actions, you can also call it directly
+# for testing or building custom workflows
+
+from openhands.tools.file_editor import FileEditorTool
+from pathlib import Path
+import tempfile
+
+# ─── Create a workspace directory ───
+workdir = Path(tempfile.mkdtemp(prefix='tool_demo_'))
+print(f'Workspace: {workdir}')
+
+# ─── The FileEditorTool needs a workspace path ───
+# It resolves all paths relative to this root for sandbox safety
+editor = FileEditorTool(workspace_path=str(workdir))
+
+# ─── Write a file ───
+# The agent would emit: Action(name='write', path='hello.py', content='...')
+# We call execute() directly for demonstration
+from openhands.tools.file_editor.actions import FileWriteAction
+write_action = FileWriteAction(
+    path='hello.py',
+    content='''"""A simple Python module."""
+
+def greet(name: str) -> str:
+    """Return a greeting for the given name."""
+    return f"Hello, {name}!"
+
+if __name__ == "__main__":
+    print(greet("World"))
+'''
+)
+result = editor.execute(write_action)
+print(f'Write result: {result}')
+
+# ─── Read the file back ───
+# The agent reads files with offset/limit for large files
+from openhands.tools.file_editor.actions import FileReadAction
+read_action = FileReadAction(path='hello.py')
+result = editor.execute(read_action)
+print(f'\nRead result:\n{result}')
+
+# ─── Edit the file (find-and-replace) ───
+# This is how the agent makes precise changes without rewriting entire files
+from openhands.tools.file_editor.actions import FileEditAction
+edit_action = FileEditAction(
+    path='hello.py',
+    old_string='Hello',         # Find this exact string
+    new_string='Greetings',     # Replace with this
+)
+result = editor.execute(edit_action)
+print(f'\nEdit result: {result}')
+
+# Verify the edit
+print(f'\nUpdated file content:')
+print((workdir / 'hello.py').read_text())
+
+# ─── Clean up ───
+import shutil
+shutil.rmtree(workdir)
+
+
+--- CELL 4 (markdown) ---
+## 5.3 TerminalTool — Bash Execution
+
+The TerminalTool gives the agent access to a bash shell. Key features:
+- Foreground command execution with output capture
+- Background processes (servers, watchers)
+- Tmux-based interactive terminal for persistent sessions
+- Timeout and output size limits for safety
+- Working directory persistence across calls
+
+
+--- CELL 5 (code) ---
+# ═══════════════════════════════════════════
+# 5.3 TerminalTool — Direct Invocation
+# ═══════════════════════════════════════════
+from openhands.tools.terminal import TerminalTool
+from openhands.tools.terminal.actions import BashAction
+
+# TerminalTool executes commands in the workspace directory
+# For safety, it runs in a subprocess, not the agent's process
+term = TerminalTool(workspace_path=str(Path(tempfile.mkdtemp())))
+
+# ─── Simple command ───
+action = BashAction(command='echo "Hello from the agent terminal!" && python --version')
+result = term.execute(action)
+print(f'Command output:\n{result}')
+
+# ─── Command with working directory ───
+# The agent can set workdir to run commands in specific subdirectories
+action2 = BashAction(
+    command='pwd && ls -la',
+    workdir='/tmp',  # Run in a specific directory
+)
+result2 = term.execute(action2)
+print(f'\nWith workdir:\n{result2}')
+
+# ─── Command with timeout ───
+# Long-running or hanging commands need timeouts
+action3 = BashAction(
+    command='sleep 1 && echo "Done after 1 second"',
+    timeout=3000,  # 3 seconds in milliseconds
+)
+result3 = term.execute(action3)
+print(f'\nWith timeout:\n{result3}')
+
+
+--- CELL 6 (markdown) ---
+## 5.4 TaskTrackerTool — Autonomous Task Decomposition
+
+The TaskTrackerTool lets the agent break down complex tasks into subtasks and track progress.
+
+**How it works:**
+1. Agent creates a task list: `[{"id": "1", "content": "Read the codebase", "status": "pending"}, ...]`
+2. Agent marks tasks `in_progress` as it works on them
+3. Agent marks tasks `completed` when done
+4. The tool enforces only ONE task in_progress at a time
+
+This gives the LLM a **structured way to plan** rather than trying to hold the entire plan in its context.
+
+
+--- CELL 7 (markdown) ---
+## 5.5 WebBrowserTool — Web Browsing
+
+The WebBrowserTool lets the agent browse the web — reading documentation, searching for solutions, checking API references.
+
+Capabilities:
+- Navigate to URLs
+- Click elements
+- Fill forms
+- Extract page content as markdown
+- Execute JavaScript for dynamic pages
+
+
+--- CELL 8 (markdown) ---
+## 5.6 MCPTool — Model Context Protocol Integration
+
+MCP (Model Context Protocol) connects OpenHands to external tools and data sources: databases, APIs, file systems, SaaS platforms.
+
+```bash
+# Configure MCP servers in ~/.openhands/mcp.json
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "uvx",
+      "args": ["mcp-server-fetch"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {"GITHUB_PERSONAL_ACCESS_TOKEN": "..."}
+    }
+  }
+}
+```
+
+These tools appear alongside built-in tools — the agent can use them just like FileEditor or Terminal.
+
+
+--- CELL 9 (markdown) ---
+## 5.7 Workspace Types
+
+The workspace is the agent's execution environment. Three types:
+
+| Type | Class | When to Use |
+|---|---|---|
+| **Local** | `LocalWorkspace` | Development, prototyping, trusted code |
+| **Docker** | Docker sandbox (via Agent Server) | Untrusted code, dependency isolation |
+| **Remote** | `RemoteWorkspace` | Shared agents, cloud execution |
+
+```python
+# Local workspace — agent runs on your machine
+from openhands.workspace import LocalWorkspace
+workspace = LocalWorkspace(path='/path/to/project')
+
+# Remote workspace — agent runs on a remote Agent Server
+from openhands.workspace import RemoteWorkspace
+workspace = RemoteWorkspace(
+    base_url='http://localhost:8000',
+    api_key='your-server-token',
+)
+```
+
+
+--- CELL 10 (markdown) ---
+## 5.8 Creating a Custom Tool
+
+You can extend OpenHands with your own tools. A custom tool needs:
+- A name and description (for the LLM to understand)
+- An action Pydantic model (the input)
+- An execute method (the implementation)
+
+
+--- CELL 11 (code) ---
+# ═══════════════════════════════════════════
+# 5.8 Custom Tool: WeatherChecker
+# ═══════════════════════════════════════════
+# This demonstrates the complete pattern for creating a custom tool.
+# Custom tools let you give agents domain-specific superpowers.
+
+from openhands.tools import BaseTool, Tool
+from openhands.sdk.events import Observation
+from pydantic import BaseModel, Field
+import json
+
+# ─── Step 1: Define the Action (what the LLM passes to the tool) ───
+# Pydantic model gives the LLM a typed schema via the function-calling API
+class WeatherCheckAction(BaseModel):
+    """Check the weather for a city."""
+    city: str = Field(description='City name, e.g. "San Francisco"')
+    units: str = Field(default='metric', description='metric or imperial')
+
+# ─── Step 2: Create the Tool class ───
+# Inherit from BaseTool and implement: name, action_class, execute()
+class WeatherCheckerTool(BaseTool):
+    # The 'name' is how the agent identifies this tool
+    name: str = 'weather_check'
+
+    # The action_class maps the LLM's function call to a typed Python object
+    @property
+    def action_class(self):
+        return WeatherCheckAction
+
+    # The execute method does the actual work
+    # It receives a typed action and returns an Observation
+    async def execute(self, action: WeatherCheckAction) -> Observation:
+        # In production, call a real weather API here
+        # This mock returns deterministic data for demonstration
+        temps = {
+            'san francisco': 18, 'new york': 22, 'london': 12,
+            'tokyo': 25, 'sydney': 20, 'berlin': 15
+        }
+        temp = temps.get(action.city.lower(), 20)
+        if action.units == 'imperial':
+            temp = temp * 9/5 + 32  # Convert to Fahrenheit
+
+        result = {
+            'city': action.city,
+            'temperature': temp,
+            'units': action.units,
+            'conditions': 'sunny' if temp > 20 else 'cloudy',
+        }
+
+        # Return an Observation — this is what the agent sees
+        return Observation(
+            content=json.dumps(result, indent=2),
+            tool_call_id=action.tool_call_id if hasattr(action, 'tool_call_id') else None,
+        )
+
+# ─── Step 3: Register the tool with an agent ───
+# The agent needs the tool wrapped in Tool() to include it in its action space
+weather_tool = Tool(
+    name=WeatherCheckerTool.name,
+    tool_class=WeatherCheckerTool,
+)
+
+print('Custom tool created: WeatherChecker')
+print(f'  Name: {weather_tool.name}')
+print(f'  Action: WeatherCheckAction(city, units)')
+print(f'  The LLM will see this tool and can invoke it when the user asks about weather')
+
+
+--- CELL 12 (markdown) ---
+## 5.9 Tool Selection Decision Guide
+
+| Task | Use This Tool |
+|---|---|
+| Read/write/edit source code | `FileEditorTool` |
+| Run tests, install deps, git commands | `TerminalTool` |
+| Break down complex task into steps | `TaskTrackerTool` |
+| Look up documentation, APIs, error messages | `WebBrowserTool` |
+| Access GitHub, databases, external services | `MCPTool` + MCP servers |
+| Domain-specific operations (weather, Slack, CRM) | Custom Tool (extend BaseTool) |
+
+
+--- CELL 13 (markdown) ---
+## Next
+
+→ [06_context_and_skills.ipynb](06_context_and_skills.ipynb) — Context management, condensers, and the skills system
+

@@ -1,0 +1,58 @@
+name: OpenHands Auto-Fix
+
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task for OpenHands'
+        required: true
+
+jobs:
+  autofix:
+    # Only run when the "openhands" label is applied
+    if: github.event.label.name == 'openhands'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv and OpenHands
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv tool install openhands --python 3.12
+
+      - name: Run OpenHands
+        env:
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'claude-sonnet-4-5' }}
+        run: |
+          ISSUE_TITLE="${{ github.event.issue.title }}"
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          openhands --headless --override-with-envs --json \
+            -t "GitHub Issue: $ISSUE_TITLE. Details: $ISSUE_BODY" \
+            > openhands_output.jsonl
+
+      - name: Create PR with changes
+        if: success()
+        run: |
+          git config user.name "OpenHands Bot"
+          git config user.email "bot@openhands.dev"
+          git checkout -b openhands/fix-${{ github.event.issue.number }}
+          git add -A
+          git diff --staged --quiet || (
+            git commit -m "Fix: ${{ github.event.issue.title }}
+
+          Closes #${{ github.event.issue.number }}"
+            git push origin openhands/fix-${{ github.event.issue.number }}
+            gh pr create \
+              --title "Auto-fix: ${{ github.event.issue.title }}" \
+              --body "Automated fix by OpenHands. Closes #${{ github.event.issue.number }}"
+          )
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -9,17 +9,39 @@
 
 ## Table of Contents
 
-| # | Notebook | Focus | Level |
-|---|----------|-------|-------|
-| 01 | `01_letta_fundamentals.ipynb` | Memory architecture, OS-inspired hierarchy, core concepts | Beginner |
-| 02 | `02_getting_started.ipynb` | Installation, API keys, creating your first agent | Beginner |
-| 03 | `03_memory_blocks.ipynb` | Core memory blocks (human, persona, custom), read/write patterns | Intermediate |
-| 04 | `04_archival_memory.ipynb` | Passages, semantic search, long-term storage | Intermediate |
-| 05 | `05_tools_and_functions.ipynb` | Custom tools, function calling, server-side tools | Intermediate |
-| 06 | `06_multi_agent_systems.ipynb` | Multiple agents, shared memory, agent collaboration | Advanced |
-| 07 | `07_advanced_patterns.ipynb` | Agent types, compaction, templates, sleep-time compute | Advanced |
-| 08 | `08_letta_code_intro.ipynb` | Letta Code CLI / Agent SDK V2 (MemFS, skills, subagents) | Advanced |
-| 09 | `09_production_deployment.ipynb` | Self-hosting, Docker, best practices | Advanced |
+| # | File | Focus | Level |
+|---|------|-------|-------|
+| 01 | `markdown/01_letta_fundamentals.md` | Memory architecture, OS-inspired hierarchy, core concepts | Beginner |
+| 02 | `markdown/02_getting_started.md` | Installation, API keys, creating your first agent | Beginner |
+| 03 | `markdown/03_memory_blocks.md` | Core memory blocks (human, persona, custom), read/write patterns | Intermediate |
+| 04 | `markdown/04_archival_memory.md` | Passages, semantic search, long-term storage | Intermediate |
+| 05 | `markdown/05_tools_and_functions.md` | Custom tools, function calling, server-side tools | Intermediate |
+| 06 | `markdown/06_multi_agent_systems.md` | Multiple agents, shared memory, agent collaboration | Advanced |
+| 07 | `markdown/07_advanced_patterns.md` | Agent types, compaction, templates, sleep-time compute | Advanced |
+| 08 | `markdown/08_letta_code_intro.md` | Letta Code CLI / Agent SDK V2 (MemFS, skills, subagents) | Advanced |
+| 09 | `markdown/09_production_deployment.md` | Self-hosting, Docker, best practices | Advanced |
+
+### Standalone Config Files
+
+| File | Purpose |
+|------|---------|
+| `configs/docker-compose.yml` | Production Docker Compose stack (Letta + optional Postgres/Redis) |
+| `configs/.env.example` | All environment variables with documentation |
+| `configs/letta_agent_service.py` | Production-ready Python wrapper with retry logic and health checks |
+
+---
+
+## Why Markdown, Not Jupyter?
+
+This tutorial was originally published as `.ipynb` notebooks. We converted to markdown because:
+
+- **Notebook 01** has zero executable code — it was pure documentation trapped in JSON
+- **Notebooks 02–07** require a live Letta API key — readers can't actually run them interactively
+- **Notebook 08** mixes bash, TypeScript, and YAML — none of which execute in a Python kernel
+- **Notebook 09** is configuration documentation — `docker-compose.yml` and `.env` belong as standalone files
+- Markdown is readable on GitHub, diffable in git, and works with any editor
+
+The original `.ipynb` files are preserved in the `legacy/` directory.
 
 ---
 
@@ -65,6 +87,17 @@ npm install -g @letta-ai/letta-code
 
 ---
 
+## Quick Start: Production Deployment
+
+```bash
+cd configs/
+cp .env.example .env
+# Edit .env with your API keys
+docker-compose up -d
+```
+
+---
+
 ## Sources
 
 - [Letta GitHub](https://github.com/letta-ai/letta) — 16k+ stars
@@ -73,3 +106,4 @@ npm install -g @letta-ai/letta-code
 - [Letta Blog — Agent Memory](https://www.letta.com/blog/agent-memory)
 
 *Tutorial created June 2026 against Letta v0.16.x (V1 SDK) and Agent SDK beta (V2).*
+*Converted from Jupyter notebooks to markdown + standalone configs June 2026.*

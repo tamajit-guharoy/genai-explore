@@ -1,0 +1,203 @@
+=== 03_cli_modes.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 03 — CLI Modes: TUI, Headless, Web, ACP, Cloud
+
+**Goal:** Master all five CLI modes of OpenHands and understand when to use each.
+
+**What You'll Learn:**
+- Interactive TUI mode for development
+- Headless mode for CI/CD and automation
+- Web mode for browser-based access
+- ACP mode for IDE integration
+- Cloud mode for zero-install usage
+
+
+--- CELL 1 (markdown) ---
+## 3.1 CLI Mode Overview
+
+OpenHands has five distinct CLI modes, each optimized for a different context:
+
+| Mode | Command | Best For | Interactive |
+|---|---|---|---|
+| **Terminal (TUI)** | `openhands` | Interactive development, exploration | Yes |
+| **Headless** | `openhands --headless -t "task"` | CI/CD, scripts, batch automation | No |
+| **Web** | `openhands web` | Browser-based TUI | Yes |
+| **ACP** | `openhands acp` | IDE integration (JetBrains, Zed, VS Code) | Yes (via IDE) |
+| **Cloud** | `openhands cloud -t "task"` | Zero-install, shared sessions | Yes |
+| **GUI Server** | `openhands serve` | Full web GUI with VSCode, VNC, browser | Yes |
+
+
+--- CELL 2 (markdown) ---
+## 3.2 Terminal (TUI) Mode
+
+The default mode — a terminal UI built with Textual. Features:
+- Streaming token-by-token output
+- Tool execution shown live
+- `/settings` command to configure LLM
+- `/resume` to continue previous conversations
+- Conversation history persisted in `~/.openhands/`
+
+```bash
+# Launch TUI
+openhands
+
+# With specific approval mode
+openhands --always-approve    # Auto-approve all actions
+openhands --llm-approve       # Use LLM to judge action safety
+openhands --override-with-envs  # Use env vars for LLM config
+```
+
+
+--- CELL 3 (markdown) ---
+## 3.3 Headless Mode — Automation & CI/CD
+
+Headless mode runs without UI — perfect for scripts, CI pipelines, and batch processing.
+
+**Key characteristics:**
+- **Always runs in `always-approve` mode** — no confirmation prompts
+- Must specify a task via `--task` or `--file`
+- `--json` flag enables structured JSONL output
+- Exit codes: `0` = success, `1` = error, `2` = invalid arguments
+
+
+--- CELL 4 (code) ---
+# ═══════════════════════════════════════════
+# 3.3 Headless Mode Examples (run in terminal)
+# ═══════════════════════════════════════════
+# These are COMMANDS to run in your terminal, not Python code.
+# They are here for reference — copy-paste them into your shell.
+
+headless_examples = r'''
+# ─── Basic headless task ───
+# Runs a single task and exits — ideal for one-off automation
+openhands --headless -t "Create a Python script that prints hello world"
+
+# ─── Task from a file ───
+# Pass complex, multi-line tasks via a text file
+echo "Write a FastAPI app with a /health endpoint and Dockerfile" > task.txt
+openhands --headless -f task.txt
+
+# ─── JSONL output mode ───
+# Structured output for downstream parsing — each line is a JSON event
+openhands --headless --json -t "Add unit tests to app.py" > output.jsonl
+# Each line: {"type": "action", "action": "write", "path": "test_app.py", ...}
+
+# ─── CI/CD pipeline integration ───
+# Capture exit code to determine success/failure
+openhands --headless -t "Fix all linting errors" && echo "PASS" || echo "FAIL"
+
+# ─── With environment variable override ───
+# Use a different model just for this run
+LLM_MODEL=claude-sonnet-4-5 openhands --headless --override-with-envs \
+  -t "Review this PR diff for security issues"
+'''
+print(headless_examples)
+
+
+--- CELL 5 (markdown) ---
+## 3.4 Web Mode — Browser-Based TUI
+
+`openhands web` launches a web server with a browser-accessible TUI. This is useful when:
+- You're on a remote machine and want a UI
+- You want to share access with team members (with auth)
+- You prefer a browser interface over terminal
+
+```bash
+# Default: localhost:12000
+openhands web
+
+# Custom host and port
+openhands web --host 0.0.0.0 --port 8080
+
+# Debug mode (verbose logging)
+openhands web --debug
+```
+
+
+--- CELL 6 (markdown) ---
+## 3.5 GUI Server — Full Web Application
+
+`openhands serve` launches the complete OpenHands GUI with Docker. This gives you:
+- Full React-based web UI
+- Embedded VSCode editor for viewing agent's workspace
+- VNC desktop for GUI-based debugging
+- Persistent Chromium browser for web tasks
+
+```bash
+# Basic launch (at http://localhost:3000)
+openhands serve
+
+# Mount current directory into the container
+# The agent can then read/write your project files directly
+openhands serve --mount-cwd
+
+# Enable GPU support (for local LLM inference)
+openhands serve --gpu
+
+# Combine both
+openhands serve --mount-cwd --gpu
+```
+
+
+--- CELL 7 (markdown) ---
+## 3.6 ACP Mode — IDE Integration
+
+The Agent Client Protocol (ACP) lets OpenHands integrate directly into IDEs via JSON-RPC 2.0 over stdio.
+
+```bash
+# Start ACP server (used by IDE configurations)
+openhands acp
+
+# With auto-approval (for trusted contexts)
+openhands acp --always-approve
+
+# With LLM-based approval (safety check before execution)
+openhands acp --llm-approve
+
+# Resume a specific conversation
+openhands acp --resume abc123
+
+# Resume the most recent conversation
+openhands acp --resume --last
+```
+
+
+--- CELL 8 (markdown) ---
+## 3.7 Cloud Mode — Zero-Install
+
+`openhands cloud` creates a conversation on OpenHands Cloud (app.all-hands.dev) — no local Docker, no setup. Best for:
+- Trying OpenHands without installing anything
+- Sharing sessions with teammates
+- Quick tasks on machines where you can't install Docker
+
+```bash
+# Create a cloud session with a task
+openhands cloud -t "Build a REST API for a todo app"
+
+# From a file
+openhands cloud -f task.txt
+
+# Custom server URL (self-hosted OpenHands Cloud)
+openhands cloud --server-url https://my-openhands.company.com -t "Fix issue #42"
+```
+
+
+--- CELL 9 (markdown) ---
+## 3.8 Mode Selection Decision Guide
+
+| Scenario | Recommended Mode |
+|---|---|
+| Interactive coding session on my laptop | `openhands` (TUI) |
+| CI pipeline that fixes lint errors automatically | `openhands --headless` |
+| Remote dev server with no GUI | `openhands web` |
+| Full-featured workspace with VSCode + browser | `openhands serve` |
+| Inside IntelliJ / PyCharm | `openhands acp` |
+| Quick test, no Docker installed | `openhands cloud` |
+
+
+--- CELL 10 (markdown) ---
+## Next
+
+→ [04_sdk_hello_world.ipynb](04_sdk_hello_world.ipynb) — Write your first agent with the Python SDK
+

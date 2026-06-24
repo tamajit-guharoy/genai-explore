@@ -1,0 +1,18 @@
+# .archon/workflows/two-step.yaml
+# Two-node sequential workflow
+name: two-step
+description: Plan then implement — demonstrates depends_on
+
+nodes:
+  - id: plan
+    prompt: |
+      Explore the codebase and create an implementation plan.
+      Identify all files that need changes.
+      Save the plan to $ARTIFACTS_DIR/plan.md
+
+  - id: implement
+    depends_on: [plan]
+    prompt: |
+      Read the plan from $ARTIFACTS_DIR/plan.md
+      Implement the changes.
+    context: fresh     # Clean session — only sees $plan.output, not plan's tool calls

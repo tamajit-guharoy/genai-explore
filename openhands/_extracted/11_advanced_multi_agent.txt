@@ -1,0 +1,233 @@
+=== 11_advanced_multi_agent.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 11 — Advanced: Multi-Agent Orchestration
+
+**Goal:** Orchestrate multiple OpenHands agents to tackle large-scale tasks through decomposition and parallel execution.
+
+**What You'll Learn:**
+- Task decomposition: breaking large tasks into agent-sized chunks
+- Parallel agent execution patterns
+- The orchestrator-worker pattern
+- Dependency-aware task scheduling
+- Cross-vendor agent review (agent A writes, agent B reviews)
+- Performance benchmarks: when multi-agent beats single-agent
+
+
+--- CELL 1 (markdown) ---
+## 11.1 Why Multi-Agent?
+
+Single agents have limits:
+- **Context window:** After ~100 tool calls, even condensed history strains the LLM
+- **Focus:** One agent working on 10 files loses track of the big picture
+- **Laziness:** LLMs sometimes refuse large tasks or skip steps
+- **Compounding errors:** A small mistake early in a long chain cascades
+
+Multi-agent orchestration addresses these by:
+- **Dividing work** into independent, parallelizable chunks
+- **Isolating contexts** — each agent sees only its slice of the problem
+- **Cross-validation** — one agent reviews another's output
+- **Human oversight** at checkpoints, not on every line
+
+
+--- CELL 2 (markdown) ---
+## 11.2 Task Decomposition Strategy
+
+The key to successful orchestration is decomposition. Good tasks are:
+
+| Property | Meaning | Example |
+|---|---|---|
+| **One-shottable** | Agent can complete in one focused session | "Add type hints to utils.py" ✓ |
+| **Single-commit** | Changes fit in one git commit | "Migrate entire codebase to TypeScript" ✗ |
+| **Parallelizable** | Doesn't depend on other agents' output | "Add docstrings to module A" (when B doesn't import A) |
+| **Verifiable** | Human can judge correct/incorrect quickly | "Write tests for function X" — tests pass or they don't |
+
+
+--- CELL 3 (code) ---
+# ═══════════════════════════════════════════
+# 11.2 Task Decomposition Example
+# ═══════════════════════════════════════════
+# Breaking a large task into parallel agent assignments
+
+import json
+
+# ─── Original task (too big for one agent) ───
+big_task = """Migrate the entire frontend from Redux to Zustand.
+The codebase has 45 connected components across 12 modules."""
+
+# ─── Decomposed into parallel subtasks ───
+# Each subtask targets leaf nodes in the dependency tree
+# (components that few other things import = lowest risk)
+subtasks = [
+    {
+        "id": "zustand-01",
+        "module": "components/ui/Button",
+        "imported_by": [],  # Leaf node — nothing depends on it
+        "task": "Convert Button component from Redux connect() to Zustand useStore()",
+        "files": ["components/ui/Button.tsx", "components/ui/Button.test.tsx"],
+    },
+    {
+        "id": "zustand-02",
+        "module": "components/ui/Modal",
+        "imported_by": [],  # Another leaf — safe to do in parallel
+        "task": "Convert Modal component from Redux to Zustand",
+        "files": ["components/ui/Modal.tsx", "components/ui/Modal.test.tsx"],
+    },
+    {
+        "id": "zustand-03",
+        "module": "components/ui/Tooltip",
+        "imported_by": ["Button", "Modal"],  # Depends on 01 and 02 being done first
+        "task": "Convert Tooltip, ensuring compatibility with updated Button and Modal",
+        "files": ["components/ui/Tooltip.tsx"],
+        "depends_on": ["zustand-01", "zustand-02"],  # Run AFTER these complete
+    },
+]
+
+print(f'Original: {big_task[:80]}...')
+print(f'\nDecomposed into {len(subtasks)} subtasks:')
+print(f'{"─"*70}')
+for st in subtasks:
+    deps = st.get('depends_on', [])
+    print(f'  [{st["id"]}] {st["module"]}')
+    print(f'    Dependencies: {deps if deps else "none (leaf node)"}')
+    print(f'    Files: {", ".join(st["files"])}')
+    print()
+print(f'{"─"*70}')
+print(f'Phase 1 (parallel): zustand-01, zustand-02  — 2 agents simultaneously')
+print(f'Phase 2 (sequential): zustand-03  — waits for Phase 1 to complete')
+
+
+--- CELL 4 (markdown) ---
+## 11.3 Orchestrator-Worker Pattern
+
+The production pattern for multi-agent OpenHands:
+
+```
+┌──────────────────┐
+│   Orchestrator   │  ← Human or meta-agent
+│   (Decomposes)   │
+└────────┬─────────┘
+         │ Spawns
+    ┌────┴────┬─────────┬─────────┐
+    ▼         ▼         ▼         ▼
+┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐
+│Agent 1│ │Agent 2│ │Agent 3│ │Agent 4│
+│Worker │ │Worker │ │Worker │ │Review │
+└───────┘ └───────┘ └───────┘ └───────┘
+    │         │         │         │
+    └─────────┴────┬────┴─────────┘
+                   ▼
+            ┌──────────────┐
+            │  Integrator  │  ← Merges results, resolves conflicts
+            └──────────────┘
+```
+
+
+--- CELL 5 (code) ---
+# ═══════════════════════════════════════════
+# 11.3 Orchestrator Pattern (Conceptual SDK Code)
+# ═══════════════════════════════════════════
+# This shows the multi-agent orchestration pattern using the SDK
+
+print('Multi-Agent Orchestration Pattern:')
+print('─' * 60)
+print()
+print('''
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
+async def run_agent_task(task: dict, workspace_path: str):
+    """Run a single agent task and return the result."""
+    llm = LLM(model="claude-sonnet-4-5", api_key=os.getenv("LLM_API_KEY"))
+
+    # Each agent gets a scoped set of tools
+    # Workers get file + terminal; reviewers get file (read-only)
+    agent = Agent(
+        llm=llm,
+        tools=[
+            Tool(name=FileEditorTool.name),
+            Tool(name=TerminalTool.name),
+        ],
+        system_prompt=task.get("system_prompt", ""),
+    )
+
+    conv = Conversation(
+        agent=agent,
+        workspace=workspace_path,
+        max_iterations=task.get("max_iterations", 50),
+    )
+
+    conv.send_message(task["prompt"])
+    conv.run()
+    return {"task_id": task["id"], "status": "completed"}
+
+
+async def orchestrate(tasks: list, workspace: str):
+    """Run independent tasks in parallel, dependent tasks sequentially."""
+    results = []
+
+    # Phase 1: Run all leaf-node tasks in parallel
+    leaf_tasks = [t for t in tasks if not t.get("depends_on")]
+    print(f"Phase 1: Running {len(leaf_tasks)} tasks in parallel")
+
+    # asyncio.gather runs all tasks concurrently
+    phase1_results = await asyncio.gather(*[
+        run_agent_task(t, workspace) for t in leaf_tasks
+    ])
+    results.extend(phase1_results)
+
+    # Phase 2: Run dependent tasks (after their dependencies complete)
+    dependent = [t for t in tasks if t.get("depends_on")]
+    for task in dependent:
+        print(f"Phase 2: Running {task['id']} (depends on {task['depends_on']})")
+        result = await run_agent_task(task, workspace)
+        results.append(result)
+
+    return results
+
+# Usage:
+# asyncio.run(orchestrate(subtasks, "/path/to/project"))
+''')
+
+
+--- CELL 6 (markdown) ---
+## 11.4 Cross-Vendor Agent Review
+
+A powerful pattern: use different LLM providers for writing and reviewing:
+
+```python
+# Agent A (Writer): Claude — strong code generation
+writer = Agent(
+    llm=LLM(model="claude-sonnet-4-5", api_key=...),
+    tools=[Tool(name=FileEditorTool.name)],
+)
+
+# Agent B (Reviewer): GPT — different perspective catches different issues
+reviewer = Agent(
+    llm=LLM(model="gpt-5.5", api_key=...),
+    tools=[Tool(name=FileEditorTool.name)],  # Read-only in practice
+    system_prompt="You are a code reviewer. Only write to REVIEW.md."
+)
+
+# Run writer → get diff → run reviewer on the diff
+# Different model architectures catch different bug categories
+```
+
+
+--- CELL 7 (markdown) ---
+## 11.5 When Multi-Agent Wins
+
+| Scenario | Single Agent | Multi-Agent |
+|---|---|---|
+| Fix one bug in one file | ✓ Fast | ✗ Overhead |
+| Add feature touching 3 files | ✓ Good | ~ Equal |
+| Migrate 45 components | ✗ Context overflow | ✓ 10x speedup |
+| Security audit of codebase | ✗ Misses patterns | ✓ Cross-vendor catches more |
+| Generate tests for 20 modules | ✗ Slow, repetitive | ✓ Parallel = 20x faster |
+
+
+--- CELL 8 (markdown) ---
+## Next
+
+→ [12_real_world_recipes.ipynb](12_real_world_recipes.ipynb) — Complete end-to-end workflows for real tasks
+

@@ -1,0 +1,47 @@
+# .archon/workflows/build-feature.yaml
+# The canonical Archon example — full feature development pipeline
+# Demonstrates: prompt, loop, bash, approval, depends_on
+name: build-feature
+description: |
+  Full feature development pipeline.
+  Plan → Implement (loop until done) → Test → Review → Approve → PR
+
+nodes:
+  # ── NODE 1: Plan (root — runs first) ──
+  - id: plan
+    prompt: "Explore the codebase and create an implementation plan"
+
+  # ── NODE 2: Implement (LOOP — iterates until all tasks done) ──
+  # Waits for plan, then loops. Fresh context each iteration.
+  - id: implement
+    depends_on: [plan]
+    loop:
+      prompt: "Read the plan. Implement the next task. Run validation."
+      until: ALL_TASKS_COMPLETE
+      fresh_context: true      # New session each iteration
+
+  # ── NODE 3: Run Tests (DETERMINISTIC — no AI) ──
+  # Bash node runs the test command. No LLM involved.
+  - id: run-tests
+    depends_on: [implement]
+    bash: "bun run validate"
+    timeout: 300000            # 5-minute timeout
+
+  # ── NODE 4: Review ──
+  - id: review
+    depends_on: [run-tests]
+    prompt: "Review all changes against the plan. Fix any issues."
+
+  # ── NODE 5: Human Approval (LOOP + INTERACTIVE) ──
+  # Pauses for human input. Loops on feedback.
+  - id: approve
+    depends_on: [review]
+    loop:
+      prompt: "Present the changes for review. Address any feedback."
+      until: APPROVED
+      interactive: true
+
+  # ── NODE 6: Create PR ──
+  - id: create-pr
+    depends_on: [approve]
+    prompt: "Push changes and create a pull request"

@@ -1,0 +1,265 @@
+=== 12_real_world_recipes.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 12 — Real-World Recipes
+
+**Goal:** Complete end-to-end workflows for the most common software engineering tasks.
+
+**What You'll Learn:**
+- Recipe 1: Bug Fix from GitHub Issue to PR
+- Recipe 2: Dependency Update with Test Verification
+- Recipe 3: Generate a Full Test Suite
+- Recipe 4: Code Review Automation
+- Recipe 5: Greenfield Project Scaffolding
+- Recipe 6: Legacy Code Migration
+
+
+--- CELL 1 (markdown) ---
+## 12.1 Recipe 1: Bug Fix — Issue → PR
+
+The classic OpenHands workflow: take a bug report and produce a merged PR.
+
+
+--- CELL 2 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 1: Bug Fix Workflow
+# ═══════════════════════════════════════════
+recipe1 = r'''
+# ─── Step 1: Clone and set up ───
+git clone https://github.com/your-org/your-repo.git
+cd your-repo
+git checkout -b fix/issue-42
+
+# ─── Step 2: Run OpenHands with the issue ───
+# The agent reads the codebase, identifies the bug, writes a fix + tests
+openhands --headless --override-with-envs \
+  -t "Fix issue #42: DatePicker crashes when selecting Feb 29 in non-leap years.
+       The bug report says the crash is in src/components/DatePicker.tsx line 142.
+       Write a fix, add a unit test for the leap-year edge case,
+       and verify all existing tests still pass."
+
+# ─── Step 3: Review the agent's work ───
+git diff
+npm test
+
+# ─── Step 4: Commit and create PR ───
+git add -A
+git commit -m "fix: DatePicker crash on Feb 29 in non-leap years
+
+Adds leap-year validation before creating Date object.
+Includes unit test for edge case.
+Closes #42"
+git push origin fix/issue-42
+gh pr create --title "Fix: DatePicker Feb 29 crash (#42)" \
+    --body "Automated fix by OpenHands. Adds validation + test."
+'''
+print(recipe1)
+
+
+--- CELL 3 (markdown) ---
+## 12.2 Recipe 2: Dependency Update
+
+Automate the tedious cycle of updating deps, running tests, and fixing breakage.
+
+
+--- CELL 4 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 2: Dependency Update Workflow
+# ═══════════════════════════════════════════
+recipe2 = r'''
+# ─── Step 1: Update all dependencies ───
+pip install --upgrade -r requirements.txt
+
+# ─── Step 2: Run tests to see what broke ───
+pytest 2>&1 | tee test-output.txt
+
+# ─── Step 3: Have OpenHands fix the breakage ───
+# Pass the test output so the agent knows exactly what failed
+openhands --headless --override-with-envs \
+  -t "Dependencies were just updated. Tests are failing.
+       The test output is in test-output.txt.
+       Fix all test failures by updating code to work with new dependency versions.
+       Do NOT downgrade any packages — fix the code, not the versions."
+
+# ─── Step 4: Verify everything passes ───
+pytest && echo "✓ All tests pass with updated dependencies"
+
+# ─── Step 5: Commit ───
+git add -A
+git commit -m "chore: update dependencies and fix compatibility"
+'''
+print(recipe2)
+
+
+--- CELL 5 (markdown) ---
+## 12.3 Recipe 3: Generate a Test Suite
+
+Give OpenHands a module with 0% coverage and get a comprehensive test suite.
+
+
+--- CELL 6 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 3: Test Suite Generation
+# ═══════════════════════════════════════════
+recipe3 = r'''
+# ─── Target: an untested module ───
+# src/services/payment.py — 0% test coverage, 500 lines, 12 functions
+
+openhands --headless --override-with-envs \
+  -t "Generate a comprehensive test suite for src/services/payment.py.
+       Requirements:
+       1. Use pytest (the project standard)
+       2. Write tests to tests/services/test_payment.py
+       3. Cover ALL functions: process_payment, refund, calculate_tax,
+          validate_card, create_invoice, etc.
+       4. Include edge cases: zero amounts, negative amounts, max values,
+          invalid card numbers, expired cards, network failures
+       5. Mock external services (Stripe API, tax calculator)
+       6. Aim for >90% line coverage
+       7. All tests must pass: run pytest tests/services/test_payment.py
+          and iterate until green"
+
+# ─── Verify ───
+pytest tests/services/test_payment.py --cov=src/services/payment --cov-report=term
+# Expected: 90%+ coverage, all tests pass
+'''
+print(recipe3)
+
+
+--- CELL 7 (markdown) ---
+## 12.4 Recipe 4: Code Review Automation
+
+Have OpenHands review a PR diff for bugs, security issues, and style problems.
+
+
+--- CELL 8 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 4: Automated Code Review
+# ═══════════════════════════════════════════
+recipe4 = r'''
+# ─── Get the PR diff ───
+gh pr diff 123 > pr_diff.txt
+
+# ─── Have OpenHands review it ───
+openhands --headless --override-with-envs \
+  -t "Review the PR diff in pr_diff.txt.
+       Write your review to REVIEW.md with these sections:
+       1. Summary: what this PR does
+       2. Bugs Found: actual logic errors (NOT style nits)
+       3. Security Issues: injection risks, exposed secrets, auth bypasses
+       4. Performance: N+1 queries, unnecessary allocations, blocking calls
+       5. Test Quality: missing edge cases, brittle assertions
+       6. Recommendation: APPROVE, REQUEST_CHANGES, or COMMENT
+
+       Only flag REAL issues — not personal preferences.
+       Cite specific line numbers from the diff."
+
+# ─── Post the review to GitHub ───
+gh pr review 123 --body "$(cat REVIEW.md)"
+'''
+print(recipe4)
+
+
+--- CELL 9 (markdown) ---
+## 12.5 Recipe 5: Greenfield Project Scaffolding
+
+Generate an entire project from a specification.
+
+
+--- CELL 10 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 5: Project Scaffolding
+# ═══════════════════════════════════════════
+recipe5 = r'''
+mkdir my-fastapi-app && cd my-fastapi-app
+
+openhands --headless --override-with-envs \
+  -t "Create a production-ready FastAPI application:
+
+       Features:
+       - REST API for a task management app (CRUD: tasks, users)
+       - PostgreSQL with SQLAlchemy async
+       - Alembic for migrations
+       - Pydantic v2 for validation
+       - JWT authentication (access + refresh tokens)
+       - Rate limiting (slowapi)
+       - Structured logging (structlog)
+       - Health check endpoint
+       - OpenAPI docs at /docs
+
+       Project structure:
+       app/
+         main.py          — FastAPI app factory
+         config.py        — Settings from env vars
+         models/          — SQLAlchemy models
+         schemas/         — Pydantic schemas
+         api/v1/          — Route handlers
+         core/            — Auth, deps, security
+       tests/
+       alembic/
+       Dockerfile
+       docker-compose.yml
+       README.md
+
+       Write ALL files with full implementations.
+       Include docstrings and type hints throughout.
+       Run the tests to verify: pytest -v"
+'''
+print(recipe5)
+
+
+--- CELL 11 (markdown) ---
+## 12.6 Recipe 6: Legacy Migration
+
+Migrate from deprecated libraries or patterns.
+
+
+--- CELL 12 (code) ---
+# ═══════════════════════════════════════════
+# Recipe 6: Legacy Code Migration
+# ═══════════════════════════════════════════
+recipe6 = r'''
+# ─── Migrate from Flask to FastAPI ───
+
+openhands --headless --override-with-envs \
+  -t "Migrate this Flask application to FastAPI:
+
+       1. Convert Flask routes to FastAPI path operations
+       2. Replace Flask request objects with FastAPI dependency injection
+       3. Convert Flask-SQLAlchemy to SQLAlchemy 2.0 async
+       4. Replace Flask-JWT with python-jose + passlib
+       5. Add Pydantic models for all request/response schemas
+       6. Update tests from pytest-flask to httpx TestClient
+       7. Add type hints to all functions
+
+       Rules:
+       - Preserve ALL existing behavior — this is a refactor, not a rewrite
+       - Keep the same URL paths where possible
+       - All existing tests must pass (updated for FastAPI)
+       - Add migration notes to MIGRATION.md"
+
+# ─── After migration ───
+pytest && echo "✓ Migration complete, all tests pass"
+cat MIGRATION.md
+'''
+print(recipe6)
+
+
+--- CELL 13 (markdown) ---
+## 12.7 Recipe Selection Guide
+
+| Your Situation | Recommended Recipe |
+|---|---|
+| Bug assigned to you, want AI to fix it | Recipe 1: Bug Fix |
+| Dependabot PR broke everything | Recipe 2: Dependency Update |
+| Legacy module with 0 tests | Recipe 3: Test Generation |
+| PR review piling up | Recipe 4: Code Review |
+| Starting a new project | Recipe 5: Scaffolding |
+| Python 2 → 3, Flask → FastAPI, JS → TS | Recipe 6: Migration |
+
+
+--- CELL 14 (markdown) ---
+## Next
+
+→ [13_appendix_reference.ipynb](13_appendix_reference.ipynb) — Complete cheat sheet, CLI reference, and glossary
+

@@ -1,0 +1,33 @@
+# OpenHands Agent Server - Production Deployment
+# Based on the docker run command from Section 8 of openhands-tutorial.md
+#
+# Usage:
+#   docker-compose up -d
+#   curl http://localhost:8000/api/alive
+#
+# The server runs in Docker, and agents run in sibling containers
+# for full sandbox isolation.
+
+version: "3.8"
+
+services:
+  agent-server:
+    image: ghcr.io/openhands/agent-server:latest
+    container_name: openhands-server
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount Docker socket so the server can spawn agent containers
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - AGENT_SERVER_IMAGE_REPOSITORY=ghcr.io/openhands/agent-server
+      - AGENT_SERVER_IMAGE_TAG=1.26.0-python
+      # LLM configuration (passed through to agents)
+      - LLM_API_KEY=${LLM_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-claude-sonnet-4-5}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/alive"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

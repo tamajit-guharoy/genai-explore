@@ -1,0 +1,73 @@
+# .archon/workflows/pr-review-swarm.yaml
+# Multi-agent review with 5 parallel specialized reviewers
+name: comprehensive-pr-review
+description: |
+  5 parallel specialized reviewers → synthesize → unified report.
+  Security, performance, style, logic, and test review run concurrently.
+
+nodes:
+  # ── All 5 reviewers run IN PARALLEL (no depends_on) ──
+
+  - id: security
+    prompt: |
+      SECURITY review of the changes.
+      Check for: injection vulnerabilities, auth/authz issues,
+      data leaks, unsafe deserialization, dependency vulns, secret exposure.
+    model: sonnet
+
+  - id: performance
+    prompt: |
+      PERFORMANCE review of the changes.
+      Check for: N+1 queries, unnecessary allocations, blocking I/O,
+      missing indexes, memory leaks, unbounded collections.
+    model: sonnet
+
+  - id: style
+    prompt: |
+      STYLE review of the changes.
+      Check for: naming conventions, formatting consistency,
+      documentation completeness, dead code, unused imports.
+    model: haiku
+
+  - id: logic
+    prompt: |
+      LOGIC review of the changes.
+      Check for: edge case handling, error handling completeness,
+      state management correctness, race conditions, business logic.
+    model: sonnet
+
+  - id: tests
+    prompt: |
+      TEST review of the changes.
+      Check for: missing test cases, brittle tests, coverage gaps,
+      test naming and organization, mock/stub appropriateness.
+    model: haiku
+
+  # ── Synthesize all 5 reviews into one report ──
+  - id: synthesize
+    depends_on: [security, performance, style, logic, tests]
+    prompt: |
+      Synthesize all review findings into a unified report:
+
+      ## Security Review
+      $security.output
+
+      ## Performance Review
+      $performance.output
+
+      ## Style Review
+      $style.output
+
+      ## Logic Review
+      $logic.output
+
+      ## Test Review
+      $tests.output
+
+      Create a final report formatted as:
+      # PR Review Report
+      ## Critical Issues (must fix before merge)
+      ## Warnings (should fix)
+      ## Suggestions (nice to have)
+      ## Summary
+    model: sonnet

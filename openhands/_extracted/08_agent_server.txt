@@ -1,0 +1,193 @@
+=== 08_agent_server.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 08 — Agent Server: Remote Execution
+
+**Goal:** Deploy and use the Agent Server for remote, sandboxed, and production-grade agent execution.
+
+**What You'll Learn:**
+- Agent Server architecture: REST + WebSocket
+- Starting the server locally and with Docker
+- Connecting via RemoteWorkspace
+- WebSocket for streaming events
+- OpenAI-compatible endpoint for chat UIs
+- Multi-agent deployment patterns
+
+
+--- CELL 1 (markdown) ---
+## 8.1 Why a Remote Agent Server?
+
+Running agents locally works for development, but production needs:
+- **Isolation:** Agents run in Docker containers, not on your laptop
+- **Scalability:** Multiple agents can run concurrently on different machines
+- **Persistence:** Server manages agent state, clients connect/disconnect freely
+- **Security:** Centralized sandboxing, API key management, audit logging
+- **OpenAI compatibility:** Chat UIs, IDEs, voice platforms can use OpenHands as a drop-in model
+
+
+--- CELL 2 (markdown) ---
+## 8.2 Server Architecture
+
+```
+┌──────────────────────────────────────────────┐
+│              Agent Server                     │
+├──────────────────────────────────────────────┤
+│  REST API          WebSocket       OpenAI     │
+│  POST /conversations  ws://.../ws   /v1/chat  │
+│  GET  /conversations               /v1/models │
+│  POST /messages                               │
+├──────────────────────────────────────────────┤
+│         Agent Runtime (Docker)                │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐      │
+│  │ Agent 1 │  │ Agent 2 │  │ Agent 3 │ ...  │
+│  │(sandbox)│  │(sandbox)│  │(sandbox)│      │
+│  └─────────┘  └─────────┘  └─────────┘      │
+└──────────────────────────────────────────────┘
+```
+
+
+--- CELL 3 (code) ---
+# ═══════════════════════════════════════════
+# 8.2 Starting the Agent Server
+# ═══════════════════════════════════════════
+# These are terminal commands to start the server
+
+server_commands = r'''
+# ─── Option 1: Start server locally (development) ───
+# This runs the agent server on your machine — good for testing
+openhands agent-server
+# Server starts at http://localhost:8000
+# REST API: http://localhost:8000/api
+# WebSocket: ws://localhost:8000/ws
+# OpenAI endpoint: http://localhost:8000/v1
+
+# ─── Option 2: Start server with Docker (production) ───
+# The server itself runs in Docker, and agents run in sibling containers
+docker run -d --name openhands-server \
+  -p 8000:8000 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -e AGENT_SERVER_IMAGE_REPOSITORY=ghcr.io/openhands/agent-server \
+  -e AGENT_SERVER_IMAGE_TAG=1.26.0-python \
+  ghcr.io/openhands/agent-server:latest
+
+# ─── Option 3: Using docker-compose ───
+# Better for multi-service setups (server + database + monitoring)
+
+# Verify server is running:
+curl http://localhost:8000/api/alive
+# Should return: {"status": "ok"}
+'''
+print(server_commands)
+
+
+--- CELL 4 (markdown) ---
+## 8.3 Connecting via Python SDK
+
+Once the server is running, connect to it with `RemoteWorkspace`:
+
+
+--- CELL 5 (code) ---
+# ═══════════════════════════════════════════
+# 8.3 Remote Agent via SDK
+# ═══════════════════════════════════════════
+# This shows the code pattern — requires a running Agent Server
+
+print('Remote Agent Pattern:')
+print('─' * 50)
+print('''
+from openhands.sdk import LLM, Agent, Conversation
+from openhands.workspace import RemoteWorkspace
+from openhands.tools import Tool
+from openhands.tools.file_editor import FileEditorTool
+from openhands.tools.terminal import TerminalTool
+
+# ─── Step 1: LLM (same as local) ───
+llm = LLM(model="gpt-5.5", api_key=os.getenv("LLM_API_KEY"))
+
+# ─── Step 2: Remote workspace instead of LocalWorkspace ───
+# This is the ONLY change vs local mode — everything else is identical
+workspace = RemoteWorkspace(
+    base_url="http://localhost:8000",  # Agent Server URL
+    api_key=os.getenv("AGENT_SERVER_KEY"),  # Server auth token
+)
+
+# ─── Step 3: Agent and Conversation (identical to local) ───
+agent = Agent(
+    llm=llm,
+    tools=[
+        Tool(name=FileEditorTool.name),
+        Tool(name=TerminalTool.name),
+    ],
+)
+
+conv = Conversation(agent=agent, workspace=workspace)
+conv.send_message("Create a FastAPI app with Dockerfile")
+conv.run()  # Executes REMOTELY in Docker sandbox on the server
+''')
+print('─' * 50)
+print('Key insight: The Agent and Conversation code is IDENTICAL')
+print('between local and remote — only the Workspace changes.')
+
+
+--- CELL 6 (markdown) ---
+## 8.4 WebSocket for Streaming Events
+
+For real-time applications, use WebSocket to stream agent events as they happen:
+
+```python
+import asyncio
+import websockets
+import json
+
+async def stream_agent_events(conversation_id: str):
+    uri = f"ws://localhost:8000/ws/conversations/{conversation_id}"
+    async with websockets.connect(uri) as ws:
+        async for message in ws:
+            event = json.loads(message)
+            print(f"[{event['type']}] {event.get('content', '')}")
+            if event['type'] == 'finish':
+                break
+
+# Run with:
+# asyncio.run(stream_agent_events('conv_abc123'))
+```
+
+
+--- CELL 7 (markdown) ---
+## 8.5 OpenAI-Compatible Endpoint
+
+The Agent Server exposes an OpenAI-compatible API at `/v1`:
+
+```bash
+# List models — OpenHands agent appears as a model
+curl http://localhost:8000/v1/models
+# Returns: {"data": [{"id": "openhands-agent", ...}]}
+
+# Chat completion — any OpenAI client can talk to OpenHands
+curl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openhands-agent",
+    "messages": [{"role": "user", "content": "Create a TODO app in React"}]
+  }'
+```
+
+This means ANY tool that works with OpenAI's API (chat UIs, voice assistants, IDE plugins) can use OpenHands as a drop-in replacement.
+
+
+--- CELL 8 (markdown) ---
+## 8.6 Production Deployment Patterns
+
+| Pattern | Setup | Use Case |
+|---|---|---|
+| **Single server** | One Agent Server, multiple clients | Team sharing an agent |
+| **Server per project** | One Agent Server per codebase | Isolation between projects |
+| **Kubernetes** | Agent Server as a Deployment, agents as Jobs | Enterprise scale |
+| **Serverless** | OpenHands Cloud | Zero-ops, pay-per-use |
+
+
+--- CELL 9 (markdown) ---
+## Next
+
+→ [09_headless_automation.ipynb](09_headless_automation.ipynb) — Automating CI/CD pipelines with headless mode
+

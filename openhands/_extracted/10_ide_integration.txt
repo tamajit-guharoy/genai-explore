@@ -1,0 +1,168 @@
+=== 10_ide_integration.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 10 — IDE Integration via ACP
+
+**Goal:** Set up OpenHands as an AI agent inside your IDE using the Agent Client Protocol.
+
+**What You'll Learn:**
+- The ACP protocol: JSON-RPC 2.0 over stdio
+- JetBrains IDEs: IntelliJ, PyCharm, WebStorm setup
+- VS Code integration via community extension
+- Zed editor native ACP support
+- Toad editor universal terminal interface
+- Multiple agent configurations for different workflows
+
+
+--- CELL 1 (markdown) ---
+## 10.1 How ACP Works
+
+The Agent Client Protocol (ACP) lets IDEs communicate with AI agents through a standard interface:
+
+```
+┌──────────┐  JSON-RPC 2.0  ┌────────────────┐  API Calls  ┌──────────┐
+│ Your IDE │←──────────────→│ OpenHands CLI  │───────────→│ LLM      │
+│          │   over stdio   │ (openhands acp)│            │ Provider │
+└──────────┘                └────────────────┘            └──────────┘
+```
+
+The IDE launches `openhands acp` as a subprocess. All communication happens over stdin/stdout using JSON-RPC 2.0 messages.
+
+
+--- CELL 2 (markdown) ---
+## 10.2 Prerequisites for All IDEs
+
+1. OpenHands CLI installed (`uv tool install openhands --python 3.12`)
+2. LLM configured (`openhands` → `/settings`)
+3. IDE with ACP support (see table below)
+
+
+--- CELL 3 (markdown) ---
+## 10.3 JetBrains IDEs (IntelliJ, PyCharm, WebStorm…)
+
+JetBrains IDEs version 25.3+ support ACP natively via JetBrains AI Assistant.
+
+**Setup:**
+
+1. Create `~/.jetbrains/acp.json` (Linux/macOS) or `C:\Users\<user>\.jetbrains\acp.json` (Windows)
+2. Add the configuration:
+
+```json
+{
+  "agent_servers": {
+    "OpenHands": {
+      "command": "openhands",
+      "args": ["acp"],
+      "env": {}
+    }
+  }
+}
+```
+
+**Advanced configurations:**
+
+
+--- CELL 4 (code) ---
+# ═══════════════════════════════════════════
+# 10.3 JetBrains ACP Configurations
+# ═══════════════════════════════════════════
+import json
+
+# ─── Multiple agent configurations ───
+# You can define multiple OpenHands profiles for different workflows
+acp_config = {
+    "agent_servers": {
+        # Default: interactive, requires confirmation for risky actions
+        "OpenHands": {
+            "command": "openhands",
+            "args": ["acp"],
+            "env": {}
+        },
+        # Auto-approve: for trusted, repetitive tasks
+        "OpenHands (Auto-Approve)": {
+            "command": "openhands",
+            "args": ["acp", "--always-approve"],
+            "env": {}
+        },
+        # LLM-approve: second LLM screens actions for safety
+        "OpenHands (LLM-Approve)": {
+            "command": "openhands",
+            "args": ["acp", "--llm-approve"],
+            "env": {}
+        },
+        # Resume latest: continue where you left off
+        "OpenHands (Resume Latest)": {
+            "command": "openhands",
+            "args": ["acp", "--resume", "--last"],
+            "env": {}
+        },
+    }
+}
+
+print('JetBrains ACP Configuration (~/.jetbrains/acp.json):')
+print(json.dumps(acp_config, indent=2))
+print()
+print('After creating this file, restart your JetBrains IDE.')
+print('OpenHands will appear as an available agent in AI Assistant.')
+
+
+--- CELL 5 (markdown) ---
+## 10.4 VS Code
+
+VS Code integration uses a community ACP extension:
+
+```bash
+# Install the ACP extension (search in VS Code marketplace)
+# Then configure settings.json:
+{
+  "acp.agents": [
+    {
+      "id": "openhands",
+      "name": "OpenHands",
+      "command": "openhands",
+      "args": ["acp"]
+    }
+  ]
+}
+```
+
+
+--- CELL 6 (markdown) ---
+## 10.5 Zed Editor
+
+Zed has built-in ACP support — no extension needed:
+
+```json
+// ~/.config/zed/settings.json
+{
+  "agent_servers": {
+    "OpenHands": {
+      "command": "openhands",
+      "args": ["acp"]
+    }
+  }
+}
+```
+
+
+--- CELL 7 (markdown) ---
+## 10.6 Toad Editor
+
+Toad uses a universal terminal interface — OpenHands works through the terminal integration directly.
+
+
+--- CELL 8 (markdown) ---
+## 10.7 IDE Integration Best Practices
+
+1. **Use LLM-approve mode** in IDEs — you're actively coding and want safety without constant popups
+2. **Create separate configurations** — one for code review, one for refactoring, one for test generation
+3. **Pin the workspace** to your project root — avoids confusion about which files are in scope
+4. **Use resume** — IDE sessions benefit from continuity; `--resume --last` is your friend
+5. **ACD is experimental** — report issues on the OpenHands-CLI GitHub repo
+
+
+--- CELL 9 (markdown) ---
+## Next
+
+→ [11_advanced_multi_agent.ipynb](11_advanced_multi_agent.ipynb) — Multi-agent orchestration and task decomposition
+

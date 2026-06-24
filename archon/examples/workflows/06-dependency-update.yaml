@@ -1,0 +1,59 @@
+# .archon/workflows/update-deps.yaml
+# Automated dependency update pipeline
+name: update-dependencies
+description: |
+  Check outdated npm packages, update minor/patch, run tests, create PR.
+  Uses script node for deterministic JSON parsing instead of LLM.
+
+nodes:
+  # ── BASH: Check for outdated packages ──
+  - id: check-outdated
+    bash: "npm outdated --json 2>/dev/null || echo '{}'"
+    timeout: 30000
+
+  # ── SCRIPT: Parse outdated JSON (TypeScript via bun) ──
+  - id: parse-outdated
+    script: |
+      try {
+        const data = $check-outdated.output;
+        const updates = Object.entries(data).map(([name, info]) => ({
+          name,
+          current: info.current,
+          latest: info.latest,
+          type: info.type
+        }));
+        const minor = updates.filter(u => u.type === 'minor' || u.type === 'patch');
+        console.log(JSON.stringify({ total: updates.length, count: minor.length }));
+      } catch {
+        console.log(JSON.stringify({ total: 0, count: 0 }));
+      }
+    runtime: bun
+    depends_on: [check-outdated]
+    timeout: 10000
+
+  # ── CANCEL: Guard clause — nothing to update ──
+  - id: abort-if-none
+    depends_on: [parse-outdated]
+    when: "$parse-outdated.output.count == 0"
+    cancel: "All dependencies are up to date — nothing to do"
+
+  # ── BASH: Update packages ──
+  - id: update
+    depends_on: [parse-outdated]
+    when: "$parse-outdated.output.count > 0"
+    bash: "npm update"
+    timeout: 120000
+
+  # ── BASH: Run tests ──
+  - id: test
+    depends_on: [update]
+    bash: "npm test 2>&1"
+    timeout: 300000
+
+  # ── PROMPT: Create PR ──
+  - id: create-pr
+    depends_on: [test]
+    prompt: |
+      Create a PR for the dependency updates.
+      Updated packages count: $parse-outdated.output.count
+      Include a summary of changes. Use `gh pr create`.

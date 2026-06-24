@@ -1,0 +1,131 @@
+=== 01_what_is_openhands.ipynb ===
+
+--- CELL 0 (markdown) ---
+# 01 — What Is OpenHands?
+
+**Goal:** Understand what OpenHands is, its architecture, how it compares to alternatives, and when to use it.
+
+**What You'll Learn:**
+- The event-driven agent loop that powers OpenHands
+- How OpenHands compares to Devin, Claude Code, Hermes, SWE-Agent, and GitHub Copilot
+- The four-package SDK architecture
+- Use cases: from one-off tasks to multi-agent orchestration
+
+
+--- CELL 1 (markdown) ---
+## 1.1 The Problem OpenHands Solves
+
+Before agents, AI coding tools were **autocomplete on steroids** — GitHub Copilot suggests the next line, ChatGPT writes a function when asked. But neither can:
+- Read your entire codebase to understand context
+- Execute shell commands and react to their output
+- Iterate: write code, run tests, see failures, fix bugs, repeat
+- Work autonomously for minutes or hours on a multi-file change
+
+OpenHands fills this gap: it's an **autonomous coding agent** that perceives (reads files, runs commands, browses web), reasons (plans via LLM), and acts (writes code, executes shell, opens PRs) — all inside a sandboxed environment.
+
+
+--- CELL 2 (markdown) ---
+## 1.2 Core Architecture: The Event Stream
+
+OpenHands uses an **event-driven architecture**. Every interaction — user message, LLM response, tool execution, file change — is an **immutable event** in a chronological stream.
+
+```
+┌──────────┐    Action     ┌─────────────┐    Observation    ┌──────────┐
+│  AGENT   │──────────────→│  ENVIRONMENT │────────────────→│  AGENT   │
+│ (LLM)    │               │ (Sandbox)    │                  │ (LLM)    │
+└──────────┘               └─────────────┘                  └──────────┘
+     ↑                                                          │
+     └──────────────── Event Log (history) ─────────────────────┘
+```
+
+**Why events instead of mutable state?**
+- **Auditability:** Every action is traceable — critical for debugging agent behavior
+- **Replay:** You can replay an event stream to reproduce exactly what happened
+- **Stateless agents:** The agent is a pure function of event history → no hidden state bugs
+
+
+--- CELL 3 (markdown) ---
+## 1.3 The Reasoning-Action Loop
+
+This is the heartbeat of every OpenHands agent:
+
+1. **Condense:** Compress conversation history to fit in the LLM context window
+2. **Query LLM:** Send the condensed history + system prompt → get back an Action
+3. **Security Check:** The Security Analyzer evaluates risk of the proposed action
+4. **Execute:** Run the action (write file, run bash, browse web, etc.)
+5. **Observe:** Capture the result as an Observation event
+6. **Loop:** Append observation to history → go to step 1
+
+The loop terminates when the agent emits a `FinishAction` (task complete) or hits the max iteration limit.
+
+
+--- CELL 4 (markdown) ---
+## 1.4 Comparison: OpenHands vs Alternatives
+
+| Feature | OpenHands | Devin | Claude Code | Hermes Agent | GitHub Copilot |
+|---|---|---|---|---|---|
+| **License** | MIT (open-source) | Proprietary | Proprietary | Apache 2.0 | Proprietary |
+| **Autonomy** | Full autonomous agent | Full autonomous agent | Interactive agent | General-purpose agent | Inline autocomplete |
+| **Sandbox** | Docker-based, isolated | Built-in | Bash in working dir | Optional Docker | None (IDE only) |
+| **Multi-model** | 100+ via litellm | Cognition-only | Anthropic-only | 30+ providers | OpenAI/GitHub models |
+| **IDE Integration** | ACP (JetBrains, Zed, VS Code) | Web UI only | Terminal + VS Code | Terminal + 20 messaging platforms | IDE extensions |
+| **CI/CD** | Headless mode, JSONL output | No | Via CLI | Cron scheduler | GitHub Actions |
+| **Multi-agent** | Orchestration, parallel agents | No | Sub-agents (delegate_task) | Sub-agents (delegate_task) | No |
+| **Skills/Condensers** | Yes | No | CLAUDE.md hooks | Yes (agentskills.io) | No |
+| **Price** | Free (pay for API tokens) | $500/mo | Pay for tokens | Free (pay for tokens) | $10-39/mo |
+| **SWE-bench** | 72% (Sonnet 4.5) | Not disclosed | Model-dependent | Not a coding specialist | N/A |
+
+
+--- CELL 5 (markdown) ---
+## 1.5 When to Use OpenHands
+
+**Use OpenHands when:**
+- You want an agent that works on your codebase autonomously for minutes/hours
+- You need sandboxed execution (untrusted code, dependency installs)
+- You want to automate CI/CD tasks with an AI agent
+- You're building custom agent workflows via the Python SDK
+- You need multi-model flexibility (swap between Claude, GPT, Gemini, local models)
+- You want open-source transparency and audit trails
+
+**Don't use OpenHands when:**
+- You just want inline code completions → use Copilot or Cursor
+- You want a chat-based coding assistant inside your IDE → use Claude Code or Codex
+- You need a general-purpose personal assistant with memory → use Hermes
+
+
+--- CELL 6 (markdown) ---
+## 1.6 Four-Package SDK Architecture
+
+The Software Agent SDK is organized into four Python packages:
+
+| Package | Purpose | When You Need It |
+|---|---|---|
+| `openhands-sdk` | Core abstractions: Agent, LLM, Conversation, Event, Tool | Always — this is the foundation |
+| `openhands-tools` | Built-in tools: FileEditor, Terminal, TaskTracker, WebBrowser, MCP | When you want agents that do things |
+| `openhands-workspace` | Execution environments: LocalWorkspace, RemoteWorkspace, Docker sandbox | When agents need to run code |
+| `openhands-agent-server` | REST/WebSocket server for remote agent execution | Production deployment, shared agents |
+
+```
+┌─────────────────────────────────────────┐
+│         Your Application                │
+├─────────────────────────────────────────┤
+│  OpenHands CLI  │  GUI  │  Custom Code  │
+├─────────────────────────────────────────┤
+│       Software Agent SDK                │
+│  ┌─────────┐ ┌───────┐ ┌──────────┐    │
+│  │ Agent   │ │ Tools │ │Workspace │    │
+│  │ LLM     │ │ MCP   │ │ Docker   │    │
+│  │ Events  │ │Bash   │ │ Local    │    │
+│  └─────────┘ └───────┘ └──────────┘    │
+│  ┌──────────────────────────────────┐   │
+│  │     Agent Server (REST/WS)       │   │
+│  └──────────────────────────────────┘   │
+└─────────────────────────────────────────┘
+```
+
+
+--- CELL 7 (markdown) ---
+## Next
+
+→ [02_installation_setup.ipynb](02_installation_setup.ipynb) — Install OpenHands and configure your first agent
+

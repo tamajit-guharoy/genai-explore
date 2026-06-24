@@ -1,0 +1,64 @@
+# .archon/workflows/migrate.yaml
+# Structured code migration with validation at every step
+name: migrate-framework
+description: |
+  Structured migration pipeline.
+  Analyze → plan → migrate (loop with validation) → verify → PR.
+  Adaptable to any framework/library migration.
+
+nodes:
+  - id: analyze
+    prompt: |
+      Analyze the code at: $ARGUMENTS
+
+      Document:
+      1. Every endpoint/module/component
+      2. Current patterns and conventions
+      3. Dependencies on the framework being migrated
+      4. Potential challenges
+
+    model: sonnet
+
+  - id: plan
+    depends_on: [analyze]
+    prompt: |
+      Create a detailed migration plan based on the analysis.
+
+      For each piece to migrate:
+      - Current pattern → New pattern mapping
+      - Breaking changes to watch for
+      - Testing strategy
+
+      Save to $ARTIFACTS_DIR/migration-plan.md
+    model: sonnet
+    context: fresh
+
+  - id: migrate
+    depends_on: [plan]
+    loop:
+      prompt: |
+        Read $ARTIFACTS_DIR/migration-plan.md
+        Implement the migration ONE STEP at a time.
+        After each step:
+        1. Run type-check
+        2. Run tests
+        3. Fix any failures before proceeding
+        When ALL steps complete: <promise>DONE</promise>
+      until: DONE
+      max_iterations: 8
+
+  - id: verify
+    depends_on: [migrate]
+    bash: |
+      npx tsc --noEmit && npm test && npm run lint
+    timeout: 300000
+
+  - id: create-pr
+    depends_on: [verify]
+    prompt: |
+      Create a PR for the migration with:
+      1. What was migrated
+      2. Breaking changes (if any)
+      3. Performance/quality improvements (if measurable)
+      4. Testing instructions
+      Use `gh pr create`
